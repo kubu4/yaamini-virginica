@@ -1,0 +1,95 @@
+---
+title: "BLAST Tutorial in R Markdown"
+author: "Yaamini Venkataraman"
+date: "10/11/2018"
+output: html_document
+---
+
+In this tutorial, I'll use `blastx` in R Markdown. I will follow the same steps as the [BLAST Tutorial in Jupyter](https://github.com/fish546-2018/yaamini-virginica/tree/master/tutorials/2018-10-09-BLAST-Tutorial).
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+sessionInfo()
+```
+
+```{bash}
+pwd #Check present working directory
+```
+
+# Step 1: Create a BLAST Database
+
+```{bash}
+curl \
+ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz \
+> uniprot_sprot.fasta.gz #Download directory from Unprot Swiss-Prot
+```
+
+```{bash}
+gunzip -k uniprot_sprot.fasta #Unzip the database, but keep the original file
+```
+
+```{bash}
+ls -F
+```
+
+```{bash}
+#Path to blast; path to input for database; specify database type; output name
+/Applications/blast/ncbi-blast-2.2.18+/bin/makeblastdb \
+-in uniprot_sprot.fasta \
+-dbtype prot \
+-out uniprot_sprot_20181011
+```
+ 
+```{bash}
+ls -F #Confirm database creation worked
+```
+
+# Step 2: Obtain the query sequence
+
+```{bash}
+curl http://eagle.fish.washington.edu/cnidarian/Ab_4denovo_CLC6_a.fa \
+> Ab_4denovo_CLC6_a.fa
+```
+
+```{bash}
+head Ab_4denovo_CLC6_a.fa #Confirm download
+```
+
+```{bash}
+grep -c ">" Ab_4denovo_CLC6_a.fa #Count the number of sequences
+```
+
+# Step 3: Run `blastx`
+
+To run blastx I need the following:
+
+1. Path to blastx
+2. Path to query
+3. Path to database
+4. Output file name
+5. Maximum e-value to use for hits
+6. Number of CPUs to use
+7. Only produce 1 hit per query (may not be the best hit, but it is the first hit the algorithm finds...this is different than the web interface that finds the best hit)
+8. Output format 6 specifies tabular format
+
+```{bash}
+/Applications/blast/ncbi-blast-2.2.18+/bin/makeblastdb \
+-query Ab_4denovo_CLC6_a.fa \
+-db uniprot_sprot_20181010  \
+-out Ab_4-uniprot_blastx.tab \
+-evalue 1E-20 \
+-num_threads 4 \
+-max_target_seqs 1 \
+-outfmt 6
+```
+
+```{bash}
+head Ab_4-uniprot_blastx.tab #Confirm output was created
+```
+
+```{bash}
+wc -l Ab_4-uniprot_blastx.tab #Count the number of hits
+```
