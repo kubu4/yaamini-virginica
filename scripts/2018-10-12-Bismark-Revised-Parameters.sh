@@ -15,7 +15,7 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=yaaminiv@uw.edu
 ## Specify the working directory for this job
-#SBATCH --workdir=/gscratch/scrubbed/yaamini/Virginica-MBD/2018-10-17-Virginica-Bismark-Revised-Parameters
+#SBATCH --workdir=/gscratch/scrubbed/yaamini/data/Virginica-MBD/2018-10-17-Virginica-Bismark-Revised-Parameters
 
 #Add Directories and Programs to Path
 
