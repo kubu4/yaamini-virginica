@@ -18,6 +18,7 @@ This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab
 3. Receive sequencing data and trim files as appropriate
 4. Align trimmed files to a reference bisulfite genome in `bismark`
 5. Isolate differentially methylated loci (DMLs) and regions (DMRs) from alignments in `methylKit`
+6. Perform a gene enrichment
 
 ## Project Timeline
 
