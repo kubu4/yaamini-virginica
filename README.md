@@ -14,9 +14,10 @@ This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab
 ## Project Timeline
 
 **Week 4**: 
-- Start `bismark` alignment on Mox
-- Validate analysis parameters in `methylKit` with other samples
-- Create protocol for tiling analysis in `methylKit`
+- Start `bismark` alignment on Mox: Protocol can be found [here](https://yaaminiv.github.io/DML-Analysis-Part12/)
+- Use different samples to create working `methylKit` protocol. This work was done in a [different Github repository](https://github.com/RobertsLab/project-virginica-oa).
+  - Validate analysis parameters in `methylKit` with other samples: Results can be found [here](https://yaaminiv.github.io/DML-Analysis-Part13/)
+  - Create protocol for tiling analysis in `methylKit`: Results can be found [here](https://yaaminiv.github.io/DML-Analysis-Part14/)
 
 **Week 5**: 
 - Run `methylKit` to identify DMLs and DMRs on samples from Mox
