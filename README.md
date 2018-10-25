@@ -11,6 +11,14 @@ This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab
 3. Create reproducible protocols for anlaysis
 4. Produce a written report of findings
 
+## Method Overview
+
+1. Extract DNA and prepare samples for MBD-BSseq
+2. Send samples to ZymoResearch for sequencing
+3. Receive sequencing data and trim files as appropriate
+4. Align trimmed files to a reference bisulfite genome in `bismark`
+5. Isolate differentially methylated loci (DMLs) and regions (DMRs) from alignments in `methylKit`
+
 ## Project Timeline
 
 **Week 4**: 
@@ -30,11 +38,11 @@ R code and output from multiple analyses. Each analysis will be in its own subdi
 
 ### [data](https://github.com/fish546-2018/yaamini-virginica/tree/master/data)
 
-Raw data used for project analyses. Empty as of 2018-10-16.
+Raw data used for project analyses, as well as links to data files.
 
 ### [notebooks](https://github.com/fish546-2018/yaamini-virginica/tree/master/notebooks)
 
-Jupyter notebooks. that detail reproducible methods for data analysis. Empty as of 2018-10-16.
+Jupyter notebooks that detail reproducible methods for data analysis. Empty as of 2018-10-16.
 
 ### [scripts](https://github.com/fish546-2018/yaamini-virginica/tree/master/scripts)
 
