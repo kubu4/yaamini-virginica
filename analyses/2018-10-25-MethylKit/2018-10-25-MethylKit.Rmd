@@ -63,8 +63,8 @@ processedFilesCov3 <- processBismarkAln(location = analysisFiles, sample.id = sa
 
 ```{r}
 nFiles <- length(sample.IDs) #Count number of samples
-fileName <- data.frame("nameBase" = rep("2018-10-25-Percent-CpG-Methylation", times = nFiles),
-                       "nameBase2" = rep("2018-10-25-Percent-CpG-Coverage", times = nFiles),
+fileName <- data.frame("nameBase" = rep("2018-10-25-Loci-Analysis/2018-10-25-Percent-CpG-Methylation", times = nFiles),
+                       "nameBase2" = rep("2018-10-25-Loci-Analysis/2018-10-25-Percent-CpG-Coverage", times = nFiles),
                        "sample.ID" = 1:10) #Create new dataframe for filenames
 head(fileName) #Confirm dataframe creation
 ```
@@ -99,25 +99,25 @@ clusteringInformationCov3 <- clusterSamples(methylationInformationCov3, dist = "
 ```
 
 ```{r}
-jpeg(filename = "2018-10-25-Full-Sample-Pearson-Correlation-Plot-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "2018-10-25-Loci-Analysis/2018-10-25-Full-Sample-Pearson-Correlation-Plot-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
 getCorrelation(methylationInformationCov3, plot = TRUE) #Understand correlation between methylation patterns in different samples
 dev.off()
 ```
 
 ```{r}
-jpeg(filename = "2018-10-25-Full-Sample-CpG-Methylation-Clustering-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "2018-10-25-Loci-Analysis/2018-10-25-Full-Sample-CpG-Methylation-Clustering-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
 clusterSamples(methylationInformationCov3, dist = "correlation", method = "ward", plot = TRUE) #Cluster samples based on correlation coefficients
 dev.off()
 ```
 
 ```{r}
-jpeg(filename = "2018-10-25-Genefish-Samples/2018-10-18-Full-Sample-Methylation-PCA-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "2018-10-25-Loci-Analysis/2018-10-25-Genefish-Samples/2018-10-18-Full-Sample-Methylation-PCA-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
 PCASamples(methylationInformationCov3) #Run a PCA analysis on percent methylation for all samples
 dev.off() #Turn off plotting device
 ```
 
 ```{r}
-jpeg(filename = "2018-10-25-Full-Sample-Methylation-Screeplot-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "2018-10-25-Loci-Analysis/2018-10-25-Full-Sample-Methylation-Screeplot-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
 PCASamples(methylationInformationCov3, screeplot = TRUE) #Run the PCA analysis and plot variances against PC number in a screeplot
 dev.off()
 ```
@@ -131,7 +131,7 @@ head(diffMethStats50Cov3) #Confirm creation
 ```
 
 ```{r}
-write.csv(diffMethStats50Cov3, "2018-10-25-Genefish-Samples-Differentially-Methylated-Loci-50-Cov3.csv") #Save table as .csv
+write.csv(diffMethStats50Cov3, "2018-10-25-Loci-Analysis/2018-10-25-Differentially-Methylated-Loci-50-Cov3.csv") #Save table as .csv
 ```
 
 # Differentially methylated regions
@@ -213,7 +213,7 @@ DML10222018 <- bind_rows(DMLPlus10222018, DMLMinus10222018) %>% arrange(chr, sta
 ```
 
 ```{r}
-write_delim(DML10222018, "2018-10-22-DML-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
+write_delim(DML10222018, "2018-10-25-DML-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
 ```
 
 ## DMRs
@@ -223,6 +223,6 @@ DMR10222018 <- select(diffMethStats50Tiles100, chr, start, end, meth.diff) %>% m
 ```
 
 ```{r}
-write_delim(DMR10222018, "2018-10-22-DMR-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
+write_delim(DMR10222018, "2018-10-25-DMR-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
 ```
 
