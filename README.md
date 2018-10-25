@@ -1,6 +1,6 @@
 # Influence of ocean acidification on Eastern oyster (*Crassostrea virginica*) reproductive tissue
 
-This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab at Northeastern University. Her team exposed twelve Eastern oysters, *Crassostrea virginica*, to two different pCO<sub>2</sub> for four weeks at 15ºC during the summer of 2017. Half of the oysters were exposed to 400 µatm (control), and the other half to 2800 µatm. The Lotterhos lab sent gonad samples for MBDSeq to identify if different pCO<sub>2</sub> conditions drive differential methylation patterns. I then prepared samples for bisulfite sequencing.
+This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab at Northeastern University. Her team exposed twelve Eastern oysters, *Crassostrea virginica*, to two different pCO<sub>2</sub> for four weeks at 15ºC during the summer of 2017. Half of the oysters were exposed to 400 µatm (control), and the other half to 2800 µatm. The Lotterhos lab sent gonad samples for MBDSeq to identify if different pCO<sub>2</sub> conditions drive differential methylation patterns. I then prepared samples for bisulfite sequencing. Information about sample preparation and tangential analyses can be found in [the broader project repository](https://github.com/RobertsLab/project-virginica-oa).
 
 **My goal is to identify differentially methylated regions and differentially methylated loci between oysters exposed to ambient and elevated pCO<sub>2</sub> conditions**.
 
@@ -13,12 +13,10 @@ This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab
 
 ## Method Overview
 
-1. Extract DNA and prepare samples for MBD-BSseq
-2. Send samples to ZymoResearch for sequencing
-3. Receive sequencing data and trim files as appropriate
-4. Align trimmed files to a reference bisulfite genome in `bismark`
-5. Isolate differentially methylated loci (DMLs) and regions (DMRs) from alignments in `methylKit`
-6. Perform a gene enrichment
+1. Receive sequencing data and trim files as appropriate
+2. Align trimmed files to a reference bisulfite genome in `bismark`
+3. Isolate differentially methylated loci (DMLs) and regions (DMRs) from alignments in `methylKit`
+4. Perform a gene enrichment
 
 ## Project Timeline
 
@@ -38,7 +36,9 @@ This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab
 
 ### [analyses](https://github.com/fish546-2018/yaamini-virginica/tree/master/analyses)
 
-R code and output from multiple analyses. Each analysis will be in its own subdirectory. Empty as of 2018-10-16.
+R code and output from multiple analyses. Each analysis will be in its own subdirectory.
+
+- [2018-10-25-MethylKit](https://github.com/fish546-2018/yaamini-virginica/blob/master/analyses/2018-10-25-MethylKit)
 
 ### [data](https://github.com/fish546-2018/yaamini-virginica/tree/master/data)
 
