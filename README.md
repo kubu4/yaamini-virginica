@@ -44,6 +44,8 @@ R code and output from multiple analyses. Each analysis will be in its own subdi
 
 Raw data used for project analyses, as well as links to data files.
 
+- [Original sample list from Lotterhos lab](https://github.com/RobertsLab/yaamini-virginica/blob/master/data/OysterTissueInfoSheet_GonadTestRoberts_20171002.xlsx)
+
 ### [notebooks](https://github.com/fish546-2018/yaamini-virginica/tree/master/notebooks)
 
 Jupyter notebooks that detail reproducible methods for data analysis. Empty as of 2018-10-16.
