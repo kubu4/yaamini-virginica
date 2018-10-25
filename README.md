@@ -31,6 +31,9 @@ This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab
 **Week 5**: 
 - Run `methylKit` to identify DMLs and DMRs on samples from Mox
 
+**Week 6**:
+- Perform a gene enrichment
+
 ## Repository Structure
 
 ### [analyses](https://github.com/fish546-2018/yaamini-virginica/tree/master/analyses)
