@@ -46,7 +46,7 @@ find ${trimmed_files}/zr2096_*R1*.fq.gz \
 ${bismark_dir}/deduplicate_bismark \
 -p \
 --bam \
-zr2096_*_s1_R1_val_1_bismark_bt2_pe.bam \
+zr2096_*_s1_R1_val_1_bismark_bt2_pe.bam
 
 #Sorting for Downstream Applications
 
@@ -69,7 +69,7 @@ ${bismark_dir}/bismark_methylation_extractor \
 --counts \
 --scaffolds \
 --multicore 28 \
-*deduplicated.bam \
+*deduplicated.bam
 
 #HTML Processing Report
 
