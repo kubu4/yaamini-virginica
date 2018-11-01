@@ -15,22 +15,33 @@ This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab
 
 1. Receive sequencing data and trim files as appropriate
 2. Align trimmed files to a reference bisulfite genome in `bismark`
-3. Isolate differentially methylated loci (DMLs) and regions (DMRs) from alignments in `methylKit`
-4. Perform a gene enrichment
+3. Isolate differentially methylated loci (DML) and regions (DMR) from alignments in `methylKit`
+4. Characterize DML and DMR with `bedtools`
+5. Perform a gene enrichment
 
 ## Project Timeline
 
-**Week 4**: 
+**Week 4-5**: 
 - Start `bismark` alignment on Mox: Protocol can be found [here](https://yaaminiv.github.io/DML-Analysis-Part12/)
 - Use different samples to create working `methylKit` protocol. This work was done in a [different Github repository](https://github.com/RobertsLab/project-virginica-oa).
   - Validate analysis parameters in `methylKit` with other samples: Results can be found [here](https://yaaminiv.github.io/DML-Analysis-Part13/)
   - Create protocol for tiling analysis in `methylKit`: Results can be found [here](https://yaaminiv.github.io/DML-Analysis-Part14/)
 
-**Week 5**: 
-- Run `methylKit` to identify DMLs and DMRs on samples from Mox
+**Week 6**: 
+- Run `methylKit` to identify DML and DMR on samples from Mox with [this R Markdown script](https://github.com/fish546-2018/yaamini-virginica/blob/master/analyses/2018-10-25-MethylKit/2018-10-25-MethylKit.Rmd)
+- Characterize locations of DML and DMR in [this Jupyter notebook](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb)
 
 **Week 6**:
-- Perform a gene enrichment
+- Conduct flanking analysis with `bedtools closest`
+- Test different gene enrichment methods
+
+**Week 7**:
+- Perform a gene enrichment using methods decided upon in Week 6
+- Plot observed vs. expected CpG coverage and methylation
+
+**Week 8-10**:
+- Ensure all analyses are easily reproducible
+- Draft a manuscript with findings
 
 ## Repository Structure
 
@@ -38,7 +49,7 @@ This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab
 
 R code and output from multiple analyses. Each analysis will be in its own subdirectory.
 
-- [2018-10-25-MethylKit](https://github.com/fish546-2018/yaamini-virginica/blob/master/analyses/2018-10-25-MethylKit)
+- [2018-10-25-MethylKit](https://github.com/fish546-2018/yaamini-virginica/blob/master/analyses/2018-10-25-MethylKit): [R Markdown file](https://github.com/fish546-2018/yaamini-virginica/blob/master/analyses/2018-10-25-MethylKit/2018-10-25-MethylKit.Rmd) and output from `methylKit` identification of DML and DMR.
 
 ### [data](https://github.com/fish546-2018/yaamini-virginica/tree/master/data)
 
@@ -48,13 +59,15 @@ Raw data used for project analyses, as well as links to data files.
 
 ### [notebooks](https://github.com/fish546-2018/yaamini-virginica/tree/master/notebooks)
 
-Jupyter notebooks that detail reproducible methods for data analysis. Empty as of 2018-10-16.
+Jupyter notebooks that detail reproducible methods for data analysis.
+
+- [2018-11-01-DML-and-DMR-Analysis.ipynb](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb): Pipeline for `bedtools` analysis of DML and DMR locations in various genome feature tracks. Includes option to specify variable path names for easy reproducibility.
 
 ### [scripts](https://github.com/fish546-2018/yaamini-virginica/tree/master/scripts)
 
 Scripts used for Mox.
 
-[2018-10-12-Revised-Bismark-Parameters](https://github.com/fish546-2018/yaamini-virginica/blob/master/scripts/2018-10-12-Bismark-Revised-Parameters.sh): Used to run `bismark` alignment on [MBD-Seq data](http://owl.fish.washington.edu/Athaliana/20180411_trimgalore_10bp_Cvirginica_MBD/).
+- [2018-10-31-Revised-Bismark-Parameters-Samtools](https://github.com/fish546-2018/yaamini-virginica/blob/master/scripts/2018-10-31-Bismark-Revised-Parameters-Samtools.sh): Used to run `bismark` alignment on [MBD-Seq data](http://owl.fish.washington.edu/Athaliana/20180411_trimgalore_10bp_Cvirginica_MBD/). This is an edited version of [2018-10-12-Revised-Bismark-Parameters](https://github.com/fish546-2018/yaamini-virginica/blob/master/scripts/2018-10-12-Bismark-Revised-Parameters.sh) that does not redirect standard error to a new file and includes an explicit path to `bowtie2` and `samtools` in the alignment step.
 
 ### [tutorials](https://github.com/fish546-2018/yaamini-virginica/tree/master/tutorials)
 
