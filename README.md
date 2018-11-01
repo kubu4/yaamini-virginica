@@ -21,14 +21,19 @@ This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab
 
 ## Project Timeline
 
-**Week 4-5**: 
+**Week 4**: 
 - Start `bismark` alignment on Mox: Protocol can be found [here](https://yaaminiv.github.io/DML-Analysis-Part12/)
 - Use different samples to create working `methylKit` protocol. This work was done in a [different Github repository](https://github.com/RobertsLab/project-virginica-oa).
   - Validate analysis parameters in `methylKit` with other samples: Results can be found [here](https://yaaminiv.github.io/DML-Analysis-Part13/)
   - Create protocol for tiling analysis in `methylKit`: Results can be found [here](https://yaaminiv.github.io/DML-Analysis-Part14/)
 
+**Week 5**:
+
+- Added [R Markdown file for `methylKit` analysis](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb)
+- Added [Jupyter notebook for DML and DMR characterization](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb) 
+
 **Week 6**: 
-- Run `methylKit` to identify DML and DMR on samples from Mox with [this R Markdown script](https://github.com/fish546-2018/yaamini-virginica/blob/master/analyses/2018-10-25-MethylKit/2018-10-25-MethylKit.Rmd)
+- Run `methylKit` to identify DML and DMR on samples from Mox with [this R Markdown script](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb)
 - Characterize locations of DML and DMR in [this Jupyter notebook](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb)
 
 **Week 6**:
