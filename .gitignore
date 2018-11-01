@@ -7,3 +7,7 @@
 *.psq
 .Rproj.user
 .Rhistory
+analyses/2018-11-01-DML-Analysis/C_virginica-3.0_CG-motif.bed
+analyses/2018-11-01-DML-Analysis/C_virginica-3.0_Gnomon_exon.bed
+analyses/2018-11-01-DML-Analysis/C_virginica-3.0_Gnomon_mRNA.gff3
+*.bed
