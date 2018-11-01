@@ -37,11 +37,11 @@ This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab
 - Characterize locations of DML and DMR in [this Jupyter notebook](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb)
 
 **Week 6**:
+- Transposable elements analysis
 - Conduct flanking analysis with `bedtools closest`
-- Test different gene enrichment methods
 
 **Week 7**:
-- Perform a gene enrichment using methods decided upon in Week 6
+- Perform a gene enrichment
 - Plot observed vs. expected CpG coverage and methylation
 
 **Week 8-10**:
