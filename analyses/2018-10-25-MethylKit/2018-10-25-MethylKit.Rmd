@@ -35,19 +35,34 @@ library(methylKit) #Load methylkit
 sessionInfo()
 ```
 
+# Download files from `gannet`
+
+```{bash}
+wget -r -l1 --no-parent -A_dedup.sorted.bam http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/ #Download files from gannet. They will be stored in the same directory structure as they are online.
+```
+
+```{bash}
+mv gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/* analyses/2018-10-25-MethylKit #Move all files from gannet folder to analyses folder
+```
+
+```{bash}
+rm -r gannet.fish.washington.edu #Remove the empty gannet directory
+```
+
+
 # Process methylation data
 
 ```{r}
-analysisFiles <- list("/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_1_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_2_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_3_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_4_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_5_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_6_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_7_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_8_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_9_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_10_dedup.sorted.bam") #Put all .bam files into a list for analysis. File paths are sourced from locally-mounted gannet server.
+analysisFiles <- list("analyses/2018-10-25-MethylKit/zr2096_1_dedup.sorted.bam",
+                      "analyses/2018-10-25-MethylKit/zr2096_2_dedup.sorted.bam",
+                      "analyses/2018-10-25-MethylKit/zr2096_3_dedup.sorted.bam",
+                      "analyses/2018-10-25-MethylKit/zr2096_4_dedup.sorted.bam",
+                      "analyses/2018-10-25-MethylKit/zr2096_5_dedup.sorted.bam",
+                      "analyses/2018-10-25-MethylKit/zr2096_6_dedup.sorted.bam",
+                      "analyses/2018-10-25-MethylKit/zr2096_7_dedup.sorted.bam",
+                      "analyses/2018-10-25-MethylKit/zr2096_8_dedup.sorted.bam",
+                      "analyses/2018-10-25-MethylKit/zr2096_9_dedup.sorted.bam",
+                      "analyses/2018-10-25-MethylKit/zr2096_10_dedup.sorted.bam") #Put all .bam files into a list for analysis.
 ```
 
 ```{r}
