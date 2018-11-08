@@ -12,3 +12,15 @@ analyses/2018-11-01-DML-Analysis/C_virginica-3.0_Gnomon_exon.bed
 analyses/2018-11-01-DML-Analysis/C_virginica-3.0_Gnomon_mRNA.gff3
 *.bed
 analyses/2018-11-01-DML-and-DMR-Analysis/C_virginica-3.0_Gnomon_mRNA.gff3
+analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA.txt
+analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-Exon-CGmotif.txt
+analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-Intron-CGmotif.txt
+analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-mRNA-CGmotif.txt
+analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-mRNA-TE-all.txt
+analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-Exon-TE-all.txt
+analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-Exon-TE-Cv.txt
+analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-Intron-TE-all.txt
+analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-Intron-TE-Cv.txt
+analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-mRNA-TE-Cv.txt
+analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-TE-all-CGmotif.txt
+analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-TE-Cv-CGmotif.txt
