@@ -21,9 +21,13 @@ library(devtools) #Load devtools
 
 source("https://bioconductor.org/biocLite.R") #Source package from bioconductor
 biocLite("methylKit") #Install methylkit
-install_github("al2na/methylKit", build_vignettes = FALSE, repos=BiocInstaller::biocinstallRepos(), dependencies = TRUE) #Install more methylKit options
+```
+
+```{r}
+install_github("al2na/methylKit", build_vignettes = FALSE, repos = BiocInstaller::biocinstallRepos(), dependencies = TRUE) #Install more methylKit options
 library(methylKit) #Load methylkit
 ```
+
 
 # Obtain session information
 
@@ -34,16 +38,16 @@ sessionInfo()
 # Process methylation data
 
 ```{r}
-analysisFiles <- list("/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-10-04-Bismark-Full-Samples-Revised-Parameters/zr2096_1_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-10-04-Bismark-Full-Samples-Revised-Parameters/zr2096_2_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-10-04-Bismark-Full-Samples-Revised-Parameters/zr2096_3_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-10-04-Bismark-Full-Samples-Revised-Parameters/zr2096_4_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-10-04-Bismark-Full-Samples-Revised-Parameters/zr2096_5_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-10-04-Bismark-Full-Samples-Revised-Parameters/zr2096_6_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-10-04-Bismark-Full-Samples-Revised-Parameters/zr2096_7_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-10-04-Bismark-Full-Samples-Revised-Parameters/zr2096_8_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-10-04-Bismark-Full-Samples-Revised-Parameters/zr2096_9_dedup.sorted.bam",
-                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-10-04-Bismark-Full-Samples-Revised-Parameters/zr2096_10_dedup.sorted.bam") #Put all .bam files into a list for analysis. File paths are sourced from locally-mounted gannet server.
+analysisFiles <- list("/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_1_dedup.sorted.bam",
+                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_2_dedup.sorted.bam",
+                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_3_dedup.sorted.bam",
+                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_4_dedup.sorted.bam",
+                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_5_dedup.sorted.bam",
+                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_6_dedup.sorted.bam",
+                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_7_dedup.sorted.bam",
+                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_8_dedup.sorted.bam",
+                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_9_dedup.sorted.bam",
+                      "/Volumes/web-1/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/zr2096_10_dedup.sorted.bam") #Put all .bam files into a list for analysis. File paths are sourced from locally-mounted gannet server.
 ```
 
 ```{r}
@@ -63,8 +67,8 @@ processedFilesCov3 <- processBismarkAln(location = analysisFiles, sample.id = sa
 
 ```{r}
 nFiles <- length(sample.IDs) #Count number of samples
-fileName <- data.frame("nameBase" = rep("2018-10-25-Loci-Analysis/2018-10-25-Percent-CpG-Methylation", times = nFiles),
-                       "nameBase2" = rep("2018-10-25-Loci-Analysis/2018-10-25-Percent-CpG-Coverage", times = nFiles),
+fileName <- data.frame("nameBase" = rep("2018-10-25-Loci-Analysis/2018-11-07-Percent-CpG-Methylation", times = nFiles),
+                       "nameBase2" = rep("2018-10-25-Loci-Analysis/2018-11-07-Percent-CpG-Coverage", times = nFiles),
                        "sample.ID" = 1:10) #Create new dataframe for filenames
 head(fileName) #Confirm dataframe creation
 ```
@@ -78,7 +82,7 @@ head(fileName) #Confirm column creation
 ```{r}
 for(i in 1:nFiles) { #For each data file
   jpeg(filename = fileName$actualFileName[i], height = 1000, width = 1000) #Save file with designated name
-  getMethylationStats(processedFilesCov1[[i]], plot = TRUE, both.strands = FALSE) #Get %CpG methylation information
+  getMethylationStats(processedFilesCov3[[i]], plot = TRUE, both.strands = FALSE) #Get %CpG methylation information
   dev.off() #Turn off plotting device
 } #Plot and save %CpG methylation information
 ```
@@ -86,7 +90,7 @@ for(i in 1:nFiles) { #For each data file
 ```{r}
 for(i in 1:nFiles) { #For each data file
   jpeg(filename = fileName$actualFileName2[i], height = 1000, width = 1000) #Save file with designated name
-  getCoverageStats(processedFilesCov1[[i]], plot = TRUE, both.strands = FALSE) #Get CpG coverage information
+  getCoverageStats(processedFilesCov3[[i]], plot = TRUE, both.strands = FALSE) #Get CpG coverage information
   dev.off() #Turn off plotting device
 } #Plot and save CpG coverage information
 ```
@@ -99,25 +103,25 @@ clusteringInformationCov3 <- clusterSamples(methylationInformationCov3, dist = "
 ```
 
 ```{r}
-jpeg(filename = "2018-10-25-Loci-Analysis/2018-10-25-Full-Sample-Pearson-Correlation-Plot-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "2018-10-25-Loci-Analysis/2018-11-07-Full-Sample-Pearson-Correlation-Plot-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
 getCorrelation(methylationInformationCov3, plot = TRUE) #Understand correlation between methylation patterns in different samples
 dev.off()
 ```
 
 ```{r}
-jpeg(filename = "2018-10-25-Loci-Analysis/2018-10-25-Full-Sample-CpG-Methylation-Clustering-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "2018-10-25-Loci-Analysis/2018-11-07-Full-Sample-CpG-Methylation-Clustering-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
 clusterSamples(methylationInformationCov3, dist = "correlation", method = "ward", plot = TRUE) #Cluster samples based on correlation coefficients
 dev.off()
 ```
 
 ```{r}
-jpeg(filename = "2018-10-25-Loci-Analysis/2018-10-25-Genefish-Samples/2018-10-18-Full-Sample-Methylation-PCA-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "2018-10-25-Loci-Analysis/2018-11-07-Full-Sample-Methylation-PCA-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
 PCASamples(methylationInformationCov3) #Run a PCA analysis on percent methylation for all samples
 dev.off() #Turn off plotting device
 ```
 
 ```{r}
-jpeg(filename = "2018-10-25-Loci-Analysis/2018-10-25-Full-Sample-Methylation-Screeplot-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "2018-10-25-Loci-Analysis/2018-11-07-Full-Sample-Methylation-Screeplot-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
 PCASamples(methylationInformationCov3, screeplot = TRUE) #Run the PCA analysis and plot variances against PC number in a screeplot
 dev.off()
 ```
@@ -125,13 +129,13 @@ dev.off()
 ## Obtain differentially methylated loci
 
 ```{r}
-differentialMethylationStatsCov3 <- calculateDiffMeth(methylationInformationCov3) #Calculate differential methylation statistics based on treatment indication from processBismarkAln
+differentialMethylationStatsCov3 <- calculateDiffMeth(methylationInformationCov3, ) #Calculate differential methylation statistics based on treatment indication from processBismarkAln
 diffMethStats50Cov3 <- getMethylDiff(differentialMethylationStatsCov3, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
 head(diffMethStats50Cov3) #Confirm creation
 ```
 
 ```{r}
-write.csv(diffMethStats50Cov3, "2018-10-25-Loci-Analysis/2018-10-25-Differentially-Methylated-Loci-50-Cov3.csv") #Save table as .csv
+write.csv(diffMethStats50Cov3, "2018-10-25-Loci-Analysis/2018-11-07-Differentially-Methylated-Loci-50-Cov3.csv") #Save table as .csv
 ```
 
 # Differentially methylated regions
@@ -153,25 +157,25 @@ clusteringInformationTiles100 <- clusterSamples(methylationInformationTiles100, 
 ```
 
 ```{r}
-jpeg(filename = "2018-10-25-Tiling-Analysis/2018-10-25-Full-Sample-Pearson-Correlation-Plot-Tiles100.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "2018-10-25-Tiling-Analysis/2018-11-07-Full-Sample-Pearson-Correlation-Plot-Tiles100.jpeg", height = 1000, width = 1000) #Save file with designated name
 getCorrelation(methylationInformationTiles100, plot = TRUE) #Understand correlation between methylation patterns in different samples
 dev.off()
 ```
 
 ```{r}
-jpeg(filename = "2018-10-25-Tiling-Analysis/2018-10-25-Full-Sample-CpG-Methylation-Clustering-Tiles100.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "2018-10-25-Tiling-Analysis/2018-11-07-Full-Sample-CpG-Methylation-Clustering-Tiles100.jpeg", height = 1000, width = 1000) #Save file with designated name
 clusterSamples(methylationInformationTiles100, dist = "correlation", method = "ward", plot = TRUE) #Cluster samples based on correlation coefficients
 dev.off()
 ```
 
 ```{r}
-jpeg(filename = "2018-10-25-Tiling-Analysis/2018-10-25-Full-Sample-Methylation-PCA-Tiles100.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "2018-10-25-Tiling-Analysis/2018-11-07-Full-Sample-Methylation-PCA-Tiles100.jpeg", height = 1000, width = 1000) #Save file with designated name
 PCASamples(methylationInformationTiles100) #Run a PCA analysis on percent methylation for all samples
 dev.off() #Turn off plotting device
 ```
 
 ```{r}
-jpeg(filename = "2018-10-25-Tiling-Analysis/2018-10-25-Full-Sample-Methylation-Screeplot-Tiles100.jpeg", height = 1000, width = 1000) #Save file with designated name
+jpeg(filename = "2018-10-25-Tiling-Analysis/2018-11-07-Full-Sample-Methylation-Screeplot-Tiles100.jpeg", height = 1000, width = 1000) #Save file with designated name
 PCASamples(methylationInformationTiles100, screeplot = TRUE) #Run the PCA analysis and plot variances against PC number in a screeplot
 dev.off()
 ```
@@ -185,7 +189,7 @@ head(diffMethStats50Tiles100) #Confirm creation
 ```
 
 ```{r}
-write.csv(diffMethStats50Tiles100, "2018-10-25-Tiling-Analysis/2018-10-25-Differentially-Methylated-Regions-50-Cov3-Tiles100.csv") #Save table as .csv
+write.csv(diffMethStats50Tiles100, "2018-10-25-Tiling-Analysis/2018-11-07-Differentially-Methylated-Regions-50-Cov3-Tiles100.csv") #Save table as .csv
 ```
 
 # Save DMLs and DMRs as BEDfiles
@@ -213,7 +217,7 @@ DML10222018 <- bind_rows(DMLPlus10222018, DMLMinus10222018) %>% arrange(chr, sta
 ```
 
 ```{r}
-write_delim(DML10222018, "2018-10-25-DML-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
+write_delim(DML10222018, "2018-11-07-DML-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
 ```
 
 ## DMRs
@@ -223,6 +227,6 @@ DMR10222018 <- select(diffMethStats50Tiles100, chr, start, end, meth.diff) %>% m
 ```
 
 ```{r}
-write_delim(DMR10222018, "2018-10-25-DMR-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
+write_delim(DMR10222018, "2018-11-07-DMR-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
 ```
 
