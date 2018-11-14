@@ -36,15 +36,15 @@ This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab
 - Run `methylKit` to identify DML and DMR on samples from Mox with [this R Markdown script](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb)
 - Characterize locations of DML and DMR in [this Jupyter notebook](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb)
 
-**Week 6**:
+**Week 7**:
 - Transposable elements analysis
 - Conduct flanking analysis with `bedtools closest`
 
-**Week 7**:
+**Week 8**:
 - Perform a gene enrichment
 - Plot observed vs. expected CpG coverage and methylation
 
-**Week 8-10**:
+**Week 9-10**:
 - Ensure all analyses are easily reproducible
 - Draft a manuscript with findings
 
