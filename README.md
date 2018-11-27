@@ -2,24 +2,29 @@
 
 This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab at Northeastern University. Her team exposed twelve Eastern oysters, *Crassostrea virginica*, to two different pCO<sub>2</sub> for four weeks at 15ºC during the summer of 2017. Half of the oysters were exposed to 400 µatm (control), and the other half to 2800 µatm. The Lotterhos lab sent gonad samples for MBDSeq to identify if different pCO<sub>2</sub> conditions drive differential methylation patterns. I then prepared samples for bisulfite sequencing. Information about sample preparation and tangential analyses can be found in [the broader project repository](https://github.com/RobertsLab/project-virginica-oa).
 
-**My goal is to identify differentially methylated regions and differentially methylated loci between oysters exposed to ambient and elevated pCO<sub>2</sub> conditions**.
+## Question
+
+Does acute exposure to elevated pCO<sub>2</sub> conditions induce differential methylation in *Crassostrea virginica* reproductive tissue?
 
 ## Objectives
 
+My goal is to identify differentially methylated regions and loci between oysters exposed to ambient and elevated pCO<sub>2</sub> conditions.
+
 1. Identify differentially methylated regions and loci between samples
 2. Characterize gene ontology information associated with differential methylation
-3. Create reproducible protocols for anlaysis
-4. Produce a written report of findings
+3. Create reproducible protocols for analysis
 
-## Method Overview
+## Methods 
+
+### Overview
 
 1. Receive sequencing data and trim files as appropriate
 2. Align trimmed files to a reference bisulfite genome in `bismark`
 3. Isolate differentially methylated loci (DML) and regions (DMR) from alignments in `methylKit`
 4. Characterize DML and DMR with `bedtools`
-5. Perform a gene enrichment
+5. Understand functions of genes with DML and DMR
 
-## Project Timeline
+### Project Timeline
 
 **Week 4**: 
 - Start `bismark` alignment on Mox: Protocol can be found [here](https://yaaminiv.github.io/DML-Analysis-Part12/)
@@ -33,20 +38,37 @@ This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab
 - Added [Jupyter notebook for DML and DMR characterization](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb) 
 
 **Week 6**: 
-- Run `methylKit` to identify DML and DMR on samples from Mox with [this R Markdown script](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb)
-- Characterize locations of DML and DMR in [this Jupyter notebook](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb)
+- Ran `methylKit` to identify DML and DMR on samples from Mox with [this R Markdown script](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb)
+- Characterized locations of DML and DMR in [this Jupyter notebook](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb)
 
 **Week 7**:
-- Transposable elements analysis
-- Conduct flanking analysis with `bedtools closest`
+- Completed transposable elements analysis in [this Jupyter notebook](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb). Results can be found [here](https://yaaminiv.github.io/DML-Analysis-Part17/).
+- Conducted flanking analysis with `bedtools flank` and `bedtools closest` in [this Jupyter notebook](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb). Results can be found [here](https://yaaminiv.github.io/DML-Analysis-Part18/)
 
-**Week 8**:
-- Perform a gene enrichment
-- Plot observed vs. expected CpG coverage and methylation
+**Week 9**:
+- Determine what functions are represented in mRNA coding regions with DML and DMR
+- Visualize data
 
-**Week 9-10**:
-- Ensure all analyses are easily reproducible
-- Draft a manuscript with findings
+## Results
+
+### Analysis parameter validation
+
+*A full descriiption of `methylKit` parameter validation can be found [here](https://yaaminiv.github.io/DML-Analysis-Part13/), with a focus on `methylKit` tiling analysis [here](https://yaaminiv.github.io/DML-Analysis-Part14/).*
+
+### DML and DMR location characterization
+
+*A full description can be found [here](https://yaaminiv.github.io/DML-Analysis-Part17/).*
+
+### Flanking analysis
+
+*A full description can be found [here](https://yaaminiv.github.io/DML-Analysis-Part18/).*
+
+## Next Steps
+
+1. Determine if a formal gene enrichment is necessary
+2. If necessary, select the most appropriate gene enrichment method
+3. Describe functions of most interesting genes with DML and DMR
+4. Update [draft manuscript](https://docs.google.com/document/d/1gOMJrnhs4D-jCKWlJK2tm0Z27IrSqMkmc7K1pDBmqi0/edit#heading=h.r39if6ga2q0r)
 
 ## Repository Structure
 
