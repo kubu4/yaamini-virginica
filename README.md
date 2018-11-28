@@ -1,6 +1,10 @@
 # Influence of ocean acidification on Eastern oyster (*Crassostrea virginica*) reproductive tissue
 
-This is a collaboration between the Roberts Lab and Dr. Kathleen Lotterhos's lab at Northeastern University. Her team exposed twelve Eastern oysters, *Crassostrea virginica*, to two different pCO<sub>2</sub> for four weeks at 15ºC during the summer of 2017. Half of the oysters were exposed to 400 µatm (control), and the other half to 2800 µatm. The Lotterhos lab sent gonad samples for MBDSeq to identify if different pCO<sub>2</sub> conditions drive differential methylation patterns. I then prepared samples for bisulfite sequencing. Information about sample preparation and tangential analyses can be found in [the broader project repository](https://github.com/RobertsLab/project-virginica-oa).
+## Background
+
+Epigenetic modification, specifically DNA methylation, is one possible mechanism for transgenerational plasticity. Before inheritance of methylation patterns can be characterized we need a better understanding of how environmental change modifies the parental epigenome. Specifically, methylation patterns should be understood in reproductive tissue. Collaboarting with Dr. Kathleen Lotterhos' lab at Northeastern University, we examined the effect of ocean acidification on Eastern oyster (*Crassostrea virginica*) reproductive tissue.
+
+The Lotterhos lab exposed twelve oysters to two different pCO<sub>2</sub> for four weeks at 15ºC during the summer of 2017. Half of the oysters were exposed to 400 µatm (control), and the other half to 2800 µatm. The Lotterhos lab sent gonad samples for MBDSeq to identify if different pCO<sub>2</sub> conditions drive differential methylation patterns. I prepared samples for bisulfite sequencing. Information about sample preparation and tangential analyses can be found in [the broader project repository](https://github.com/RobertsLab/project-virginica-oa).
 
 ## Question
 
