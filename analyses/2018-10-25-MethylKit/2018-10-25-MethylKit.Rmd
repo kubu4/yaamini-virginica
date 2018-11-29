@@ -70,7 +70,7 @@ sample.IDs <- list("1", "2", "3", "4", "5", "6", "7", "8", "9", "10") #Create li
 treatmentSpecification <- c(rep(0, times = 5), rep(1, times = 5)) #Specify which treatment the samples were from. 1 is the treatment (high pCO2) and 0 is the control (ambient pCO2)
 ```
 
-I will use `processBismarkAln` to set different coverage metrics in the `mincov` argument. I'll test 1x, 3x, and 5x, coverage.
+I will use `processBismarkAln` to set different coverage metrics in the `mincov` argument. I'll use 1x, 3x coverage.
 
 ```{r}
 processedFilesCov3 <- processBismarkAln(location = analysisFiles, sample.id = sample.IDs, assembly = "v3", read.context = "CpG", mincov = 3, treatment = treatmentSpecification) #Process files for CpG methylation using 3x coverage. First 5 files were from ambient conditions, and the second from high pCO2 conditions.
