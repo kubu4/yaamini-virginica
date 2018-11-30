@@ -230,6 +230,10 @@ library(tidyverse) #Load package
 write_delim(methylationInformationCov3, "2018-11-29-Methylation-Information-Cov3.bed", delim = "\t", col_names = FALSE) #Write out all methylation information as a background to be used for gene enrichment analyses.
 ```
 
+```{bash}
+head 2018-11-29-Methylation-Information-Cov3.bed #Confirm formatting was retained in export
+```
+
 
 ## DMLs
 
