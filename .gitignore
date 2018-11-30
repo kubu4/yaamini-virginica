@@ -33,3 +33,4 @@ analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-TE-Cg-CGmotif.txt
 analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-14-mRNA-100bp-Flanks-CGmotif.txt
 analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-14-mRNA-100bp-DownstreamFlanks-CGmotif.txt
 analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-14-mRNA-100bp-UpstreamFlanks-CGmotif.txt
+*.bam

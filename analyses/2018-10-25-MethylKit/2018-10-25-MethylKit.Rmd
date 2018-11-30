@@ -53,16 +53,16 @@ rm -r gannet.fish.washington.edu #Remove the empty gannet directory
 # Process methylation data
 
 ```{r}
-analysisFiles <- list("analyses/2018-10-25-MethylKit/zr2096_1_dedup.sorted.bam",
-                      "analyses/2018-10-25-MethylKit/zr2096_2_dedup.sorted.bam",
-                      "analyses/2018-10-25-MethylKit/zr2096_3_dedup.sorted.bam",
-                      "analyses/2018-10-25-MethylKit/zr2096_4_dedup.sorted.bam",
-                      "analyses/2018-10-25-MethylKit/zr2096_5_dedup.sorted.bam",
-                      "analyses/2018-10-25-MethylKit/zr2096_6_dedup.sorted.bam",
-                      "analyses/2018-10-25-MethylKit/zr2096_7_dedup.sorted.bam",
-                      "analyses/2018-10-25-MethylKit/zr2096_8_dedup.sorted.bam",
-                      "analyses/2018-10-25-MethylKit/zr2096_9_dedup.sorted.bam",
-                      "analyses/2018-10-25-MethylKit/zr2096_10_dedup.sorted.bam") #Put all .bam files into a list for analysis.
+analysisFiles <- list("zr2096_1_dedup.sorted.bam",
+                      "zr2096_2_dedup.sorted.bam",
+                      "zr2096_3_dedup.sorted.bam",
+                      "zr2096_4_dedup.sorted.bam",
+                      "zr2096_5_dedup.sorted.bam",
+                      "zr2096_6_dedup.sorted.bam",
+                      "zr2096_7_dedup.sorted.bam",
+                      "zr2096_8_dedup.sorted.bam",
+                      "zr2096_9_dedup.sorted.bam",
+                      "zr2096_10_dedup.sorted.bam") #Put all .bam files into a list for analysis.
 ```
 
 ```{r}
@@ -114,6 +114,10 @@ for(i in 1:nFiles) { #For each data file
 
 ```{r}
 methylationInformationCov3 <- unite(processedFilesCov3) #Combine all processed files into a single table
+head(methylationInformationCov3) #Confirm unite
+```
+
+```{r}
 clusteringInformationCov3 <- clusterSamples(methylationInformationCov3, dist = "correlation", method = "ward", plot = FALSE) #Save cluster information as a new object
 ```
 
@@ -144,7 +148,7 @@ dev.off()
 ## Obtain differentially methylated loci
 
 ```{r}
-differentialMethylationStatsCov3 <- calculateDiffMeth(methylationInformationCov3, ) #Calculate differential methylation statistics based on treatment indication from processBismarkAln
+differentialMethylationStatsCov3 <- calculateDiffMeth(methylationInformationCov3) #Calculate differential methylation statistics based on treatment indication from processBismarkAln
 diffMethStats50Cov3 <- getMethylDiff(differentialMethylationStatsCov3, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
 head(diffMethStats50Cov3) #Confirm creation
 ```
@@ -219,6 +223,13 @@ library(readr) #Load package
 install.packages("tidyverse") #Install tidyverse
 library(tidyverse) #Load package
 ```
+
+## Background
+
+```{r}
+write_delim(methylationInformationCov3, "2018-11-29-Methylation-Information-Cov3.bed", delim = "\t", col_names = FALSE) #Write out all methylation information as a background to be used for gene enrichment analyses.
+```
+
 
 ## DMLs
 
