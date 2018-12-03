@@ -15,8 +15,7 @@ Does acute exposure to elevated pCO<sub>2</sub> conditions induce differential m
 My goal is to identify differentially methylated regions and loci between oysters exposed to ambient and elevated pCO<sub>2</sub> conditions.
 
 1. Identify differentially methylated regions and loci between samples
-2. Characterize gene ontology information associated with differential methylation
-3. Create reproducible protocols for analysis
+2. Create reproducible protocols for analysis
 
 ## Methods 
 
@@ -26,7 +25,6 @@ My goal is to identify differentially methylated regions and loci between oyster
 2. Align trimmed files to a reference bisulfite genome in `bismark`
 3. Isolate differentially methylated loci (DML) and regions (DMR) from alignments in `methylKit`
 4. Characterize DML and DMR with `bedtools`
-5. Understand functions of genes with DML and DMR
 
 ### Project Timeline
 
@@ -50,8 +48,7 @@ My goal is to identify differentially methylated regions and loci between oyster
 - Conducted flanking analysis with `bedtools flank` and `bedtools closest` in [this Jupyter notebook](https://github.com/fish546-2018/yaamini-virginica/blob/master/notebooks/2018-11-01-DML-and-DMR-Analysis.ipynb). Results can be found [here](https://yaaminiv.github.io/DML-Analysis-Part18/)
 
 **Week 9**:
-- Determine what functions are represented in mRNA coding regions with DML and DMR
-- Visualize data
+- Visualize data and complete all remaining analyses
 
 ## Results
 
@@ -59,9 +56,94 @@ My goal is to identify differentially methylated regions and loci between oyster
 
 *A full descriiption of `methylKit` parameter validation can be found [here](https://yaaminiv.github.io/DML-Analysis-Part13/), with a focus on `methylKit` tiling analysis [here](https://yaaminiv.github.io/DML-Analysis-Part14/).*
 
+**Table 1**.  Mapping efficiency (%) for Bismark v.19.0 and Bowtie 2-2.3.4 (Linux x84_64 version) alignment of trimmed sample sequences to the *C. virginica* bisulfite genome. Mapping efficiency (%) based on different `-score_min` settings. For final analyses, an alignment score function of f(x) = 0 - 1.2x, where x is the read length, was set using `-score_min L,0,-1.2` to set define alignment stringency and optimize mapping efficiency for all samples.
+
+| **Treatment** | **Sample** | **L,0,-0.6** | **L,0,-0.9** | **L,0,-1.2** |
+|:-------------:|:----------:|:------------:|:------------:|:------------:|
+|    Control    |      1     |     15.5     |     20.2     |     28.8     |
+|    Control    |      2     |     32.4     |     40.2     |     49.8     |
+|    Control    |      3     |     37.2     |     45.3     |     53.6     |
+|    Control    |      4     |     36.0     |     44.7     |     52.9     |
+|    Control    |      5     |     34.6     |     42.9     |     51.7     |
+|     High      |      6     |     36.7     |     45.0     |     53.8     |
+|     High      |      7     |     34.6     |     42.9     |     51.4     |
+|     High      |      8     |     31.7     |     39.0     |     47.6     |
+|     High      |      9     |     33.0     |     41.2     |     49.9     |
+|     High      |     10     |     36.6     |     44.9     |     53.0     |
+
+**Figure 1**. Mapping efficiency (%) for Bismark v.19.0 and Bowtie 2-2.3.4 (Linux x84_64 version) alignment of trimmed sample sequences to the *C. virginica* bisulfite genome.
+
+**Table 2**. The `mincov` metric, total number of loci produced, and the number of DMLs that were at least 50% different between treatment andc control samples. More restrictive `mincov` metrics produced less significantly different DMLs.
+
+| **`mincov`** | **Total Loci** | **Number of Significantly Different DMLs** |
+|:------------:|:--------------:|:------------------------------------------:|
+|       1      |     1112085    |                    4904                    |
+|       3      |     670301     |                    1398                    |
+|       5      |     503780     |                     816                    |
+
+
+![cluster-mincov3](https://raw.githubusercontent.com/RobertsLab/project-virginica-oa/master/analyses/2018-10-11-MethylKit-Parameter-Testing/2018-10-18-Genefish-Samples/2018-10-18-Full-Sample-CpG-Methylation-Clustering-Cov3.jpeg)
+
+**Figure 2**. Dendogram for clustering of full sample methylation using `mincov = 3` for DML.
+
+![pca-mincov3](https://raw.githubusercontent.com/RobertsLab/project-virginica-oa/master/analyses/2018-10-11-MethylKit-Parameter-Testing/2018-10-18-Genefish-Samples/2018-10-18-Full-Sample-Methylation-PCA-Cov3.jpeg)
+
+**Figure 3**. Principal Components Analysis of full sample methylation using `mincov = 3` for DML.
+
+**Table 3**. Window size, step size, total number of regions produced, and the number of DMLs that were at least 50% different between treatment and control samples. The number of regions and siginificantly different DMRs seem to be dictated by the window size, and not the step size.
+
+| **Window Size (bp)** | **Step Size (bp)** | **Total Regions** | **Number of Significantly Different DMRs** |
+|:--------------------:|:------------------:|:-----------------:|:------------------------------------------:|
+|          100         |         100        |       217538      |                     162                    |
+|         1000         |        1000        |       104144      |                     118                    |
+|         1000         |         100        |       104144      |                     118                    |
+
+
+![cluster-tiles100](https://raw.githubusercontent.com/RobertsLab/project-virginica-oa/master/analyses/2018-10-11-MethylKit-Parameter-Testing/2018-10-19-Tiling-Analysis/2018-10-19-Full-Sample-CpG-Methylation-Clustering-Tiles100.jpeg)
+
+**Figure 4**. Dendogram for clustering of full sample methylation using `mincov = 3` and 100 bp window and step sizes for DMR.
+
+![pca-tiles100](https://raw.githubusercontent.com/RobertsLab/project-virginica-oa/master/analyses/2018-10-11-MethylKit-Parameter-Testing/2018-10-19-Tiling-Analysis/2018-10-19-Full-Sample-Methylation-PCA-Tiles100.jpeg)
+
+**Figure 5**. Principal Components Analysis of full sample methylation using `mincov = 3` and 100 bp window and step sizes for DMR.
+
 ### DML and DMR location characterization
 
 *A full description can be found [here](https://yaaminiv.github.io/DML-Analysis-Part17/).*
+
+**Table 4**. Location of differentially methylated loci (DML) in various genomic features from BEDtools intersect v2.26.0. Genome feature files were downloaded from NCBI. The *C. virginica* genome has 60,201 genes total. For each locus, hypermethylated refers to significantly higher methylation in treatment samples, while hypomethylated indicates significantly lower methylation. Transposable elements refers to those identified using *C. gigas* as the species designation.
+
+|      **Genomic Feature**     |   **Result**  |
+|:----------------------------:|:-------------:|
+|           Total DML          |      1398     |
+|      Hypomethylated DML      |      747      |
+|      Hypermethylated DML     |      651      |
+|     Total genes with DML     |     2,683     |
+|  DML in mRNA coding regions  | 1263 (90.34%) |
+|         DML in exons         |  786 (56.22%) |
+|        DML in introns        |  498 (35.62%) |
+| DML in transposable elements |   91 (6.51%)  |
+
+**Table 5**. Location of differentially methylated regions (DMR) in various genomic features from BEDtools intersect v2.26.0. Regions were identified in a tiling window analysis in methylKit v.1.7.9 in R Genome feature files were downloaded from NCBI. The *C. virginica* genome has 60,201 genes total. For each 100 bp region, hypermethylated refers to significantly higher methylation in treatment samples, while hypomethylated indicates significantly lower methylation. Transposable elements refers to those identified using *C. gigas* as the species designation.
+
+|      **Genomic Feature**     |  **Result**  |
+|:----------------------------:|:------------:|
+|           Total DMR          |      162     |
+|      Hypomethylated DMR      |      23      |
+|      Hypermethylated DMR     |      139     |
+|     Total genes with DMR     |      305     |
+|  DMR in mRNA coding regions  | 139 (85.80%) |
+|         DMR in exons         |  64 (39.51%) |
+|        DMR in introns        | 112 (69.14%) |
+| DMR in transposable elements |  23 (14.20%) |
+
+**Table 6**. Percent overlap between transposable element and exons, introns, and mRNA coding regions. Transposable elements refers to those identified using *C. gigas* as the species designation.
+
+| **Genomic Feature** | **Overlap** |
+|:-------------------:|:-----------:|
+| mRNA Coding Regions |     7.79    |
+|        Exons        |     6.00    |
+|       Introns       |     14.2    |
 
 ### Flanking analysis
 
