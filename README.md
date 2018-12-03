@@ -14,9 +14,6 @@ Does acute exposure to elevated pCO<sub>2</sub> conditions induce differential m
 
 My goal is to identify differentially methylated regions and loci between oysters exposed to ambient and elevated pCO<sub>2</sub> conditions.
 
-1. Identify differentially methylated regions and loci between samples
-2. Create reproducible protocols for analysis
-
 ## Methods 
 
 ### Overview
