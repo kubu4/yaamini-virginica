@@ -1,0 +1,58 @@
+---
+title: "Mapping Efficiency Plot"
+author: "Yaamini Venkataraman"
+date: "12/3/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+sessionInfo()
+```
+
+# Import data
+
+```{r}
+mappingEfficiency <- read.csv("../data/2018-12-03-Mapping-Efficiency.csv", header = TRUE) #Import data
+row.names(mappingEfficiency) <- mappingEfficiency[,1] #Change sample to row names
+mappingEfficiency <- mappingEfficiency[,-1] #Remove first column
+colnames(mappingEfficiency) <- c("L,0,-0.6", "L,0,-0.9", "L,0,-1.2") #Change column names
+head(mappingEfficiency)
+```
+
+```{r}
+mappingEfficiency.trans <- as.data.frame(t(mappingEfficiency)) #Transpose dataframe so rows are different score_min parameters
+head(mappingEfficiency.trans) #Confirm transposition
+nSamples <- length(mappingEfficiency.trans) #Calculate number of samples
+```
+
+```{r}
+#tiff("2018-12-03-Mapping-Efficiency.tiff", width = 11, height = 8.5, units = "in", res = 300)
+
+par(mfrow = c(2, 5), oma = c(5, 5, 1, 1), mar = c(1, 0, 0, 1)) #Create a 5x2 multipanel plot, filling in rows. Remove space fro inner margins but add space to outer margins
+
+for(i in 1:(nSamples/2)) { #For each control sample
+  plot(mappingEfficiency.trans[, i], ylim = c(10, 60), type = "p", cex = 1.5, pch = 16, col = c("grey80", "grey80", "red"), xlab = "", ylab = "", axes = FALSE) #Plot mapping efficiency in the same color as methylKit dendograms
+  box(col = "grey80")
+  if(i == 1) { #For the leftmost plot
+    axis(side = 2, las = 1, at = seq(10, 60, by = 10), col = "grey80") #Add an axis with mapping efficiency percentages
+  }
+}
+
+for(i in 6:(nSamples)) { #For each treatment sample
+  plot(mappingEfficiency.trans[, i], ylim = c(10, 60), type = "p", cex = 1.5, pch = 16, col = c("grey80", "grey80", "blue"), xlab = "", ylab = "", axes = FALSE)
+  axis(side = 1, las = 1, at = c(1:3), labels = c(-0.6, -0.9, -1.2), col = "grey80") #Add bottom axis
+  box(col = "grey80")
+  if(i == 6) { #For the leftmost plot
+    axis(side = 2, las = 1, at = seq(10, 60, by = 10), col = "grey80") #Add an axis with mapping efficiency percentages
+  }
+}
+mtext(side = 1, outer = TRUE, line = 2, cex = 1, text = "score_min L,0", font = 1) #Add x-axis label
+mtext(side = 2, outer = TRUE, line = 3, cex = 1, text = "Mapping efficiency (%)", font = 1) #Add x-axis label
+
+#dev.off()
+```
+
