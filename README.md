@@ -70,7 +70,7 @@ My goal is to identify differentially methylated regions and loci between oyster
 |     High      |      9     |     33.0     |     41.2     |     49.9     |
 |     High      |     10     |     36.6     |     44.9     |     53.0     |
 
-![mapping-efficiency](https://raw.githubusercontent.com/fish546-2018/yaamini-virginica/master/results/2018-12-03-Mapping-Efficiency.tiff)
+![mapping-efficiency](https://raw.githubusercontent.com/fish546-2018/yaamini-virginica/master/images/2018-12-03-Mapping-Efficiency.tiff)
 
 **Figure 1**. Mapping efficiency (%) for Bismark v.19.0 and Bowtie 2-2.3.4 (Linux x84_64 version) alignment of trimmed sample sequences to the *C. virginica* bisulfite genome.
 
@@ -121,6 +121,10 @@ My goal is to identify differentially methylated regions and loci between oyster
 ### DML and DMR location characterization
 
 *A full description can be found [here](https://yaaminiv.github.io/DML-Analysis-Part17/).*
+
+![IGV](https://github.com/fish546-2018/yaamini-virginica/blob/master/images/2018-12-03-Full-Sample-Methylation-in-IGV.png)
+
+**Figure 6**. Full sample methylation viewed in Integrative Genome Viewer.
 
 **DML**:
 
@@ -198,13 +202,9 @@ My goal is to identify differentially methylated regions and loci between oyster
 
 [Closest non-overlapping DML to mRNA coding regions](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-14-mRNA-Closest-NoOverlap-DMLs.txt)
 
-**Figure 6**. Distribution of closest non-overlapping DML to mRNA coding regions with 100 bp of the coding region.
-
 **DMR**:
 
 [Closest non-overlapping DMR to mRNA coding regions](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-14-mRNA-Closest-NoOverlap-DMRs.txt)
-
-**Figure 7**. Distribution of closest non-overlapping DMR to mRNA coding regions with 100 bp of the coding region.
 
 ## Next Steps
 
