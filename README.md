@@ -94,6 +94,10 @@ Coverage plots for each sample can be found [here](https://github.com/fish546-20
 
 **Figure 3**. Principal Components Analysis of full sample methylation using `mincov = 3` for DML.
 
+[BEDfile of DML identified](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-10-25-MethylKit/2018-11-07-DML-Locations.bed)
+
+**DMR**:
+
 **Table 3**. Window size, step size, total number of regions produced, and the number of DMLs that were at least 50% different between treatment and control samples. The number of regions and siginificantly different DMRs seem to be dictated by the window size, and not the step size.
 
 | **Window Size (bp)** | **Step Size (bp)** | **Total Regions** | **Number of Significantly Different DMRs** |
@@ -111,9 +115,13 @@ Coverage plots for each sample can be found [here](https://github.com/fish546-20
 
 **Figure 5**. Principal Components Analysis of full sample methylation using `mincov = 3` and 100 bp window and step sizes for DMR.
 
+[BEDfile of DMR identified](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-10-25-MethylKit/2018-11-07-DMR-Locations.bed)
+
 ### DML and DMR location characterization
 
 *A full description can be found [here](https://yaaminiv.github.io/DML-Analysis-Part17/).*
+
+**DML**:
 
 **Table 4**. Location of differentially methylated loci (DML) in various genomic features from BEDtools intersect v2.26.0. Genome feature files were downloaded from NCBI. The *C. virginica* genome has 60,201 genes total. For each locus, hypermethylated refers to significantly higher methylation in treatment samples, while hypomethylated indicates significantly lower methylation. Transposable elements refers to those identified using *C. gigas* as the species designation.
 
@@ -128,6 +136,14 @@ Coverage plots for each sample can be found [here](https://github.com/fish546-20
 |        DML in introns        |  498 (35.62%) |
 | DML in transposable elements |   91 (6.51%)  |
 
+- [DML-exon overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-Exon.txt)
+- [DML-intron ovleraps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-Intron.txt)
+- [DML-mRNA overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA.txt)
+- [Unique genes in DML-mRNA overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-Unique-Genes-in-DML-mRNA-Overlap.txt)
+- [DML-TE overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-TE-Cg.txt)
+
+**DMR**:
+
 **Table 5**. Location of differentially methylated regions (DMR) in various genomic features from BEDtools intersect v2.26.0. Regions were identified in a tiling window analysis in methylKit v.1.7.9 in R Genome feature files were downloaded from NCBI. The *C. virginica* genome has 60,201 genes total. For each 100 bp region, hypermethylated refers to significantly higher methylation in treatment samples, while hypomethylated indicates significantly lower methylation. Transposable elements refers to those identified using *C. gigas* as the species designation.
 
 |      **Genomic Feature**     |  **Result**  |
@@ -141,6 +157,14 @@ Coverage plots for each sample can be found [here](https://github.com/fish546-20
 |        DMR in introns        | 112 (69.14%) |
 | DMR in transposable elements |  23 (14.20%) |
 
+- [DMR-exon overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-Exon.txt)
+- [DMR-intron ovleraps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-Intron.txt)
+- [DMR-mRNA overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-mRNA.txt)
+- [Unique genes in DMR-mRNA overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-Unique-Genes-in-DMR-mRNA-Overlap.txt)
+- [DMR-TE overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-TE-Cg.txt)
+
+**Transposable elements**:
+
 **Table 6**. Percent overlap between transposable element and exons, introns, and mRNA coding regions. Transposable elements refers to those identified using *C. gigas* as the species designation.
 
 | **Genomic Feature** | **Overlap** |
@@ -152,6 +176,34 @@ Coverage plots for each sample can be found [here](https://github.com/fish546-20
 ### Flanking analysis
 
 *A full description can be found [here](https://yaaminiv.github.io/DML-Analysis-Part18/).*
+
+#### `bedtools flank`
+
+[1000 bp flanks for mRNA coding regions](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-14-mRNA-1000bp-Flanks.bed)
+
+**DML**:
+
+- [DML-upstream flank overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-15-mRNA-100bp-UpstreamFlanks-DML.txt)
+- [DML-downstream flank overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-15-mRNA-100bp-DownstreamFlanks-DML.txt)
+
+**DMR**:
+
+- [DMR-upstream flank overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-15-mRNA-100bp-DownstreamFlanks-DMR.txt)
+- [DMR-downstream flank overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-15-mRNA-100bp-UpstreamFlanks-DMR.txt)
+
+#### `bedtools closest`
+
+**DML**:
+
+[Closest non-overlapping DML to mRNA coding regions](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-14-mRNA-Closest-NoOverlap-DMLs.txt)
+
+**Figure 6**. Distribution of closest non-overlapping DML to mRNA coding regions with 100 bp of the coding region.
+
+**DMR**:
+
+[Closest non-overlapping DMR to mRNA coding regions](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-14-mRNA-Closest-NoOverlap-DMRs.txt)
+
+**Figure 7**. Distribution of closest non-overlapping DMR to mRNA coding regions with 100 bp of the coding region.
 
 ## Next Steps
 
