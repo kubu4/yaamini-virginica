@@ -56,6 +56,8 @@ My goal is to identify differentially methylated regions and loci between oyster
 
 *A full descriiption of `methylKit` parameter validation can be found [here](https://yaaminiv.github.io/DML-Analysis-Part13/), with a focus on `methylKit` tiling analysis [here](https://yaaminiv.github.io/DML-Analysis-Part14/).*
 
+#### `bismark`
+
 **Table 1**.  Mapping efficiency (%) for Bismark v.19.0 and Bowtie 2-2.3.4 (Linux x84_64 version) alignment of trimmed sample sequences to the *C. virginica* bisulfite genome. Mapping efficiency (%) based on different `-score_min` settings. For final analyses, an alignment score function of f(x) = 0 - 1.2x, where x is the read length, was set using `-score_min L,0,-1.2` to set define alignment stringency and optimize mapping efficiency for all samples.
 
 | **Treatment** | **Sample** | **L,0,-0.6** | **L,0,-0.9** | **L,0,-1.2** |
@@ -73,7 +75,11 @@ My goal is to identify differentially methylated regions and loci between oyster
 
 **Figure 1**. Mapping efficiency (%) for Bismark v.19.0 and Bowtie 2-2.3.4 (Linux x84_64 version) alignment of trimmed sample sequences to the *C. virginica* bisulfite genome.
 
-**Table 2**. The `mincov` metric, total number of loci produced, and the number of DMLs that were at least 50% different between treatment andc control samples. More restrictive `mincov` metrics produced less significantly different DMLs.
+#### `methylKit`
+
+**DML**:
+
+**Table 2**. The `mincov` metric, total number of loci produced, and the number of DMLs that were at least 50% different between treatment andc control samples. More restrictive `mincov` metrics produced less significantly different DMLs. `mincov = 3` was used in final analysis.
 
 | **`mincov`** | **Total Loci** | **Number of Significantly Different DMLs** |
 |:------------:|:--------------:|:------------------------------------------:|
@@ -81,6 +87,7 @@ My goal is to identify differentially methylated regions and loci between oyster
 |       3      |     670301     |                    1398                    |
 |       5      |     503780     |                     816                    |
 
+Coverage plots for each sample can be found [here](https://github.com/fish546-2018/yaamini-virginica/tree/master/analyses/2018-10-25-MethylKit/2018-10-25-Loci-Analysis).
 
 ![cluster-mincov3](https://raw.githubusercontent.com/RobertsLab/project-virginica-oa/master/analyses/2018-10-11-MethylKit-Parameter-Testing/2018-10-18-Genefish-Samples/2018-10-18-Full-Sample-CpG-Methylation-Clustering-Cov3.jpeg)
 
