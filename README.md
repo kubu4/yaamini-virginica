@@ -70,7 +70,7 @@ My goal is to identify differentially methylated regions and loci between oyster
 |     High      |      9     |     33.0     |     41.2     |     49.9     |
 |     High      |     10     |     36.6     |     44.9     |     53.0     |
 
-![mapping-efficiency](https://user-images.githubusercontent.com/22335838/49405932-ecd54900-f708-11e8-8e9d-87d8127abdfb.png)
+![mapping-efficiency](https://raw.githubusercontent.com/fish546-2018/yaamini-virginica/master/results/2018-12-03-Mapping-Efficiency.tiff)
 
 **Figure 1**. Mapping efficiency (%) for Bismark v.19.0 and Bowtie 2-2.3.4 (Linux x84_64 version) alignment of trimmed sample sequences to the *C. virginica* bisulfite genome.
 
