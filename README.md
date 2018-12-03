@@ -84,8 +84,6 @@ My goal is to identify differentially methylated regions and loci between oyster
 |       3      |     670301     |                    1398                    |
 |       5      |     503780     |                     816                    |
 
-Coverage plots for each sample can be found [here](https://github.com/fish546-2018/yaamini-virginica/tree/master/analyses/2018-10-25-MethylKit/2018-10-25-Loci-Analysis).
-
 ![cluster-mincov3](https://raw.githubusercontent.com/RobertsLab/project-virginica-oa/master/analyses/2018-10-11-MethylKit-Parameter-Testing/2018-10-18-Genefish-Samples/2018-10-18-Full-Sample-CpG-Methylation-Clustering-Cov3.jpeg)
 
 **Figure 2**. Dendogram for clustering of full sample methylation using `mincov = 3` for DML.
@@ -94,7 +92,8 @@ Coverage plots for each sample can be found [here](https://github.com/fish546-20
 
 **Figure 3**. Principal Components Analysis of full sample methylation using `mincov = 3` for DML.
 
-[BEDfile of DML identified](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-10-25-MethylKit/2018-11-07-DML-Locations.bed)
+- [Coverage plots for each sample generated with `mincov = 3`](https://github.com/fish546-2018/yaamini-virginica/tree/master/analyses/2018-10-25-MethylKit/2018-10-25-Loci-Analysis).
+- [BEDfile of DML identified](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-10-25-MethylKit/2018-11-07-DML-Locations.bed)
 
 **DMR**:
 
@@ -115,7 +114,7 @@ Coverage plots for each sample can be found [here](https://github.com/fish546-20
 
 **Figure 5**. Principal Components Analysis of full sample methylation using `mincov = 3` and 100 bp window and step sizes for DMR.
 
-[BEDfile of DMR identified](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-10-25-MethylKit/2018-11-07-DMR-Locations.bed)
+- [BEDfile of DMR identified](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-10-25-MethylKit/2018-11-07-DMR-Locations.bed)
 
 ### DML and DMR location characterization
 
