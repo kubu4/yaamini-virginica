@@ -123,6 +123,12 @@ Coverage plots for each sample can be found [here](https://github.com/fish546-20
 
 **DML**:
 
+- [DML-exon overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-Exon.txt)
+- [DML-intron ovleraps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-Intron.txt)
+- [DML-mRNA overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA.txt)
+- [Unique genes in DML-mRNA overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-Unique-Genes-in-DML-mRNA-Overlap.txt)
+- [DML-TE overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-TE-Cg.txt)
+
 **Table 4**. Location of differentially methylated loci (DML) in various genomic features from BEDtools intersect v2.26.0. Genome feature files were downloaded from NCBI. The *C. virginica* genome has 60,201 genes total. For each locus, hypermethylated refers to significantly higher methylation in treatment samples, while hypomethylated indicates significantly lower methylation. Transposable elements refers to those identified using *C. gigas* as the species designation.
 
 |      **Genomic Feature**     |   **Result**  |
@@ -136,13 +142,13 @@ Coverage plots for each sample can be found [here](https://github.com/fish546-20
 |        DML in introns        |  498 (35.62%) |
 | DML in transposable elements |   91 (6.51%)  |
 
-- [DML-exon overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-Exon.txt)
-- [DML-intron ovleraps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-Intron.txt)
-- [DML-mRNA overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA.txt)
-- [Unique genes in DML-mRNA overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-Unique-Genes-in-DML-mRNA-Overlap.txt)
-- [DML-TE overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-TE-Cg.txt)
-
 **DMR**:
+
+- [DMR-exon overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-Exon.txt)
+- [DMR-intron ovleraps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-Intron.txt)
+- [DMR-mRNA overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-mRNA.txt)
+- [Unique genes in DMR-mRNA overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-Unique-Genes-in-DMR-mRNA-Overlap.txt)
+- [DMR-TE overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-TE-Cg.txt)
 
 **Table 5**. Location of differentially methylated regions (DMR) in various genomic features from BEDtools intersect v2.26.0. Regions were identified in a tiling window analysis in methylKit v.1.7.9 in R Genome feature files were downloaded from NCBI. The *C. virginica* genome has 60,201 genes total. For each 100 bp region, hypermethylated refers to significantly higher methylation in treatment samples, while hypomethylated indicates significantly lower methylation. Transposable elements refers to those identified using *C. gigas* as the species designation.
 
@@ -156,12 +162,6 @@ Coverage plots for each sample can be found [here](https://github.com/fish546-20
 |         DMR in exons         |  64 (39.51%) |
 |        DMR in introns        | 112 (69.14%) |
 | DMR in transposable elements |  23 (14.20%) |
-
-- [DMR-exon overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-Exon.txt)
-- [DMR-intron ovleraps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-Intron.txt)
-- [DMR-mRNA overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-mRNA.txt)
-- [Unique genes in DMR-mRNA overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-Unique-Genes-in-DMR-mRNA-Overlap.txt)
-- [DMR-TE overlaps](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-TE-Cg.txt)
 
 **Transposable elements**:
 
