@@ -224,12 +224,15 @@ My goal is to identify differentially methylated regions and loci between oyster
 R code and output from multiple analyses. Each analysis will be in its own subdirectory.
 
 - [2018-10-25-MethylKit](https://github.com/fish546-2018/yaamini-virginica/blob/master/analyses/2018-10-25-MethylKit): [R Markdown file](https://github.com/fish546-2018/yaamini-virginica/blob/master/analyses/2018-10-25-MethylKit/2018-10-25-MethylKit.Rmd) and output from `methylKit` identification of DML and DMR.
+- [2018-11-01-DML-and-DMR-Analysis](https://github.com/fish546-2018/yaamini-virginica/tree/master/analyses/2018-11-01-DML-and-DMR-Analysis): Output from `bedtools` characterization of DML and DMR location in the *C. virginica* genome
 
 ### [data](https://github.com/fish546-2018/yaamini-virginica/tree/master/data)
 
 Raw data used for project analyses, as well as links to data files.
 
-- [Original sample list from Lotterhos lab](https://github.com/RobertsLab/yaamini-virginica/blob/master/data/OysterTissueInfoSheet_GonadTestRoberts_20171002.xlsx)
+### [images](https://github.com/fish546-2018/yaamini-virginica/tree/master/images)
+
+Images generated outside of standard analyses.
 
 ### [notebooks](https://github.com/fish546-2018/yaamini-virginica/tree/master/notebooks)
 
