@@ -23,6 +23,10 @@ My goal is to identify differentially methylated regions and loci between oyster
 3. Isolate differentially methylated loci (DML) and regions (DMR) from alignments in `methylKit`
 4. Characterize DML and DMR with `bedtools`
 
+![methods](https://raw.githubusercontent.com/fish546-2018/yaamini-virginica/master/images/2018-12-03-Methods-Overview.png)
+
+**Figure 1**. Overview of methods used in this project.
+
 ### Project Timeline
 
 **Week 4**: 
@@ -72,7 +76,7 @@ My goal is to identify differentially methylated regions and loci between oyster
 
 ![mapping-efficiency](https://raw.githubusercontent.com/fish546-2018/yaamini-virginica/master/images/2018-12-03-Mapping-Efficiency.tiff)
 
-**Figure 1**. Mapping efficiency (%) for Bismark v.19.0 and Bowtie 2-2.3.4 (Linux x84_64 version) alignment of trimmed sample sequences to the *C. virginica* bisulfite genome.
+**Figure 2**. Mapping efficiency (%) for Bismark v.19.0 and Bowtie 2-2.3.4 (Linux x84_64 version) alignment of trimmed sample sequences to the *C. virginica* bisulfite genome.
 
 #### `methylKit`
 
@@ -88,11 +92,11 @@ My goal is to identify differentially methylated regions and loci between oyster
 
 ![cluster-mincov3](https://raw.githubusercontent.com/RobertsLab/project-virginica-oa/master/analyses/2018-10-11-MethylKit-Parameter-Testing/2018-10-18-Genefish-Samples/2018-10-18-Full-Sample-CpG-Methylation-Clustering-Cov3.jpeg)
 
-**Figure 2**. Dendogram for clustering of full sample methylation using `mincov = 3` for DML.
+**Figure 3**. Dendogram for clustering of full sample methylation using `mincov = 3` for DML.
 
 ![pca-mincov3](https://raw.githubusercontent.com/RobertsLab/project-virginica-oa/master/analyses/2018-10-11-MethylKit-Parameter-Testing/2018-10-18-Genefish-Samples/2018-10-18-Full-Sample-Methylation-PCA-Cov3.jpeg)
 
-**Figure 3**. Principal Components Analysis of full sample methylation using `mincov = 3` for DML.
+**Figure 4**. Principal Components Analysis of full sample methylation using `mincov = 3` for DML.
 
 - [Coverage plots for each sample generated with `mincov = 3`](https://github.com/fish546-2018/yaamini-virginica/tree/master/analyses/2018-10-25-MethylKit/2018-10-25-Loci-Analysis).
 - [BEDfile of DML identified](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-10-25-MethylKit/2018-11-07-DML-Locations.bed)
@@ -110,11 +114,11 @@ My goal is to identify differentially methylated regions and loci between oyster
 
 ![cluster-tiles100](https://raw.githubusercontent.com/RobertsLab/project-virginica-oa/master/analyses/2018-10-11-MethylKit-Parameter-Testing/2018-10-19-Tiling-Analysis/2018-10-19-Full-Sample-CpG-Methylation-Clustering-Tiles100.jpeg)
 
-**Figure 4**. Dendogram for clustering of full sample methylation using `mincov = 3` and 100 bp window and step sizes for DMR.
+**Figure 5**. Dendogram for clustering of full sample methylation using `mincov = 3` and 100 bp window and step sizes for DMR.
 
 ![pca-tiles100](https://raw.githubusercontent.com/RobertsLab/project-virginica-oa/master/analyses/2018-10-11-MethylKit-Parameter-Testing/2018-10-19-Tiling-Analysis/2018-10-19-Full-Sample-Methylation-PCA-Tiles100.jpeg)
 
-**Figure 5**. Principal Components Analysis of full sample methylation using `mincov = 3` and 100 bp window and step sizes for DMR.
+**Figure 6**. Principal Components Analysis of full sample methylation using `mincov = 3` and 100 bp window and step sizes for DMR.
 
 - [BEDfile of DMR identified](http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-12-03-Yaamini-Virginica-Repository/analyses/2018-10-25-MethylKit/2018-11-07-DMR-Locations.bed)
 
