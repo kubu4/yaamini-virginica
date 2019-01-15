@@ -1,0 +1,193 @@
+---
+title: "Proportion Test"
+author: "Yaamini Venkataraman"
+date: "1/15/2019"
+output: html_document
+---
+
+I will use a proportion test to compare the proportion of genome feature overlaps between differentially methylated loci (DML), differentially methylated regions (DMR), and the gene background.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+sessionInfo()
+```
+
+# Import data
+
+```{r}
+overlapData <- read.csv("2019-01-15-Overlap-Proportions.csv", header = TRUE)
+overlapData <- overlapData[,-5] #Remove empty column
+rownames(overlapData) <- overlapData$genomicFeature #Set genomic feature indication and rownames
+overlapData <- overlapData[,-1] #Remove genomic feature indication column
+head(overlapData) #Confirm import
+```
+
+```{r}
+proportionTestData <- as.data.frame(t(overlapData)) #Transpose dataframe
+head(proportionTestData) #Confirm transposition
+```
+
+# Conduct proportion tests
+
+## DML, DMR, and Gene Background
+
+### Exons
+
+```{r}
+exonAllResults <- prop.test(x = proportionTestData$exons, 
+                         n = proportionTestData$totalLines) #Conduct a proportion test to compare the overlap proportions of DML (1), DMR (2), and the gene background (3) with exons.
+exonAllResults #See results
+```
+
+### Introns
+
+```{r}
+intronAllResults <- prop.test(x = proportionTestData$introns, 
+                         n = proportionTestData$totalLines) #Conduct a proportion test to compare the overlap proportions of DML (1), DMR (2), and the gene background (3) with introns
+intronAllResults #See results
+```
+
+### mRNA Coding Regions
+
+```{r}
+mRNAAllResults <- prop.test(x = proportionTestData$mRNA, 
+                         n = proportionTestData$totalLines) #Conduct a proportion test to compare the overlap proportions of DML (1), DMR (2), and the gene background (3) with mRNA
+mRNAAllResults #See results
+```
+
+### Transposable Elements (All)
+
+```{r}
+allTEAllResults <- prop.test(x = proportionTestData$transposableElementsAll, 
+                         n = proportionTestData$totalLines) #Conduct a proportion test to compare the overlap proportions of DML (1), DMR (2), and the gene background (3) with transposable elements derived using all species in the database.
+allTEAllResults #See results
+```
+
+### Transposable Elements (Cg)
+
+```{r}
+cgTEAllResults <- prop.test(x = proportionTestData$transposableElementsCg, 
+                         n = proportionTestData$totalLines) #Conduct a proportion test to compare the overlap proportions of DML (1), DMR (2), and the gene background (3) with transposable elements derived using only C. gigas information.
+cgTEAllResults #See results
+```
+
+Comparing DML, DMR, and the gene background, I can see that there are significant differences in overlap proportions between all three categories. I will now conduct proportion tests using only DML-gene background or DMR-gene background comparisons.
+
+## DML and Gene Background
+
+```{r}
+DMLGBData <- proportionTestData #Save proportionTestData as a new dataframe
+DMLGBData <- DMLGBData[-2,] #Remove the second row (DMROverlaps)
+head(DMLGBData) #Confirm changes
+```
+
+### Exons
+
+```{r}
+exonDMLGBResults <- prop.test(x = DMLGBData$exons, 
+                              n = DMLGBData$totalLines) #Conduct a proportion test to compare the overlap proportions of DML (1) and the gene background (2) with exons.
+exonDMLGBResults #See results
+```
+
+### Introns
+
+```{r}
+intronDMLGBResults <- prop.test(x = DMLGBData$introns, 
+                              n = DMLGBData$totalLines) #Conduct a proportion test to compare the overlap proportions of DML (1) and the gene background (2) with introns
+intronDMLGBResults #See results
+```
+
+### mRNA
+
+```{r}
+mRNADMLGBResults <- prop.test(x = DMLGBData$mRNA, 
+                              n = DMLGBData$totalLines) #Conduct a proportion test to compare the overlap proportions of DML (1) and the gene background (2) with mRNA coding regions.
+mRNADMLGBResults #See results
+```
+
+### Transposable Elements (all)
+
+```{r}
+allTEDMLGBResults <- prop.test(x = DMLGBData$transposableElementsAll, 
+                              n = DMLGBData$totalLines) #Conduct a proportion test to compare the overlap proportions of DML (1) and the gene background (2) with transposable elements derived using all species in the database.
+allTEDMLGBResults #See results
+```
+
+### Transposable Elements (Cg)
+
+```{r}
+cgTEDMLGBResults <- prop.test(x = DMLGBData$transposableElementsCg, 
+                              n = DMLGBData$totalLines) #Conduct a proportion test to compare the overlap proportions of DML (1) and the gene background (2) with transposable elements using only C. gigas information.
+cgTEDMLGBResults #See results
+```
+
+Overlap proportions for all genome features are significant except for transposable elements (All) and mRNA. Interesting how the overlap proportions between mRNA, DML, and the gene background are the same, but there are differences in overlaps with exons and introns. 
+
+## DMR and Gene Background
+
+```{r}
+DMRGBData <- proportionTestData #Save proportionTestData as a new dataframe
+DMRGBData <- DMRGBData[-1,] #Remove the first row (DMLOverlaps)
+head(DMRGBData) #Confirm changes
+```
+
+### Exons
+
+```{r}
+exonDMRGBResults <- prop.test(x = DMRGBData$exons, 
+                              n = DMRGBData$totalLines) #Conduct a proportion test to compare the overlap proportions of DMR (1) and the gene background (2) with exons.
+exonDMRGBResults #See results
+```
+
+### Introns
+
+```{r}
+intronDMRGBResults <- prop.test(x = DMRGBData$introns, 
+                              n = DMRGBData$totalLines) #Conduct a proportion test to compare the overlap proportions of DMR (1) and the gene background (2) with introns
+intronDMRGBResults #See results
+```
+
+### mRNA
+
+```{r}
+mRNADMRGBResults <- prop.test(x = DMRGBData$mRNA, 
+                              n = DMRGBData$totalLines) #Conduct a proportion test to compare the overlap proportions of DMR (1) and the gene background (2) with mRNA coding regions.
+mRNADMRGBResults #See results
+```
+
+### Transposable Elements (all)
+
+```{r}
+allTEDMRGBResults <- prop.test(x = DMRGBData$transposableElementsAll, 
+                              n = DMRGBData$totalLines) #Conduct a proportion test to compare the overlap proportions of DMR (1) and the gene background (2) with transposable elements derived using all species in the database.
+allTEDMRGBResults #See results
+```
+
+### Transposable Elements (Cg)
+
+```{r}
+cgTEDMRGBResults <- prop.test(x = DMRGBData$transposableElementsCg, 
+                              n = DMRGBData$totalLines) #Conduct a proportion test to compare the overlap proportions of DMR (1) and the gene background (2) with transposable elements using only C. gigas information.
+cgTEDMRGBResults #See results
+```
+
+All proportions are significant.
+
+# Save results
+
+```{r}
+proportionTestResults <- data.frame("Feature" = c(rep("exon", times = 3), rep("intron", times = 3), rep("mRNA", times = 3), rep("transposableElementsAll", times = 3), rep("transposableElementsCg", times = 3)),
+                                    "Test" = rep(c("All", "DML-GB", "DMR-GB"), times = 5),
+                                    "chiSquaredStatistic" = c(exonAllResults$statistic, exonDMLGBResults$statistic, exonDMRGBResults$statistic, intronAllResults$statistic, intronDMLGBResults$statistic, intronDMRGBResults$statistic, mRNAAllResults$statistic, mRNADMLGBResults$statistic, mRNADMRGBResults$statistic, allTEAllResults$statistic, allTEDMLGBResults$statistic, allTEDMRGBResults$statistic, cgTEAllResults$statistic, cgTEDMLGBResults$statistic, cgTEDMRGBResults$statistic),
+                                    "df" = c(exonAllResults$parameter, exonDMLGBResults$parameter, exonDMRGBResults$parameter, intronAllResults$parameter, intronDMLGBResults$parameter, intronDMRGBResults$parameter, mRNAAllResults$parameter, mRNADMLGBResults$parameter, mRNADMRGBResults$parameter, allTEAllResults$parameter, allTEDMLGBResults$parameter, allTEDMRGBResults$parameter, cgTEAllResults$parameter, cgTEDMLGBResults$parameter, cgTEDMRGBResults$parameter),
+                                    "pValue" = c(exonAllResults$p.value, exonDMLGBResults$p.value, exonDMRGBResults$p.value, intronAllResults$p.value, intronDMLGBResults$p.value, intronDMRGBResults$p.value, mRNAAllResults$p.value, mRNADMLGBResults$p.value, mRNADMRGBResults$p.value, allTEAllResults$p.value, allTEDMLGBResults$p.value, allTEDMRGBResults$p.value, cgTEAllResults$p.value, cgTEDMLGBResults$p.value, cgTEDMRGBResults$p.value)) #Save all proportion test results in a new dataframe. Feature refers to the genomic feature for which overlap proportions were tested. Test refers to DML, DMR, and gene background comparisons (All), just DML and gene background (DML-GB), or just DMR and gene background (DMR-GB). chiSquaredStatistic, df, and pValue are all taken from the corresponding prop.test results.
+head(proportionTestResults) #Confirm data is saved
+```
+
+```{r}
+write.csv(proportionTestResults, "2019-01-15-Proportion-Test-Results.csv", col.names = TRUE) #Save proportionTestResults as a .csv
+```
+
