@@ -189,4 +189,9 @@ head(proportionTestResults) #Confirm data is saved
 
 ```{r}
 write.csv(proportionTestResults, "2019-01-15-Proportion-Test-Results.csv", col.names = TRUE) #Save proportionTestResults as a .csv
+<<<<<<< HEAD
 ```
+=======
+```
+
+>>>>>>> 4370805156daecdfbd4eb0e8547689cb7f482c2b
