@@ -82,7 +82,7 @@ processedFilesCov3 <- processBismarkAln(location = analysisFiles, sample.id = sa
 nFiles <- length(sample.IDs) #Count number of samples
 fileName <- data.frame("nameBase" = rep("2019-01-15-Percent-CpG-Methylation", times = nFiles),
                        "nameBase2" = rep("2019-01-15-Percent-CpG-Coverage", times = nFiles),
-                       "sample.ID" = 1:10) #Create new dataframe for filenames
+                       "sample.ID" = 2:10) #Create new dataframe for filenames
 head(fileName) #Confirm dataframe creation
 ```
 
