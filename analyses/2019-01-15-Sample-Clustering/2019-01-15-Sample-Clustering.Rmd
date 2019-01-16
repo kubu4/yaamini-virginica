@@ -1,0 +1,133 @@
+---
+title: "Sample Clustering"
+author: "Yaamini Venkataraman"
+date: "01/15/2019"
+output: html_document
+---
+
+In this file, I'll try optimizing sample clustering in `methylKit` output.
+
+# Prepare R Markdown file
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Install packages
+
+```{r}
+install.packages("devtools") #Install the devtools package
+library(devtools) #Load devtools
+
+source("https://bioconductor.org/biocLite.R") #Source package from bioconductor
+biocLite("methylKit") #Install methylkit
+```
+
+```{r}
+install_github("al2na/methylKit", build_vignettes = FALSE, repos = BiocInstaller::biocinstallRepos(), dependencies = TRUE) #Install more methylKit options
+library(methylKit) #Load methylkit
+```
+
+# Obtain session information
+
+```{r}
+sessionInfo()
+```
+
+# Download files from `gannet`
+
+```{bash}
+wget -r -l1 --no-parent -A_dedup.sorted.bam http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/ #Download files from gannet. They will be stored in the same directory structure as they are online.
+```
+
+```{bash}
+mv gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-11-07-Bismark-Mox/* analyses/2018-10-25-MethylKit #Move all files from gannet folder to analyses folder
+```
+
+```{bash}
+rm -r gannet.fish.washington.edu #Remove the empty gannet directory
+```
+
+
+# Process methylation data
+
+```{r}
+analysisFiles <- list("zr2096_2_dedup.sorted.bam",
+                      "zr2096_3_dedup.sorted.bam",
+                      "zr2096_4_dedup.sorted.bam",
+                      "zr2096_5_dedup.sorted.bam",
+                      "zr2096_6_dedup.sorted.bam",
+                      "zr2096_7_dedup.sorted.bam",
+                      "zr2096_8_dedup.sorted.bam",
+                      "zr2096_9_dedup.sorted.bam",
+                      "zr2096_10_dedup.sorted.bam") #Put all .bam files into a list for analysis.
+```
+
+```{r}
+sample.IDs <- list("2", "3", "4", "5", "6", "7", "8", "9", "10") #Create list of sample IDs
+treatmentSpecification <- c(rep(0, times = 4), rep(1, times = 5)) #Specify which treatment the samples were from. 1 is the treatment (high pCO2) and 0 is the control (ambient pCO2)
+```
+
+I will use `processBismarkAln` to set different coverage metrics in the `mincov` argument. I'll use 3x coverage.
+
+```{r}
+processedFilesCov3 <- processBismarkAln(location = analysisFiles, sample.id = sample.IDs, assembly = "v3", read.context = "CpG", mincov = 3, treatment = treatmentSpecification) #Process files for CpG methylation using 3x coverage. First 5 files were from ambient conditions, and the second from high pCO2 conditions.
+```
+
+# Differentially methylated loci
+
+## Obtain methylation and coverage plots
+
+```{r}
+nFiles <- length(sample.IDs) #Count number of samples
+fileName <- data.frame("nameBase" = rep("2019-01-15-Percent-CpG-Methylation", times = nFiles),
+                       "nameBase2" = rep("2019-01-15-Percent-CpG-Coverage", times = nFiles),
+                       "sample.ID" = 1:10) #Create new dataframe for filenames
+head(fileName) #Confirm dataframe creation
+```
+
+```{r}
+fileName$actualFileName <- paste(fileName$nameBase, "-3xCoverage", "-Sample", fileName$sample.ID, ".jpeg", sep = "") #Create a new column for the full filename for 3x coverage + specific sample's percent CpG methylation plot
+fileName$actualFileName2 <- paste(fileName$nameBase2, "-3xCoverage", "-Sample", fileName$sample.ID, ".jpeg", sep = "") #Create a new column for the full filename for 3x coverage + specific sample's percent CpG coverage plot
+head(fileName) #Confirm column creation
+```
+
+```{r}
+for(i in 1:nFiles) { #For each data file
+  jpeg(filename = fileName$actualFileName[i], height = 1000, width = 1000) #Save file with designated name
+  getMethylationStats(processedFilesCov3[[i]], plot = TRUE, both.strands = FALSE) #Get %CpG methylation information
+  dev.off() #Turn off plotting device
+} #Plot and save %CpG methylation information
+```
+
+```{r}
+for(i in 1:nFiles) { #For each data file
+  jpeg(filename = fileName$actualFileName2[i], height = 1000, width = 1000) #Save file with designated name
+  getCoverageStats(processedFilesCov3[[i]], plot = TRUE, both.strands = FALSE) #Get CpG coverage information
+  dev.off() #Turn off plotting device
+} #Plot and save CpG coverage information
+```
+
+## Obtain clustering information
+
+```{r}
+methylationInformationCov3 <- unite(processedFilesCov3) #Combine all processed files into a single table
+head(methylationInformationCov3) #Confirm unite
+```
+
+```{r}
+clusteringInformationCov3 <- clusterSamples(methylationInformationCov3, dist = "correlation", method = "ward", plot = FALSE) #Save cluster information as a new object
+```
+
+```{r}
+jpeg(filename = "2019-01-15-Full-Sample-CpG-Methylation-Clustering-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
+clusterSamples(methylationInformationCov3, dist = "correlation", method = "ward", plot = TRUE) #Cluster samples based on correlation coefficients
+dev.off()
+```
+
+```{r}
+jpeg(filename = "2019-01-15-Full-Sample-Methylation-PCA-Cov3.jpeg", height = 1000, width = 1000) #Save file with designated name
+PCASamples(methylationInformationCov3) #Run a PCA analysis on percent methylation for all samples
+dev.off() #Turn off plotting device
+```
+
