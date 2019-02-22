@@ -99,12 +99,20 @@ head(blastResults) #Confirm column headers
 ```
 
 ```{r}
-DMRmRNA <- read.delim("2018-11-07-DMR-mRNA-unfolded.txt", header = FALSE) #Import DMR-mRNA overlaps
-head(DMRmRNA) #Confirm import
-colnames(DMRmRNA) <- c("DMRchromosome", "DMRstart", "DMRend", "DMRstrand", "V5", "mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V11", "mRNAstrand", "V13", "ID", "Parent", "Dbxref=GeneID", "V17", "V18", "Genbank", "Name", "V21", "V22", "V23", "V24", "V25", "V26", "V27", "V28", "V29") #Rename columns
-head(DMRmRNA) #Confirm column naming
+backgroundmRNA <- read.delim("2018-12-18-Gene-Background-mRNA-Unfolded.txt", header = FALSE) #Import background-mRNA overlaps
+head(backgroundmRNA) #Confirm import
+colnames(backgroundmRNA) <- c("backgroundchromosome", "backgroundstart", "backgroundend", "backgroundstrand", "V5","V6","V7","V8","V9","V10","V11","V12","V13","V14","V15","V16","V17","V18","V19","V20","V21","V22","V23","V24","V25","V26","V27","V28","V29","V30","V31","V32","V33","V34", "mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V40", "mRNAstrand", "V42", "ID", "Parent", "Dbxref=GeneID", "V17", "V18", "Genbank", "Name", "V50", "V51", "V52", "V53", "V54", "V55", "V56", "V57", "V58", "V59", "V60", "V61") #Rename columns
+head(backgroundmRNA) #Confirm column naming
 ```
 
+```{r}
+backgroundmRNAblast <- merge(x = blastResults, y = backgroundmRNA, by = "Genbank") #Merge the gene background and Uniprot codes by the Genbank ID column
+head(backgroundmRNAblast) #Confirm merge
+```
+
+```{r}
+write.csv(backgroundmRNAblast, "2019-02-22-mRNA-Gene-Background-Uniprot.csv") #Write out file
+```
 
 ## mRNA overlaps
 
