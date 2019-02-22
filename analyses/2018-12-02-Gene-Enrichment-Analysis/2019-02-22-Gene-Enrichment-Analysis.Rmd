@@ -113,7 +113,7 @@ head(mRNADMLblast) #Confirm merge
 ```
 
 ```{r}
-write.csv(mRNADMLblast, "2018-09-11-mRNA-DML-Uniprot.csv") #Write out file
+write.csv(mRNADMLblast, "2019-02-22-mRNA-DMR-Uniprot.csv") #Write out file
 ```
 
 The next step is to isolate the Uniprot acession codes and input them into either DAVID or compGO. The reason why I want to use both DAVID and compGO is to compare the efficacy of the compGO tool.
