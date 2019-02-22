@@ -73,28 +73,48 @@ pwd #Obtain present working directory
 
 ## Gene background
 
-## Merge Uniprot codes with gene background
+First, I will merge the gene background with *C. virginica* Uniprot information.
 
 ```{bash}
- #Check file format
+head 2018-12-18-Gene-Background-mRNA.txt #Check file format
+```
+
+The IDs in the blast result match up with the Genbank IDs in the overlap file. I need to isolate the Genbank IDs before I can merge the files. I'm not sure how to do this file manipulation in bash or R, so I'll do this in Excel.
+
+```{bash}
+head 2018-12-18-Gene-Background-mRNA-Unfolded.txt #Confirm unfolding
+```
+
+Now I'll merge the gene background with the Uniprot codes.
+
+```{bash}
+head 2018-09-11-Transcript-Uniprot-blastx-codeIsolated.txt #Check file format of Uniprot codes. I'm using a file with the Uniprot code already isolated so I don't have to unfold any columns after merging files.
+```
+
+```{r}
+blastResults <- read.delim("2018-09-11-Transcript-Uniprot-blastx-codeIsolated.txt", header = FALSE, sep = "\t", dec = ".") #Import blast results
+head(blastResults) #Confirm import
+colnames(blastResults) <- c("Genbank", "V2", "Uniprot", "V4", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore")
+head(blastResults) #Confirm column headers
+```
+
+```{r}
+DMRmRNA <- read.delim("2018-11-07-DMR-mRNA-unfolded.txt", header = FALSE) #Import DMR-mRNA overlaps
+head(DMRmRNA) #Confirm import
+colnames(DMRmRNA) <- c("DMRchromosome", "DMRstart", "DMRend", "DMRstrand", "V5", "mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V11", "mRNAstrand", "V13", "ID", "Parent", "Dbxref=GeneID", "V17", "V18", "Genbank", "Name", "V21", "V22", "V23", "V24", "V25", "V26", "V27", "V28", "V29") #Rename columns
+head(DMRmRNA) #Confirm column naming
 ```
 
 
 ## mRNA overlaps
 
-### Merge Uniprot codes with overlaps
-
-The first thing I need to do is merge the txt file of DMR-mRNA overlaps with the *C. virginica* genome-Uniprot codes.
-
-```{bash}
-head 2018-09-11-Transcript-Uniprot-blastx-codeIsolated.txt #Check file format
-```
+I will repeat the steps above with the DMR-mRNA overlap file.
 
 ```{bash}
 head ../2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-mRNA.txt #Check file format
 ```
 
-The IDs in the blast result match up with the Genbank IDs in the overlap file. I need to isolate the Genbank IDs before I can merge the files. I'm not sure how to do this file manipulation in bash or R, so I'll do this in Excel.
+Again, I need to unfold the last column.
 
 ```{bash}
 head 2018-11-07-DMR-mRNA-unfolded.txt
