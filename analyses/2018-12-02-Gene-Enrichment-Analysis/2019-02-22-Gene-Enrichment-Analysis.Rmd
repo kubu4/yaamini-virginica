@@ -118,6 +118,16 @@ head(backgroundmRNAblast) #Confirm merge
 write.csv(backgroundmRNAblast, "2019-02-22-mRNA-Gene-Background-Uniprot.csv") #Write out file
 ```
 
+### Isolate Uniprot codes
+
+To obtain gene enrichment information from DAVID, I need to isolate the Uniprot codes.
+
+```{r}
+backgroundmRNAUniprot <- backgroundmRNAblast$Uniprot #Isolate Uniprot codes from merged file
+write.csv(backgroundmRNAUniprot, "2019-02-22-mRNA-Gene-Background-UniprotOnly.csv") #Save Uniprot codes as a new file
+```
+
+
 ## mRNA overlaps
 
 I will repeat the steps above with the DMR-mRNA overlap file.
@@ -134,7 +144,7 @@ Again, I need to unfold the last column.
 head 2018-11-07-DMR-mRNA-unfolded.txt
 ```
 
-Now I'll merge the two documents.
+### Import files
 
 ```{r}
 DMRmRNA <- read.delim("2018-11-07-DMR-mRNA-unfolded.txt", header = FALSE) #Import DMR-mRNA overlaps
@@ -142,6 +152,10 @@ head(DMRmRNA) #Confirm import
 colnames(DMRmRNA) <- c("DMRchromosome", "DMRstart", "DMRend", "DMRstrand", "V5", "mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V11", "mRNAstrand", "V13", "ID", "Parent", "Dbxref=GeneID", "V17", "V18", "Genbank", "Name", "V21", "V22", "V23", "V24", "V25", "V26", "V27", "V28", "V29") #Rename columns
 head(DMRmRNA) #Confirm column naming
 ```
+
+### Merge with Uniprot codes
+
+Now I'll merge the two documents.
 
 ```{r}
 mRNADMRblast <- merge(x = blastResults, y = DMRmRNA, by = "Genbank") #Merge the two files by the Genbank ID column
@@ -152,20 +166,9 @@ head(mRNADMRblast) #Confirm merge
 write.csv(mRNADMRblast, "2019-02-22-mRNA-DMR-Uniprot.csv") #Write out file
 ```
 
-The next step is to isolate the Uniprot acession codes to use in DAVID.
+### Isolate Uniprot codes
 
-### DAVID
-
-For DAVID, I need to isolate the Uniprot accession codes from the transcript-blast results, and from my overlaps. This involves unfolding columns, which I can easily do in Excel.
-
-```{bash}
-head 2018-09-11-mRNA-DML-Uniprot-codeIsolated.csv #Confirm gene list isolation (P21783 is the code that was isolated)
+```{r}
+DMRmRNAUniprot <- mRNADMRblast$Uniprot #Isolate Uniprot codes from merged file
+write.csv(DMRmRNAUniprot, "2019-02-22-mRNA-DMR-UniprotOnly.csv") #Save Uniprot codes as a new file
 ```
-
-I saved the gene list and background in a new file:
-
-```{bash}
-head 2018-09-11-DML-mRNA-Background-GeneList.csv #Confirm file creation
-```
-
-I can now use this information in DAVID. 
