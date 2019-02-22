@@ -7,7 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In this script, I'll identify enriched genes for mRNA regions, exons, and introns that overlap with DMRs.
+In this script, I'll isolate Uniprot codes needed to perform a gene enrichment. My ultimate goal is to identify enriched genes for mRNA regions that overlap with DMRs. I will isolate Uniprot codes for the DMR-mRNA overlap, and for the gene background. The gene background will serve as my background for enrichment analyses, instead of the full transcriptome.
 
 ## Session information
 
@@ -71,14 +71,23 @@ pwd #Obtain present working directory
 -max_target_seqs 1
 ```
 
+## Gene background
+
+## Merge Uniprot codes with gene background
+
+```{bash}
+ #Check file format
+```
+
+
 ## mRNA overlaps
 
 ### Merge Uniprot codes with overlaps
 
-The first thing I need to do is merge the txt file of DML-mRNA overlaps with the *C. virginica* genome-Uniprot codes.
+The first thing I need to do is merge the txt file of DMR-mRNA overlaps with the *C. virginica* genome-Uniprot codes.
 
 ```{bash}
-head 2018-09-06-Transcript-Uniprot-blastx.txt #Check file format
+head 2018-09-11-Transcript-Uniprot-blastx-codeIsolated.txt #Check file format
 ```
 
 ```{bash}
@@ -94,9 +103,9 @@ head 2018-11-07-DMR-mRNA-unfolded.txt
 Now I'll merge the two documents.
 
 ```{r}
-blastResults <- read.delim("2018-09-06-Transcript-Uniprot-blastx.txt", header = FALSE, sep = "\t", dec = ".") #Import blast results
+blastResults <- read.delim("2018-09-11-Transcript-Uniprot-blastx-codeIsolated.txt", header = FALSE, sep = "\t", dec = ".") #Import blast results
 head(blastResults) #Confirm import
-colnames(blastResults) <- c("Genbank", "Uniprot", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore")
+colnames(blastResults) <- c("Genbank", "V2", "Uniprot", "V4", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore")
 head(blastResults) #Confirm column headers
 ```
 
@@ -124,10 +133,6 @@ For DAVID, I need to isolate the Uniprot accession codes from the transcript-bla
 
 ```{bash}
 head 2018-09-11-mRNA-DML-Uniprot-codeIsolated.csv #Confirm gene list isolation (P21783 is the code that was isolated)
-```
-
-```{bash}
-head 2018-09-11-Transcript-Uniprot-blastx-codeIsolated.txt #Confirm background isolation (Q9JJZ5 is the code that was isolated)
 ```
 
 I saved the gene list and background in a new file:
