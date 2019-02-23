@@ -357,4 +357,70 @@ write.csv(DMLmRNADownstreamUniprot, "2019-02-22-mRNA-DML-DownstreamFlanks-Unipro
 
 ### DMR-mRNA
 
+#### Check file format
+
+```{bash}
+head ../2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-14-mRNA-Closest-NoOverlap-DMRs-Unfolded.txt #Check file format
+```
+
+#### Import files
+
+```{r}
+DMRmRNANoOverlaps <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-14-mRNA-Closest-NoOverlap-DMRs-Unfolded.txt", header = FALSE) #Import DMR-mRNA closest non-overlapping regions
+head(DMRmRNANoOverlaps) #Confirm import
+colnames(DMRmRNANoOverlaps) <- c("mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V6", "mRNAstrand", "V8", "V9", "DMRchromosome", "DMRstart", "DMRend", "DMR", "Percentdiff", "ID", "Parent", "Dbxref=GeneID", "V18", "V19", "V20", "Genbank", "Name", "V22", "V23", "V24", "V25", "V26", "V27", "V28", "V29") #Rename columns
+head(DMRmRNANoOverlaps) #Confirm column naming
+```
+
+#### Merge with Uniprot codes
+
+```{r}
+mRNADMRNoOverlapsBlast <- merge(x = blastResults, y = DMRmRNANoOverlaps, by = "Genbank") #Merge the two files by the Genbank ID column
+head(mRNADMRNoOverlapsBlast) #Confirm merge
+```
+
+```{r}
+write.csv(mRNADMRNoOverlapsBlast, "2019-02-22-mRNA-DMR-NoOverlaps-Uniprot.csv") #Write out file
+```
+
+#### Isolate Uniprot codes
+
+```{r}
+DMRmRNANoOverlapsUniprot <- mRNADMRNoOverlapsBlast$Uniprot #Isolate Uniprot codes from merged file
+write.csv(DMRmRNANoOverlapsUniprot, "2019-02-22-mRNA-DMR-NoOverlaps-UniprotOnly.csv")
+```
+
 ### DML-mRNA
+
+#### Check file format
+
+```{bash}
+head ../2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-14-mRNA-Closest-NoOverlap-DMLs-Unfolded.txt #Check file format
+```
+
+#### Import files
+
+```{r}
+DMLmRNANoOverlaps <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-14-mRNA-Closest-NoOverlap-DMLs-Unfolded.txt", header = FALSE) #Import DML-mRNA closest non-overlapping regions
+head(DMLmRNANoOverlaps) #Confirm import
+colnames(DMLmRNANoOverlaps) <- c("mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V6", "mRNAstrand", "V8", "V9", "DMLchromosome", "DMLstart", "DMLend", "DML", "Percentdiff", "ID", "Parent", "Dbxref=GeneID", "V18", "V19", "V20", "Genbank", "Name", "V22", "V23", "V24", "V25", "V26", "V27", "V28", "V29") #Rename columns
+head(DMLmRNANoOverlaps) #Confirm column naming
+```
+
+#### Merge with Uniprot codes
+
+```{r}
+mRNADMLNoOverlapsBlast <- merge(x = blastResults, y = DMLmRNANoOverlaps, by = "Genbank") #Merge the two files by the Genbank ID column
+head(mRNADMLNoOverlapsBlast) #Confirm merge
+```
+
+```{r}
+write.csv(mRNADMLNoOverlapsBlast, "2019-02-22-mRNA-DML-NoOverlaps-Uniprot.csv") #Write out file
+```
+
+#### Isolate Uniprot codes
+
+```{r}
+DMLmRNANoOverlapsUniprot <- mRNADMLNoOverlapsBlast$Uniprot #Isolate Uniprot codes from merged file
+write.csv(DMLmRNANoOverlapsUniprot, "2019-02-22-mRNA-DML-NoOverlaps-UniprotOnly.csv")
+```
