@@ -243,7 +243,7 @@ write.csv(mRNADMRUpstreamBlast, "2019-02-22-mRNA-DMR-UpstreamFlanks-Uniprot.csv"
 
 ```{r}
 DMRmRNAUpstreamUniprot <- mRNADMRUpstreamBlast$Uniprot #Isolate Uniprot codes from merged file
-write.csv(DMRmRNAUpstreamUniprot, "2019-02-22-mRNA-DMR-UpstreamFlanks-UniprotOnly")
+write.csv(DMRmRNAUpstreamUniprot, "2019-02-22-mRNA-DMR-UpstreamFlanks-UniprotOnly.csv")
 ```
 
 ### DML-mRNA
@@ -278,7 +278,7 @@ write.csv(mRNADMLUpstreamBlast, "2019-02-22-mRNA-DML-UpstreamFlanks-Uniprot.csv"
 
 ```{r}
 DMLmRNAUpstreamUniprot <- mRNADMLUpstreamBlast$Uniprot #Isolate Uniprot codes from merged file
-write.csv(DMLmRNAUpstreamUniprot, "2019-02-22-mRNA-DML-UpstreamFlanks-UniprotOnly")
+write.csv(DMLmRNAUpstreamUniprot, "2019-02-22-mRNA-DML-UpstreamFlanks-UniprotOnly.csv")
 ```
 
 ## Downstream Flanks
