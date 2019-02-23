@@ -7,7 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In this script, I'll isolate Uniprot codes needed to perform a gene enrichment. My ultimate goal is to identify enriched genes for mRNA regions that overlap with DMRs. I will isolate Uniprot codes for the DMR-mRNA overlap, and for the gene background. The gene background will serve as my background for enrichment analyses, instead of the full transcriptome.
+In this script, I'll isolate Uniprot codes needed to perform a gene enrichment. My ultimate goal is to identify enriched genes for mRNA regions that overlap with DMRs and DMLs. I will isolate Uniprot codes for the DMR-mRNA overlap, and for the gene background. The gene background will serve as my background for enrichment analyses, instead of the full transcriptome.
 
 ## Session information
 
@@ -71,6 +71,10 @@ pwd #Obtain present working directory
 -max_target_seqs 1
 ```
 
+```{bash}
+head 2018-09-11-Transcript-Uniprot-blastx-codeIsolated.txt #Check file format of Uniprot codes. I'm using a file with the Uniprot code already isolated so I don't have to unfold any columns after merging files.
+```
+
 ## Gene background
 
 First, I will merge the gene background with *C. virginica* Uniprot information.
@@ -85,10 +89,6 @@ The IDs in the blast result match up with the Genbank IDs in the overlap file. I
 
 ```{bash}
 head 2018-12-18-Gene-Background-mRNA-Unfolded.txt #Confirm unfolding
-```
-
-```{bash}
-head 2018-09-11-Transcript-Uniprot-blastx-codeIsolated.txt #Check file format of Uniprot codes. I'm using a file with the Uniprot code already isolated so I don't have to unfold any columns after merging files.
 ```
 
 ### Import files
@@ -127,8 +127,7 @@ backgroundmRNAUniprot <- backgroundmRNAblast$Uniprot #Isolate Uniprot codes from
 write.csv(backgroundmRNAUniprot, "2019-02-22-mRNA-Gene-Background-UniprotOnly.csv") #Save Uniprot codes as a new file
 ```
 
-
-## mRNA overlaps
+## DMR-mRNA overlaps
 
 I will repeat the steps above with the DMR-mRNA overlap file.
 
@@ -171,4 +170,39 @@ write.csv(mRNADMRblast, "2019-02-22-mRNA-DMR-Uniprot.csv") #Write out file
 ```{r}
 DMRmRNAUniprot <- mRNADMRblast$Uniprot #Isolate Uniprot codes from merged file
 write.csv(DMRmRNAUniprot, "2019-02-22-mRNA-DMR-UniprotOnly.csv") #Save Uniprot codes as a new file
+```
+
+## DML-mRNA overlaps
+
+### Check file format
+
+```{bash}
+head ../2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA-Unfolded.txt #I unfolded the columns in Excel so the Genbank ID would be in its own column.
+```
+
+### Import files
+
+```{r}
+DMLmRNA <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA-unfolded.txt", header = FALSE) #Import DML-mRNA overlaps
+head(DMLmRNA) #Confirm import
+colnames(DMLmRNA) <- c("DMLchromosome", "DMLstart", "DMLend", "DMLstrand", "V5", "mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V11", "mRNAstrand", "V13", "ID", "Parent", "Dbxref=GeneID", "V17", "V18", "Genbank", "Name", "V21", "V22", "V23", "V24", "V25", "V26", "V27", "V28", "V29") #Rename columns
+head(DMLmRNA) #Confirm column naming
+```
+
+### Merge with Uniprot codes
+
+```{r}
+mRNADMLblast <- merge(x = blastResults, y = DMLmRNA, by = "Genbank") #Merge the two files by the Genbank ID column
+head(mRNADMLblast) #Confirm merge
+```
+
+```{r}
+write.csv(mRNADMLblast, "2019-02-22-mRNA-DML-Uniprot.csv") #Write out file
+```
+
+### Isolate Uniprot codes
+
+```{r}
+DMLmRNAUniprot <- mRNADMLblast$Uniprot #Isolate Uniprot codes from merged file
+write.csv(DMLmRNAUniprot, "2019-02-22-mRNA-DML-UniprotOnly.csv") #Save Uniprot codes as a new file
 ```
