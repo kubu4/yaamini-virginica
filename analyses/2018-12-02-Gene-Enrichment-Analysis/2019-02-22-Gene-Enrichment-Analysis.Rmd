@@ -127,11 +127,13 @@ backgroundmRNAUniprot <- backgroundmRNAblast$Uniprot #Isolate Uniprot codes from
 write.csv(backgroundmRNAUniprot, "2019-02-22-mRNA-Gene-Background-UniprotOnly.csv") #Save Uniprot codes as a new file
 ```
 
-## DMR-mRNA overlaps
+## Overlaps
+
+### DMR-mRNA overlaps
 
 I will repeat the steps above with the DMR-mRNA overlap file.
 
-### Check file format
+#### Check file format
 
 ```{bash}
 head ../2018-11-01-DML-and-DMR-Analysis/2018-11-07-DMR-mRNA.txt #Check file format
@@ -143,7 +145,7 @@ Again, I need to unfold the last column.
 head 2018-11-07-DMR-mRNA-unfolded.txt
 ```
 
-### Import files
+#### Import files
 
 ```{r}
 DMRmRNA <- read.delim("2018-11-07-DMR-mRNA-unfolded.txt", header = FALSE) #Import DMR-mRNA overlaps
@@ -152,7 +154,7 @@ colnames(DMRmRNA) <- c("DMRchromosome", "DMRstart", "DMRend", "DMRstrand", "V5",
 head(DMRmRNA) #Confirm column naming
 ```
 
-### Merge with Uniprot codes
+#### Merge with Uniprot codes
 
 Now I'll merge the two documents.
 
@@ -165,22 +167,22 @@ head(mRNADMRblast) #Confirm merge
 write.csv(mRNADMRblast, "2019-02-22-mRNA-DMR-Uniprot.csv") #Write out file
 ```
 
-### Isolate Uniprot codes
+#### Isolate Uniprot codes
 
 ```{r}
 DMRmRNAUniprot <- mRNADMRblast$Uniprot #Isolate Uniprot codes from merged file
 write.csv(DMRmRNAUniprot, "2019-02-22-mRNA-DMR-UniprotOnly.csv") #Save Uniprot codes as a new file
 ```
 
-## DML-mRNA overlaps
+### DML-mRNA overlaps
 
-### Check file format
+#### Check file format
 
 ```{bash}
 head ../2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA-Unfolded.txt #I unfolded the columns in Excel so the Genbank ID would be in its own column.
 ```
 
-### Import files
+#### Import files
 
 ```{r}
 DMLmRNA <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA-unfolded.txt", header = FALSE) #Import DML-mRNA overlaps
@@ -189,7 +191,7 @@ colnames(DMLmRNA) <- c("DMLchromosome", "DMLstart", "DMLend", "DMLstrand", "V5",
 head(DMLmRNA) #Confirm column naming
 ```
 
-### Merge with Uniprot codes
+#### Merge with Uniprot codes
 
 ```{r}
 mRNADMLblast <- merge(x = blastResults, y = DMLmRNA, by = "Genbank") #Merge the two files by the Genbank ID column
@@ -200,9 +202,93 @@ head(mRNADMLblast) #Confirm merge
 write.csv(mRNADMLblast, "2019-02-22-mRNA-DML-Uniprot.csv") #Write out file
 ```
 
-### Isolate Uniprot codes
+#### Isolate Uniprot codes
 
 ```{r}
 DMLmRNAUniprot <- mRNADMLblast$Uniprot #Isolate Uniprot codes from merged file
 write.csv(DMLmRNAUniprot, "2019-02-22-mRNA-DML-UniprotOnly.csv") #Save Uniprot codes as a new file
 ```
+
+## Upstream Flanks
+
+### DMR-mRNA
+
+#### Check file format
+
+```{bash}
+head ../2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-15-mRNA-100bp-UpstreamFlanks-DMR-Unfolded.txt #Check file format
+```
+
+#### Import files
+
+```{r}
+DMRmRNAUpstream <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-15-mRNA-100bp-UpstreamFlanks-DMR-Unfolded.txt", header = FALSE) #Import DMR-mRNA overlaps with upstream flanks
+head(DMRmRNAUpstream) #Confirm import
+colnames(DMRmRNAUpstream) <- c("mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V6", "mRNAstrand", "V8", "V9", "DMRchromosome", "DMRstart", "DMRend", "DMR", "Percentdiff", "ID", "Parent", "Dbxref=GeneID", "V18", "V19", "Genbank", "Name", "V22", "V23", "V24", "V25", "V26", "V27", "V28", "V29", "V30") #Rename columns
+head(DMRmRNAUpstream) #Confirm column naming
+```
+
+#### Merge with Uniprot codes
+
+```{r}
+mRNADMRUpstreamBlast <- merge(x = blastResults, y = DMRmRNAUpstream, by = "Genbank") #Merge the two files by the Genbank ID column
+head(mRNADMRUpstreamBlast) #Confirm merge
+```
+
+```{r}
+write.csv(mRNADMRUpstreamBlast, "2019-02-22-mRNA-DMR-UpstreamFlanks-Uniprot.csv") #Write out file
+```
+
+#### Isolate Uniprot codes
+
+```{r}
+DMRmRNAUpstreamUniprot <- mRNADMRUpstreamBlast$Uniprot #Isolate Uniprot codes from merged file
+write.csv(DMRmRNAUpstreamUniprot, "2019-02-22-mRNA-DMR-UpstreamFlanks-UniprotOnly")
+```
+
+### DML-mRNA
+
+#### Check file format
+
+```{bash}
+head ../2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-15-mRNA-100bp-UpstreamFlanks-DML-Unfolded.txt #Check file format
+```
+
+#### Import files
+
+```{r}
+DMLmRNAUpstream <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2018-11-14-Flanking-Analysis/2018-11-15-mRNA-100bp-UpstreamFlanks-DML-Unfolded.txt", header = FALSE) #Import DMR-mRNA overlaps with upstream flanks
+head(DMRmRNAUpstream) #Confirm import
+colnames(DMLmRNAUpstream) <- c("mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V6", "mRNAstrand", "V8", "V9", "DMLchromosome", "DMLstart", "DMLend", "DMR", "Percentdiff", "ID", "Parent", "Dbxref=GeneID", "V18", "V19", "Genbank", "Name", "V22", "V23", "V24", "V25", "V26", "V27", "V28", "V29", "V30") #Rename columns
+head(DMLmRNAUpstream) #Confirm column naming
+```
+
+#### Merge with Uniprot codes
+
+```{r}
+mRNADMLUpstreamBlast <- merge(x = blastResults, y = DMLmRNAUpstream, by = "Genbank") #Merge the two files by the Genbank ID column
+head(mRNADMLUpstreamBlast) #Confirm merge
+```
+
+```{r}
+write.csv(mRNADMLUpstreamBlast, "2019-02-22-mRNA-DML-UpstreamFlanks-Uniprot.csv") #Write out file
+```
+
+#### Isolate Uniprot codes
+
+```{r}
+DMLmRNAUpstreamUniprot <- mRNADMLUpstreamBlast$Uniprot #Isolate Uniprot codes from merged file
+write.csv(DMLmRNAUpstreamUniprot, "2019-02-22-mRNA-DML-UpstreamFlanks-UniprotOnly")
+```
+
+## Downstream Flanks
+
+### DMR-mRNA
+
+### DML-mRNA
+
+## Non-overlapping Features
+
+### DMR-mRNA
+
+### DML-mRNA
