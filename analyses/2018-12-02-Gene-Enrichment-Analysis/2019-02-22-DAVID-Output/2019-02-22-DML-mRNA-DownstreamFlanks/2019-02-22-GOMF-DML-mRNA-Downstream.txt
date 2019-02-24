@@ -1,0 +1,2 @@
+Category	Term	Count	%	PValue	Genes	List Total	Pop Hits	Pop Total	Fold Enrichment	Bonferroni	Benjamini	FDR
+GOTERM_MF_DIRECT	GO:0061630~ubiquitin protein ligase activity	2	4.444444444444445	0.05772544443576952	Q9R1R2, O70277	5	20	1357	27.14	0.5901150626137073	0.5901150626137073	33.85966544010738
