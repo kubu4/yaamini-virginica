@@ -123,10 +123,13 @@ write.csv(backgroundmRNAblast, "2019-02-22-mRNA-Gene-Background-Uniprot.csv") #W
 I want a list of unique genes and matching Uniprot codes represented in the gene background-mRNA overlaps.
 
 ```{r}
-uniqueBackgroundmRNAUniprot <- subset(backgroundmRNAUniprot, !duplicated(backgroundmRNAUniprot$Genbank)) #Subset the unique Genbank IDs from backgroundmRNAUniprot and save as a new dataframe.
-head(uniqueBackgroundmRNAUniprot) #Confirm changes
+uniqueBackgroundmRNAblast <- subset(backgroundmRNAblast, !duplicated(backgroundmRNAblast$Genbank)) #Subset the unique Genbank IDs from backgroundmRNAUniprot and save as a new dataframe.
+head(uniqueBackgroundmRNAblast) #Confirm changes
 ```
 
+```{r}
+write.csv(uniqueBackgroundmRNAblast, "2019-02-28-mRNA-Gene-Background-Uniprot-Unique.csv") #Save file
+```
 
 ### Isolate Uniprot codes
 
