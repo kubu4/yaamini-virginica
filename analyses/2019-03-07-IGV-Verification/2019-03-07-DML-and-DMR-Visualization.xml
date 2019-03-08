@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Session genome="/Users/yaamini/Documents/project-virginica-oa/analyses/2018-04-27-Bismark/2018-04-27-Bismark-Inputs/C_virginica-3.0_genomic.fa" hasGeneTrack="false" hasSequenceTrack="true" locus="NC_035781.1:1-61752955" path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/2019-03-07-DML-and-DMR-Visualization.xml" version="8">
+    <Resources>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_1_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_5_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_10_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_10_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2018-10-25-MethylKit/2018-11-07-DML-Locations.bed"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_9_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_2_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_6_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_5_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_6_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_7_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_8_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_4_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_9_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2018-10-25-MethylKit/2019-03-07-1000bp-DMR-Locations.bed"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_3_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_3_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_1_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_2_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_7_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_4_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2018-10-25-MethylKit/2018-11-07-DMR-Locations.bed"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2018-10-25-MethylKit/2018-11-29-Methylation-Information-Cov3.bed"/>
+        <Resource path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_8_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph"/>
+    </Resources>
+    <Panel height="800" name="DataPanel" width="1903">
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,0" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_1_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph" name="1-3x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,0" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_1_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph" name="1-10x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,0" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_2_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph" name="2-3x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,0" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_2_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph" name="2-10x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,0" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_3_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph" name="3-3x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,0" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_3_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph" name="3-10x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,0" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_4_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph" name="4-3x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,0" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_4_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph" name="4-10x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,0" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_5_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph" name="5-3x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,0" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_5_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph" name="5-10x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_6_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph" name="6-3x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_6_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph" name="6-10x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_7_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph" name="7-3x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_7_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph" name="7-10x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_8_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph" name="8-3x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_8_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph" name="8-10x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_9_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph" name="9-3x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_9_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph" name="9-10x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_10_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph" name="10-3x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/zr2096_10_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_10x.bedgraph" name="10-10x" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+    </Panel>
+    <Panel height="261" name="FeaturePanel" width="1903">
+        <Track altColor="0,0,178" autoScale="false" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="Reference sequence" name="Reference sequence" sortable="false" visible="true"/>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2018-10-25-MethylKit/2018-11-07-DML-Locations.bed" name="DML" renderer="BASIC_FEATURE" sortable="false" visible="true" windowFunction="count"/>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2018-10-25-MethylKit/2018-11-07-DMR-Locations.bed" name="100bp-DMR" renderer="BASIC_FEATURE" sortable="false" visible="true" windowFunction="count"/>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2018-10-25-MethylKit/2019-03-07-1000bp-DMR-Locations.bed" name="1000bp-DMR" renderer="BASIC_FEATURE" sortable="false" visible="true" windowFunction="count"/>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="/Users/yaamini/Documents/yaamini-virginica/analyses/2018-10-25-MethylKit/2018-11-29-Methylation-Information-Cov3.bed" name="3x-Background" renderer="BASIC_FEATURE" sortable="false" visible="true" windowFunction="count"/>
+    </Panel>
+    <PanelLayout dividerFractions="0.6518324607329843"/>
+    <HiddenAttributes>
+        <Attribute name="DATA FILE"/>
+        <Attribute name="DATA TYPE"/>
+        <Attribute name="NAME"/>
+    </HiddenAttributes>
+</Session>
