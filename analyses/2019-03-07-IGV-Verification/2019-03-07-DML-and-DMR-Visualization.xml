@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Session genome="/Users/yaamini/Documents/project-virginica-oa/analyses/2018-04-27-Bismark/2018-04-27-Bismark-Inputs/C_virginica-3.0_genomic.fa" hasGeneTrack="false" hasSequenceTrack="true" locus="NC_035781.1:1-61752955" path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/2019-03-07-DML-and-DMR-Visualization.xml" version="8">
+<Session genome="http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2018-04-27-Bismark/2018-04-27-Bismark-Inputs/C_virginica-3.0_genomic.fa" hasGeneTrack="false" hasSequenceTrack="true" locus="NC_035781.1:1-61752955" path="/Users/yaamini/Documents/yaamini-virginica/analyses/2019-03-07-IGV-Verification/2019-03-07-DML-and-DMR-Visualization.xml" version="8">
     <Resources>
         <Resource path="http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2019-03-07-Yaamini-Virginica-Repository/analyses/2018-10-25-MethylKit/2018-11-29-Methylation-Information-Cov3.bed"/>
         <Resource path="http://gannet.fish.washington.edu/spartina/2018-10-10-project-virginica-oa-Large-Files/2019-03-07-Yaamini-Virginica-Repository/analyses/2019-03-07-IGV-Verification/zr2096_4_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_3x.bedgraph"/>
