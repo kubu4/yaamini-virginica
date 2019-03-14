@@ -68,10 +68,18 @@ sample.IDs <- list("1", "2", "3", "4", "5", "6", "7", "8", "9", "10") #Create li
 treatmentSpecification <- c(rep(0, times = 5), rep(1, times = 5)) #Specify which treatment the samples were from. 1 is the treatment (high pCO2) and 0 is the control (ambient pCO2)
 ```
 
-I will use `processBismarkAln` to set different coverage metrics in the `mincov` argument. I'll use 1x, 3x coverage.
+I will use `processBismarkAln` to set different coverage metrics in the `mincov` argument. I'll use 3x, 5x, and 10x coverage.
 
 ```{r}
 processedFilesCov3 <- processBismarkAln(location = analysisFiles, sample.id = sample.IDs, assembly = "v3", read.context = "CpG", mincov = 3, treatment = treatmentSpecification) #Process files for CpG methylation using 3x coverage. First 5 files were from ambient conditions, and the second from high pCO2 conditions.
+```
+
+```{r}
+processedFilesCov5 <- processBismarkAln(location = analysisFiles, sample.id = sample.IDs, assembly = "v3", read.context = "CpG", mincov = 5, treatment = treatmentSpecification) #Process files for CpG methylation using 5x coverage. First 5 files were from ambient conditions, and the second from high pCO2 conditions.
+```
+
+```{r}
+processedFilesCov10 <- processBismarkAln(location = analysisFiles, sample.id = sample.IDs, assembly = "v3", read.context = "CpG", mincov = 10, treatment = treatmentSpecification) #Process files for CpG methylation using 10x coverage. First 5 files were from ambient conditions, and the second from high pCO2 conditions.
 ```
 
 # Differentially methylated loci
@@ -85,6 +93,8 @@ fileName <- data.frame("nameBase" = rep("2018-10-25-Loci-Analysis/2018-11-07-Per
                        "sample.ID" = 1:10) #Create new dataframe for filenames
 head(fileName) #Confirm dataframe creation
 ```
+
+### 3x coverage
 
 ```{r}
 fileName$actualFileName <- paste(fileName$nameBase, "-3xCoverage", "-Sample", fileName$sample.ID, ".jpeg", sep = "") #Create a new column for the full filename for 3x coverage + specific sample's percent CpG methylation plot
@@ -108,7 +118,15 @@ for(i in 1:nFiles) { #For each data file
 } #Plot and save CpG coverage information
 ```
 
+### 5x coverage
+
+### 10x coverage
+
 ## Obtain clustering information
+
+### `destrand = FALSE`
+
+#### 3x coverage
 
 ```{r}
 methylationInformationCov3 <- unite(processedFilesCov3) #Combine all processed files into a single table
@@ -143,7 +161,41 @@ PCASamples(methylationInformationCov3, screeplot = TRUE) #Run the PCA analysis a
 dev.off()
 ```
 
+#### 5x coverage
+
+```{r}
+methylationInformationCov5 <- unite(processedFilesCov5) #Combine all processed files into a single table
+head(methylationInformationCov5) #Confirm unite
+```
+
+#### 10x coverage
+
+```{r}
+methylationInformationCov10 <- unite(processedFilesCov10) #Combine all processed files into a single table
+head(methylationInformationCov10) #Confirm unite
+```
+
+### `destrand = TRUE`
+
+#### 5x coverage
+
+```{r}
+methylationInformationCov5Destrand <- unite(processedFilesCov5, destrand = TRUE) #Combine all processed files into a single table
+head(methylationInformationCov5Destrand) #Confirm unite
+```
+
+#### 10x coverage
+
+```{r}
+methylationInformationCov10Destrand <- unite(processedFilesCov10, destrand = TRUE) #Combine all processed files into a single table
+head(methylationInformationCov10Destrand) #Confirm unite
+```
+
 ## Obtain differentially methylated loci
+
+### `destrand = FALSE`
+
+#### 3x coverage
 
 ```{r}
 differentialMethylationStatsCov3 <- calculateDiffMeth(methylationInformationCov3) #Calculate differential methylation statistics based on treatment indication from processBismarkAln
@@ -153,6 +205,56 @@ head(diffMethStats50Cov3) #Confirm creation
 
 ```{r}
 write.csv(diffMethStats50Cov3, "2018-10-25-Loci-Analysis/2018-11-07-Differentially-Methylated-Loci-50-Cov3.csv") #Save table as .csv
+```
+
+#### 5x coverage
+
+```{r}
+differentialMethylationStatsCov5 <- calculateDiffMeth(methylationInformationCov5) #Calculate differential methylation statistics based on treatment indication from processBismarkAln
+diffMethStats50Cov5 <- getMethylDiff(differentialMethylationStatsCov5, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+head(diffMethStats50Cov5) #Confirm creation
+```
+
+```{r}
+write.csv(diffMethStats50Cov5, "2018-10-25-Loci-Analysis/2019-03-13-Differentially-Methylated-Loci-50-Cov5.csv") #Save table as .csv
+```
+
+#### 10x coverage
+
+```{r}
+differentialMethylationStatsCov10 <- calculateDiffMeth(methylationInformationCov10) #Calculate differential methylation statistics based on treatment indication from processBismarkAln
+diffMethStats50Cov10 <- getMethylDiff(differentialMethylationStatsCov10, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+head(diffMethStats50Cov10) #Confirm creation
+```
+
+```{r}
+write.csv(diffMethStats50Cov10, "2018-10-25-Loci-Analysis/2019-03-13-Differentially-Methylated-Loci-50-Cov10.csv") #Save table as .csv
+```
+
+### `destrand = TRUE`
+
+#### 5x coverage
+
+```{r}
+differentialMethylationStatsCov5Destrand <- calculateDiffMeth(methylationInformationCov5Destrand) #Calculate differential methylation statistics based on treatment indication from processBismarkAln
+diffMethStats50Cov5Destrand <- getMethylDiff(differentialMethylationStatsCov5Destrand, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+head(diffMethStats50Cov5Destrand) #Confirm creation
+```
+
+```{r}
+write.csv(diffMethStats50Cov5Destrand, "2018-10-25-Loci-Analysis/2019-03-13-Differentially-Methylated-Loci-Destrand-50-Cov5.csv") #Save table as .csv
+```
+
+#### 10x coverage
+
+```{r}
+differentialMethylationStatsCov10Destrand <- calculateDiffMeth(methylationInformationCov10Destrand) #Calculate differential methylation statistics based on treatment indication from processBismarkAln
+diffMethStats50Cov10Destrand <- getMethylDiff(differentialMethylationStatsCov10Destrand, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
+head(diffMethStats50Cov10Destrand) #Confirm creation
+```
+
+```{r}
+write.csv(diffMethStats50Cov10Destrand, "2018-10-25-Loci-Analysis/2019-03-13-Differentially-Methylated-Loci-Destrand-50-Cov10.csv") #Save table as .csv
 ```
 
 # Differentially methylated regions
@@ -286,6 +388,10 @@ head 2018-11-29-Methylation-Information-Cov3.bed #Confirm formatting was retaine
 
 ## DMLs
 
+### `destrand = FALSE`
+
+#### 3x coverage
+
 ```{r}
 DMLPlus10222018 <- filter(diffMethStats50Cov3, strand == "+") %>% mutate(start = start -1, end = end + 1) %>% select(chr, start, end, strand, meth.diff) #Save + strand of DMLs as a new object
 DMLMinus10222018 <- filter(diffMethStats50Cov3, strand == "-") %>% mutate(start = start -2) %>% select(chr, start, end, strand, meth.diff) #Save - strand of DMLs as a new object
@@ -297,6 +403,68 @@ DML10222018 <- bind_rows(DMLPlus10222018, DMLMinus10222018) %>% arrange(chr, sta
 
 ```{r}
 write_delim(DML10222018, "2018-11-07-DML-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
+```
+
+#### 5x coverage
+
+```{r}
+DML5xPlus03132019 <- filter(diffMethStats50Cov5, strand == "+") %>% mutate(start = start -1, end = end + 1) %>% select(chr, start, end, strand, meth.diff) #Save + strand of DMLs as a new object
+DML5xMinus03132019 <- filter(diffMethStats50Cov5, strand == "-") %>% mutate(start = start -2) %>% select(chr, start, end, strand, meth.diff) #Save - strand of DMLs as a new object
+```
+
+```{r}
+DML5x03132019 <- bind_rows(DML5xPlus03132019, DML5xMinus03132019) %>% arrange(chr, start) %>% mutate_if(is.numeric, as.integer) #Join + and - strand information to be saved as a BED file, and avoid writing information in scientific notation
+```
+
+```{r}
+write_delim(DML5x03132019, "2019-03-13-DML-5x-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
+```
+
+#### 10x coverage
+
+```{r}
+DML10xPlus03132019 <- filter(diffMethStats50Cov10, strand == "+") %>% mutate(start = start -1, end = end + 1) %>% select(chr, start, end, strand, meth.diff) #Save + strand of DMLs as a new object
+DML10xMinus03132019 <- filter(diffMethStats50Cov10, strand == "-") %>% mutate(start = start -2) %>% select(chr, start, end, strand, meth.diff) #Save - strand of DMLs as a new object
+```
+
+```{r}
+DML10x03132019 <- bind_rows(DML10xPlus03132019, DML10xMinus03132019) %>% arrange(chr, start) %>% mutate_if(is.numeric, as.integer) #Join + and - strand information to be saved as a BED file, and avoid writing information in scientific notation
+```
+
+```{r}
+write_delim(DML10x03132019, "2019-03-13-DML-10x-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
+```
+
+### `destrand = TRUE`
+
+#### 5x coverage
+
+```{r}
+DML5xDestrandPlus03132019 <- filter(diffMethStats50Cov5Destrand, strand == "+") %>% mutate(start = start -1, end = end + 1) %>% select(chr, start, end, strand, meth.diff) #Save + strand of DMLs as a new object
+DML5xDestrandMinus03132019 <- filter(diffMethStats50Cov5Destrand, strand == "-") %>% mutate(start = start -2) %>% select(chr, start, end, strand, meth.diff) #This should be empty.
+```
+
+```{r}
+DML5xDestrand03132019 <- bind_rows(DML5xDestrandPlus03132019, DML5xDestrandMinus03132019) %>% arrange(chr, start) %>% mutate_if(is.numeric, as.integer) #Join + and - strand information to be saved as a BED file, and avoid writing information in scientific notation
+```
+
+```{r}
+write_delim(DML5xDestrand03132019, "2019-03-13-DML-Destrand-5x-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
+```
+
+#### 10x coverage
+
+```{r}
+DML10xDestrandPlus03132019 <- filter(diffMethStats50Cov10Destrand, strand == "+") %>% mutate(start = start -1, end = end + 1) %>% select(chr, start, end, strand, meth.diff) #Save + strand of DMLs as a new object
+DML10xDestrandMinus03132019 <- filter(diffMethStats50Cov10Destrand, strand == "-") %>% mutate(start = start -2) %>% select(chr, start, end, strand, meth.diff) #This should be empty.
+```
+
+```{r}
+DML10xDestrand03132019 <- bind_rows(DML10xDestrandPlus03132019, DML10xDestrandMinus03132019) %>% arrange(chr, start) %>% mutate_if(is.numeric, as.integer) #Join + and - strand information to be saved as a BED file, and avoid writing information in scientific notation
+```
+
+```{r}
+write_delim(DML10xDestrand03132019, "2019-03-13-DML-Destrand-10x-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
 ```
 
 ## DMRs
