@@ -462,7 +462,7 @@ head(DML10xDestrand03132019) #Confirm changes
 ```
 
 ```{r}
-write_delim(diffMethStats50Cov10Destrand, "2019-03-13-DML-Destrand-10x-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
+write_delim(DML10xDestrand03132019, "2019-03-13-DML-Destrand-10x-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
 ```
 
 ## DMRs
