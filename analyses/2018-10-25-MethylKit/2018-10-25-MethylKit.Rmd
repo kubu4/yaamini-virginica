@@ -120,6 +120,28 @@ for(i in 1:nFiles) { #For each data file
 
 ### 5x coverage
 
+```{r}
+fileName$actualFileName3 <- paste(fileName$nameBase, "-5xCoverage", "-Sample", fileName$sample.ID, ".jpeg", sep = "") #Create a new column for the full filename for 5x coverage + specific sample's percent CpG methylation plot
+fileName$actualFileName4 <- paste(fileName$nameBase2, "-5xCoverage", "-Sample", fileName$sample.ID, ".jpeg", sep = "") #Create a new column for the full filename for 5x coverage + specific sample's percent CpG coverage plot
+head(fileName) #Confirm column creation
+```
+
+```{r}
+for(i in 1:nFiles) { #For each data file
+  jpeg(filename = fileName$actualFileName3[i], height = 1000, width = 1000) #Save file with designated name
+  getMethylationStats(processedFilesCov5[[i]], plot = TRUE, both.strands = FALSE) #Get %CpG methylation information
+  dev.off() #Turn off plotting device
+} #Plot and save %CpG methylation information
+```
+
+```{r}
+for(i in 1:nFiles) { #For each data file
+  jpeg(filename = fileName$actualFileName4[i], height = 1000, width = 1000) #Save file with designated name
+  getCoverageStats(processedFilesCov5[[i]], plot = TRUE, both.strands = FALSE) #Get CpG coverage information
+  dev.off() #Turn off plotting device
+} #Plot and save CpG coverage information
+```
+
 ### 10x coverage
 
 ## Obtain clustering information
@@ -182,6 +204,34 @@ head(methylationInformationCov10) #Confirm unite
 ```{r}
 methylationInformationCov5Destrand <- unite(processedFilesCov5, destrand = TRUE) #Combine all processed files into a single table
 head(methylationInformationCov5Destrand) #Confirm unite
+```
+
+```{r}
+clusteringInformationCov5Destrand <- clusterSamples(methylationInformationCov5Destrand, dist = "correlation", method = "ward", plot = FALSE) #Save cluster information as a new object
+```
+
+```{r}
+jpeg(filename = "2018-10-25-Loci-Analysis/2019-03-14-Full-Sample-Pearson-Correlation-Plot-Cov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
+getCorrelation(methylationInformationCov5Destrand, plot = TRUE) #Understand correlation between methylation patterns in different samples
+dev.off()
+```
+
+```{r}
+jpeg(filename = "2018-10-25-Loci-Analysis/2019-03-14-Full-Sample-CpG-Methylation-Clustering-Cov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
+clusterSamples(methylationInformationCov5Destrand, dist = "correlation", method = "ward", plot = TRUE) #Cluster samples based on correlation coefficients
+dev.off()
+```
+
+```{r}
+jpeg(filename = "2018-10-25-Loci-Analysis/2019-03-14-Full-Sample-Methylation-PCA-Cov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
+PCASamples(methylationInformationCov5Destrand) #Run a PCA analysis on percent methylation for all samples
+dev.off() #Turn off plotting device
+```
+
+```{r}
+jpeg(filename = "2018-10-25-Loci-Analysis/2019-03-14-Full-Sample-Methylation-Screeplot-Cov5Destrand.jpeg", height = 1000, width = 1000) #Save file with designated name
+PCASamples(methylationInformationCov5Destrand, screeplot = TRUE) #Run the PCA analysis and plot variances against PC number in a screeplot
+dev.off()
 ```
 
 #### 10x coverage
