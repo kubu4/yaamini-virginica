@@ -419,3 +419,4 @@ data/2019-03-17-Counting-Reads/2019-03-17-FastQC-Reports/zr2096_9_s1_R2_val_2_fa
 data/2019-03-17-Counting-Reads/2019-03-17-FastQC-Reports/zr2096_9_s1_R2_val_2_fastqc/Images/per_tile_quality.png
 data/2019-03-17-Counting-Reads/2019-03-17-FastQC-Reports/zr2096_9_s1_R2_val_2_fastqc/Images/sequence_length_distribution.png
 data/2019-03-17-Counting-Reads/2019-03-17-FastQC-Reports/zr2096_9_s1_R2_val_2_fastqc/summary.txt
+analyses/2019-03-18-Characterizing-CpG-Methylation/2019-03-18-Unique-1x-CpGs.bedgraph
