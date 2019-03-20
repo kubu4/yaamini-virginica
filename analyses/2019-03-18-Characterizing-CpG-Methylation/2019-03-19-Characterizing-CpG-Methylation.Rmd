@@ -33,10 +33,12 @@ head(cpgMethylation) #Confirm changes
 ## Create figure
 
 ```{r}
-hist(x = cpgMethylation$averageMethylation, axes = FALSE, xlab = "", ylab = "", main = "", col = "grey80") #Create base plot
+#pdf("2019-03-19-5x-CpG-Frequency-Distribution.pdf", width = 11, height = 8.5)
+hist(x = cpgMethylation$averageMethylation, axes = FALSE, xlab = "", ylab = "", main = "", col = "grey80", xaxs = "i", yaxs = "i") #Create base plot
 axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10)) #Add x-axis
 mtext(side = 1, text = "Percent methylation", line = 3) #Add x-axis label
 axis(side = 2, col = "grey80", las = 2, labels = c("0", "5", "10", "15"), at = c(0, 5000, 10000, 15000)) #add y-axis
 mtext(side = 2, text = "Frequency (x1000)", line = 2.5) #Add y-axis label
+#dev.off()
 ```
 
