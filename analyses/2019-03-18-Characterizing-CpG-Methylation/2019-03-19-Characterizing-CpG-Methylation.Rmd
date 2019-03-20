@@ -1,0 +1,42 @@
+---
+title: "Chacterizing CpG Methylation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this script, I'll create figures to characterize CpG methylation in my *C. virginica* gonad samples. I will use a list of CpGs with at least 5x coverage across all samples from the control pCO<sub>2</sub> treatment.
+
+## Session information
+
+```{r}
+sessionInfo()
+```
+
+## Import data
+
+```{r}
+cpgMethylation <- read.csv("2019-03-18-Control-5x-CpG-Loci.csv", header = FALSE) #Import file with CpG methylation for all loci with 5x coverage
+colnames(cpgMethylation) <- c("chromosome", "start", "end", "S1", "S2", "S3", "S4", "S5") #Add column names
+head(cpgMethylation) #Confirm import
+```
+
+#Format data
+
+```{r}
+cpgMethylation$averageMethylation <- rowMeans(cpgMethylation[,4:8]) #Average methylation in sample columns and save as a new column
+head(cpgMethylation) #Confirm changes
+```
+
+## Create figure
+
+```{r}
+hist(x = cpgMethylation$averageMethylation, axes = FALSE, xlab = "", ylab = "", main = "", col = "grey80") #Create base plot
+axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10)) #Add x-axis
+mtext(side = 1, text = "Percent methylation", line = 3) #Add x-axis label
+axis(side = 2, col = "grey80", las = 2, labels = c("0", "5", "10", "15"), at = c(0, 5000, 10000, 15000)) #add y-axis
+mtext(side = 2, text = "Frequency (x1000)", line = 2.5) #Add y-axis label
+```
+
