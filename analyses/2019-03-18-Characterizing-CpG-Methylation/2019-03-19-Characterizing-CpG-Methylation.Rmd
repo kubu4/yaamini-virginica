@@ -19,26 +19,19 @@ sessionInfo()
 
 ```{r}
 cpgMethylation <- read.csv("2019-03-18-Control-5x-CpG-Loci.csv", header = FALSE) #Import file with CpG methylation for all loci with 5x coverage
-colnames(cpgMethylation) <- c("chromosome", "start", "end", "S1", "S2", "S3", "S4", "S5") #Add column names
+colnames(cpgMethylation) <- c("chromosome", "start", "end", "methylation") #Add column names
 head(cpgMethylation) #Confirm import
-```
-
-#Format data
-
-```{r}
-cpgMethylation$averageMethylation <- rowMeans(cpgMethylation[,4:8]) #Average methylation in sample columns and save as a new column
-head(cpgMethylation) #Confirm changes
 ```
 
 ## Create figure
 
 ```{r}
 #pdf("2019-03-19-5x-CpG-Frequency-Distribution.pdf", width = 11, height = 8.5)
-hist(x = cpgMethylation$averageMethylation, axes = FALSE, xlab = "", ylab = "", main = "", col = "grey80", xaxs = "i", yaxs = "i") #Create base plot
+hist(x = cpgMethylation$methylation, axes = FALSE, xlab = "", ylab = "", main = "", col = "grey80", xaxs = "i", yaxs = "i") #Create base plot
 axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10)) #Add x-axis
 mtext(side = 1, text = "Percent methylation", line = 3) #Add x-axis label
-axis(side = 2, col = "grey80", las = 2, labels = c("0", "5", "10", "15"), at = c(0, 5000, 10000, 15000)) #add y-axis
-mtext(side = 2, text = "Frequency (x1000)", line = 2.5) #Add y-axis label
+axis(side = 2, col = "grey80", las = 2, labels = c("0", "3", "6", "9"), at = c(0, 3e+05, 6e+05, 9e+05)) #add y-axis
+mtext(side = 2, text = "Frequency (x100,000)", line = 2.5) #Add y-axis label
 #dev.off()
 ```
 
