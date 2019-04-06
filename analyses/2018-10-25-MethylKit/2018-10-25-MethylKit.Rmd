@@ -17,15 +17,20 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 install.packages("devtools") #Install the devtools package
-library(devtools) #Load devtools
+require(devtools) #Load devtools
+```
 
-source("https://bioconductor.org/biocLite.R") #Source package from bioconductor
-biocLite("methylKit") #Install methylkit
+```{r}
+source("http://bioconductor.org/biocLite.R") #Source package from bioconductor
+BiocManager::install("methylKit") #Install methylkit
 ```
 
 ```{r}
 install_github("al2na/methylKit", build_vignettes = FALSE, repos = BiocInstaller::biocinstallRepos(), dependencies = TRUE) #Install more methylKit options
-library(methylKit) #Load methylkit
+```
+
+```{r}
+require(methylKit) #Load methylkit
 ```
 
 # Obtain session information
