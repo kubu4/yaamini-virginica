@@ -468,3 +468,7 @@ analyses/2019-03-18-Characterizing-CpG-Methylation/zr2096_1_s1_R1_val_1_bismark_
 analyses/2019-03-18-Characterizing-CpG-Methylation/zr2096_10_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_control.5x.bedgraph
 analyses/2019-03-18-Characterizing-CpG-Methylation/zr2096_10_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov_5x.bedgraph
 analyses/2019-03-18-Characterizing-CpG-Methylation/zr2096_10_s1_R1_val_1_bismark_bt2_pe.deduplicated.bismark.cov
+analyses/2019-03-18-Characterizing-CpG-Methylation/cvir_bsseq_all_pe_R1_bismark_bt2_pe.bismark.cov.gz
+analyses/2019-03-18-Characterizing-CpG-Methylation/2019-04-09-All-5x-CpG-Loci-Methylated.bedgraph
+analyses/2019-03-18-Characterizing-CpG-Methylation/2019-04-09-All-5x-CpGs.bedgraph
+analyses/2019-03-18-Characterizing-CpG-Methylation/cvir_bsseq_all_pe_R1_bismark_bt2_pe.bismark.cov
