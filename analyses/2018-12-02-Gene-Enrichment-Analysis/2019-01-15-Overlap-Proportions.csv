@@ -1,1 +1,1 @@
-genomicFeature,DMLOverlaps,DMROverlaps,geneBackgroundOverlaps,exons,786,64,420979,introns,498,112,202086,mRNA,1263,139,614204,transposableElementsAll,150,39,76830,transposableElementsCg,91,23,58340,totalLines,1398,162,670301,
+genomicFeature,totalCpG,methylatedCpG,DMLexons,636270,1013691,368introns,245500,1448786,191transposableElementsAll,438365,755222,57putativePromoters,1286944,134534,67noOverlaps,4760788,386003,20totalLines,14458703,3181904,598
