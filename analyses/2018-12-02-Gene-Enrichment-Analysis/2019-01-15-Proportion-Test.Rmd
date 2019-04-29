@@ -28,25 +28,55 @@ head(overlapData) #Confirm import
 
 # Conduct chi-squared tests of homogeneity
 
-The null hypothesis is that loci distributions in the genome are the same between different CpG categories.
+The null hypothesis is that loci distributions in the genome are the same between different categories.
 
-## Total CpGs vs. methylated CpGs
+## Total CpGs vs. all CpGs with 5x coverage enriched by MBD treatment
+
+I want to see if MBD enriched CpGs in certain areas of the genome.
 
 ```{r}
-totalVersusMethylated <- overlapData[, 1:2] #Subset data and transform for statistical testing
-totalVersusMethylated <- totalVersusMethylated[-6, ] #Remove totalLines row
-head(totalVersusMethylated) #Confirm changes
+totalVersusEnriched <- overlapData[, 1:2] #Subset data for statistical testing
+totalVersusEnriched <- totalVersusEnriched[-6, ] #Remove totalLines row
+head(totalVersusEnriched) #Confirm changes
 ```
 
 ```{r}
-totalVersusMethylatedTest <- chisq.test(totalVersusMethylated) #Conduct a chi-squared test
-totalVersusMethylatedTest #The distribution of methylated CpGs is significantly different from all CpGs in the C. virginica genome.
+totalVersusEnrichedTest <- chisq.test(totalVersusEnriched) #Conduct a chi-squared test
+totalVersusEnrichedTest #The distribution of enriched CpGs from MBD is not different from the distribution of all CG motifs in the C. virginica genome
+```
+
+## Enriched CpGs vs. methylated CpGs
+
+Are methylated CpGs more populous in certain genomic regions?
+
+```{r}
+enrichedVersusMethylated <- overlapData[, 2:3] #Subset data for statistical testing
+enrichedVersusMethylated <- enrichedVersusMethylated[-6, ] #Remove totalLines row
+head(enrichedVersusMethylated) #Confirm changes
+```
+
+```{r}
+enrichedVersusMethylatedTest <- chisq.test(enrichedVersusMethylated) #Conduct a chi-squared test
+enrichedVersusMethylatedTest #The distribution of methylated CpGs is significantly different from CpGs enriched by MBD
+```
+
+## Enriched CpGs vs. methylated CpGs vs. sparsely methylated CpGs vs. unmethylated CpGs
+
+```{r}
+allMethylationCategories <- overlapData[, 2:5] #Subset data for statistical testing
+allMethylationCategories <- allMethylationCategories[-6, ] #Remove totalLines row
+head(allMethylationCategories) #Confirm changes
+```
+
+```{r}
+allMethylationCategoriesTest <- chisq.test(allMethylationCategories) #Conduct a chi-squared test
+allMethylationCategoriesTest #The distribution of methylated CpGs is significantly different from all CpGs in the C. virginica genome.
 ```
 
 ## Methylated CpGs vs. DML
 
 ```{r}
-methylatedVersusDML <- overlapData[,2:3] #Subset data and transform for statistical testing
+methylatedVersusDML <- overlapData[,c(3,6)] #Subset data for statistical testing
 methylatedVersusDML <- methylatedVersusDML[-6,] #Remove totalLines row
 head(methylatedVersusDML) #Confirm changes
 ```
@@ -55,8 +85,6 @@ head(methylatedVersusDML) #Confirm changes
 methylatedVersusDMLTest <- chisq.test(methylatedVersusDML) #Conduct a chi-squared test
 methylatedVersusDMLTest #The distribution of DML is significantly different from methylated CpGs.
 ```
-
-# Conduct post-hoc test
 
 # Create figures
 
@@ -69,46 +97,62 @@ head(overlapData)
 
 ```{r}
 proportionData <- overlapData #Copy overlap data as a new dataframe
-
-#Divide each column of overlapData by respective totalLines entry. Multiply by 100 and and save the percentage in a new dataframe
-
-for(i in 1:length(overlapData$totalCpG)) {
-  proportionData$totalCpG[i] <- (overlapData$totalCpG[i]/overlapData$totalCpG[6])*100
-}
-
-for(i in 1:length(overlapData$methylatedCpG)) {
-  proportionData$methylatedCpG[i] <- (overlapData$methylatedCpG[i]/overlapData$methylatedCpG[6])*100
-}
-
-for(i in 1:length(overlapData$DML)) {
-  proportionData$DML[i] <- (overlapData$DML[i]/overlapData$DML[6])*100
-}
+nLength <- length(proportionData$totalCpG) #Count number of rows
+for(i in 1:nLength) {
+  proportionData[i,] <- (proportionData[i,]/proportionData[6,])*100
+} #Divide each column of proportionData by respective totalLines entry. Multiply by 100 and and save the percentage
+head(proportionData) #Confirm changes
 ```
 
 ```{r}
 proportionData <- proportionData[-6,] #Remove totalLines row
-head(proportionData) #Confirm changes
+tail(proportionData) #Confirm changes
 ```
 
-## Total CpGs vs. methylated CpGs
+## Enriched CpGs vs. methylated CpGs
 
 ```{r}
-totalVersusMethylatedProportions <- proportionData[,1:2] #Subset data
-head(totalVersusMethylatedProportions) #Confirm subset
+enrichedVersusMethylatedProportions <- proportionData[,2:3] #Subset data
+head(enrichedVersusMethylatedProportions) #Confirm subset
 ```
 
 ```{r}
 #pdf("2019-04-10-Total-Versus-Methylated-CpGs.pdf", height = 8.5, width = 11)
-barplot(t(totalVersusMethylatedProportions), 
+par(mar = c(3,5,1,1)) #Change figure boundaries
+barplot(t(enrichedVersusMethylatedProportions), 
         beside = TRUE, 
         axes = FALSE, 
-        names.arg = c("Exons", "Introns", "TE", "Promoters", "None")) #Create a grouped barplot (beside = TRUE) using a transposed version of the proportion data. Use axes = FALSE to remove the y-axis and names.arg to set labels on the x-axis.
-axis(side = 2, at = seq(0, 45, by = 15), las = 2, col = "grey80")
-mtext(side = 2, "Proportion CpGs", line = 2.5) #Add y-axis label
+        names.arg = c("Exons", "Introns", "TE", "Promoters", "Other")) #Create a grouped barplot (beside = TRUE) using a transposed version of the proportion data. Use axes = FALSE to remove the y-axis and names.arg to set labels on the x-axis.
+axis(side = 2, at = seq(0, 45, by = 5), las = 2, col = "grey80")
+mtext(side = 2, "Proportion CpGs", line = 3) #Add y-axis label
 legend("topright", 
-       legend = c("All", "Methylated"),
+       legend = c("MBD-Enriched", "Methylated"),
        pch = 16,
        col = c("grey20", "grey80"),
+       bty = "n") #Place a legend in the top right of the figure with no box
+#dev.off()
+```
+
+## Enriched CpGs vs. methylated vs. sparsely methylated vs. unmethylated
+
+```{r}
+allMethylationCategoriesProportions <- proportionData[,2:5] #Subset data
+head(allMethylationCategoriesProportions) #Confirm subset
+```
+
+```{r}
+#pdf("2019-04-10-All-Methylation-Categories.pdf", height = 8.5, width = 11)
+par(mar = c(3,5,1,1)) #Change figure boundaries
+barplot(t(allMethylationCategoriesProportions), 
+        beside = TRUE, 
+        axes = FALSE, 
+        names.arg = c("Exons", "Introns", "TE", "Promoters", "Other")) #Create a grouped barplot (beside = TRUE) using a transposed version of the proportion data. Use axes = FALSE to remove the y-axis and names.arg to set labels on the x-axis.
+axis(side = 2, at = seq(0, 45, by = 5), las = 2, col = "grey80")
+mtext(side = 2, "Proportion CpGs", line = 3) #Add y-axis label
+legend("topright", 
+       legend = c("MBD-Enriched", "Methylated", "Sparsely Methylated", "Unmethylated"),
+       pch = 16,
+       col = c("grey20", "grey40", "grey60", "grey80"),
        bty = "n") #Place a legend in the top right of the figure with no box
 #dev.off()
 ```
@@ -116,18 +160,19 @@ legend("topright",
 ## Methylated CpGs vs. DML
 
 ```{r}
-methylatedVersusDMLProportions <- proportionData[,2:3] #Subset data
+methylatedVersusDMLProportions <- proportionData[,c(3,6)] #Subset data
 head(methylatedVersusDMLProportions) #Confirm subset
 ```
 
 ```{r}
 #pdf("2019-04-10-Methylated-CpGs-Versus-DML.pdf", height = 8.5, width = 11)
+par(mar = c(3,5,1,1)) #Change figure boundaries
 barplot(t(methylatedVersusDMLProportions), 
         beside = TRUE, 
         axes = FALSE, 
-        names.arg = c("Exons", "Introns", "TE", "Promoters", "None")) #Create a grouped barplot (beside = TRUE) using a transposed version of the proportion data. Use axes = FALSE to remove the y-axis and names.arg to set labels on the x-axis.
-axis(side = 2, at = seq(0, 60, by = 15), las = 2, col = "grey80")
-mtext(side = 2, "Proportion Loci", line = 2.5)
+        names.arg = c("Exons", "Introns", "TE", "Promoters", "Other")) #Create a grouped barplot (beside = TRUE) using a transposed version of the proportion data. Use axes = FALSE to remove the y-axis and names.arg to set labels on the x-axis.
+axis(side = 2, at = seq(0, 60, by = 5), las = 2, col = "grey80")
+mtext(side = 2, "Proportion CpGs", line = 3) #Add y-axis label
 legend("topright", 
        legend = c("Methylated CpGs", "DML"),
        pch = 16,
