@@ -41,8 +41,14 @@ head(totalVersusEnriched) #Confirm changes
 ```
 
 ```{r}
-totalVersusEnrichedTest <- chisq.test(totalVersusEnriched) #Conduct a chi-squared test
-totalVersusEnrichedTest #The distribution of enriched CpGs from MBD is not different from the distribution of all CG motifs in the C. virginica genome
+totalVersusEnrichedTest <- chisq.test(t(totalVersusEnriched)) #Conduct a chi-squared test
+totalVersusEnrichedTest #The distribution of enriched CpGs from MBD is different from the distribution of all CG motifs in the C. virginica genome
+```
+
+```{r}
+totalVersusEnrichedTest$observed #Look at observed valules
+totalVersusEnrichedTest$expected #Look at expected values
+totalVersusEnrichedTest$residuals #Look at residuals
 ```
 
 ## Enriched CpGs vs. methylated CpGs
@@ -56,7 +62,7 @@ head(enrichedVersusMethylated) #Confirm changes
 ```
 
 ```{r}
-enrichedVersusMethylatedTest <- chisq.test(enrichedVersusMethylated) #Conduct a chi-squared test
+enrichedVersusMethylatedTest <- chisq.test(t(enrichedVersusMethylated)) #Conduct a chi-squared test
 enrichedVersusMethylatedTest #The distribution of methylated CpGs is significantly different from CpGs enriched by MBD
 ```
 
@@ -69,8 +75,8 @@ head(allMethylationCategories) #Confirm changes
 ```
 
 ```{r}
-allMethylationCategoriesTest <- chisq.test(allMethylationCategories) #Conduct a chi-squared test
-allMethylationCategoriesTest #The distribution of methylated CpGs is significantly different from all CpGs in the C. virginica genome.
+allMethylationCategoriesTest <- chisq.test(t(allMethylationCategories)) #Conduct a chi-squared test
+allMethylationCategoriesTest #The distributions differ from eachother.
 ```
 
 ## Methylated CpGs vs. DML
@@ -82,7 +88,7 @@ head(methylatedVersusDML) #Confirm changes
 ```
 
 ```{r}
-methylatedVersusDMLTest <- chisq.test(methylatedVersusDML) #Conduct a chi-squared test
+methylatedVersusDMLTest <- chisq.test(t(methylatedVersusDML)) #Conduct a chi-squared test
 methylatedVersusDMLTest #The distribution of DML is significantly different from methylated CpGs.
 ```
 
@@ -107,6 +113,30 @@ head(proportionData) #Confirm changes
 ```{r}
 proportionData <- proportionData[-6,] #Remove totalLines row
 tail(proportionData) #Confirm changes
+```
+
+## Total CpGs vs. enriched CpGs
+
+```{r}
+totalVersusEnrichedProportions <- proportionData[,1:2] #Subset data
+head(totalVersusEnrichedProportions) #Confirm subset
+```
+
+```{r}
+#pdf("2019-04-10-Total-Versus-Enriched-CpGs.pdf", height = 8.5, width = 11)
+par(mar = c(3,5,1,1)) #Change figure boundaries
+barplot(t(totalVersusEnrichedProportions), 
+        beside = TRUE, 
+        axes = FALSE, 
+        names.arg = c("Exons", "Introns", "TE", "Promoters", "Other")) #Create a grouped barplot (beside = TRUE) using a transposed version of the proportion data. Use axes = FALSE to remove the y-axis and names.arg to set labels on the x-axis.
+axis(side = 2, at = seq(0, 40, by = 5), las = 2, col = "grey80")
+mtext(side = 2, "Proportion CpGs", line = 3) #Add y-axis label
+legend("topright", 
+       legend = c("All", "MBD-Enriched"),
+       pch = 16,
+       col = c("grey20", "grey80"),
+       bty = "n") #Place a legend in the top right of the figure with no box
+#dev.off()
 ```
 
 ## Enriched CpGs vs. methylated CpGs
