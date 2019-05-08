@@ -487,3 +487,5 @@ analyses/2019-03-18-Characterizing-CpG-Methylation/2019-04-10-All5xCpGs-TE-All.t
 analyses/2019-03-18-Characterizing-CpG-Methylation/2019-04-10-SparseMethLoci-mRNA.txt
 analyses/2019-03-18-Characterizing-CpG-Methylation/2019-04-10-UnMethLoci-mRNA.txt
 data/C_virginica-3.0_genomic.fa
+analyses/2019-03-18-Characterizing-CpG-Methylation/C_virginica-3.0_Gnomon_gene.gff3
+analyses/2019-03-18-Characterizing-CpG-Methylation/ref_C_virginica-3.0_top_level.gff3
