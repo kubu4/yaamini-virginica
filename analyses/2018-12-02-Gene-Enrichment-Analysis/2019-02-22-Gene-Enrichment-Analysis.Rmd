@@ -193,15 +193,15 @@ write.csv(DMRmRNAUniprot, "2019-02-22-mRNA-DMR-UniprotOnly.csv") #Save Uniprot c
 #### Check file format
 
 ```{bash}
-head ../2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA-Unfolded.txt #I unfolded the columns in Excel so the Genbank ID would be in its own column.
+head ../2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA.txt #I unfolded the columns in Excel so the Genbank ID would be in its own column.
 ```
 
 #### Import files
 
 ```{r}
-DMLmRNA <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA-unfolded.txt", header = FALSE) #Import DML-mRNA overlaps
+DMLmRNA <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA.txt", header = FALSE) #Import DML-mRNA overlaps
 head(DMLmRNA) #Confirm import
-colnames(DMLmRNA) <- c("DMLchromosome", "DMLstart", "DMLend", "DMLstrand", "V5", "mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V11", "mRNAstrand", "V13", "ID", "Parent", "Dbxref=GeneID", "V17", "V18", "Genbank", "Name", "V21", "V22", "V23", "V24", "V25", "V26", "V27", "V28", "V29") #Rename columns
+colnames(DMLmRNA) <- c("DMLchromosome", "DMLstart", "DMLend", "methdiff", "mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V10", "mRNAstrand", "V12", "ID", "Parent", "Dbxref=GeneID", "V16", "V17", "Genbank", "Name", "V21", "V22", "V23", "V24", "V25", "V26", "V27", "V28", "V29") #Rename columns
 head(DMLmRNA) #Confirm column naming
 ```
 
