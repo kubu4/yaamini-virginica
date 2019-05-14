@@ -545,11 +545,26 @@ library(tidyverse) #Load package
 ## Background
 
 ```{r}
-write_delim(methylationInformationCov3, "2018-11-29-Methylation-Information-Cov3.bed", delim = "\t", col_names = FALSE) #Write out all methylation information as a background to be used for gene enrichment analyses.
+head(methylationInformationFilteredCov5Destrand) #I only want the columns with chromosome, start position, stop position, and strand.
+```
+
+```{r}
+methylationInformationFilteredCov5DestrandReduced <- data.frame("chr" = methylationInformationFilteredCov5Destrand$chr,
+                                                                "start" = methylationInformationFilteredCov5Destrand$start,
+                                                                "stop" = methylationInformationFilteredCov5Destrand$end,
+                                                                "strand" = methylationInformationFilteredCov5Destrand$strand) #Subset file 
+head(methylationInformationFilteredCov5DestrandReduced) #Confirm subsetting
+```
+
+
+
+
+```{r}
+write_delim(methylationInformationFilteredCov5DestrandReduced, "2019-05-14-Methylation-Information-Filtered-Destrand-Cov5.bed", delim = "\t", col_names = FALSE) #Write out all methylation information as a background to be used for gene enrichment analyses.
 ```
 
 ```{bash}
-head 2018-11-29-Methylation-Information-Cov3.bed #Confirm formatting was retained in export
+head 2019-05-14-Methylation-Information-Filtered-Destrand-Cov5.bed #Confirm formatting was retained in export
 ```
 
 ## DMLs
