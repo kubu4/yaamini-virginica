@@ -201,6 +201,7 @@ head ../2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA.txt #I unfolded the 
 ```{r}
 DMLmRNA <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2018-11-07-DML-mRNA.txt", header = FALSE) #Import DML-mRNA overlaps
 head(DMLmRNA) #Confirm import
+DMLmRNA <- DMLmRNA[,1:29] #Remove blank columns
 colnames(DMLmRNA) <- c("DMLchromosome", "DMLstart", "DMLend", "methdiff", "mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V10", "mRNAstrand", "V12", "ID", "Parent", "Dbxref=GeneID", "V16", "V17", "Genbank", "Name", "V21", "V22", "V23", "V24", "V25", "V26", "V27", "V28", "V29") #Rename columns
 head(DMLmRNA) #Confirm column naming
 ```
