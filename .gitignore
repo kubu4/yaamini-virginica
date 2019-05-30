@@ -490,3 +490,5 @@ data/C_virginica-3.0_genomic.fa
 analyses/2019-03-18-Characterizing-CpG-Methylation/C_virginica-3.0_Gnomon_gene.gff3
 analyses/2019-03-18-Characterizing-CpG-Methylation/ref_C_virginica-3.0_top_level.gff3
 *.gff3
+analyses/2018-11-01-DML-and-DMR-Analysis/2019-05-29-Flanking-Analysis/2019-05-29-mRNA-Closest-NoOverlap-CGmotifs.txt
+analyses/2018-11-01-DML-and-DMR-Analysis/2019-05-29-No-Overlap-CGmotifs.txt
