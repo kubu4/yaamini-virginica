@@ -479,6 +479,28 @@ head(diffMethStats50Tiles100) #Confirm creation
 write.csv(diffMethStats50Tiles100, "2018-10-25-Tiling-Analysis/2019-06-05-Differentially-Methylated-Regions-50-FilteredCov5Destrand-Tiles100.csv") #Save table as .csv
 ```
 
+##### Hypermethylated DMR
+
+```{r}
+diffMethStats50FilteredCov5DestrandTiles100Hyper <- getMethylDiff(differentialMethylationStatsTiles100, difference = 50, qvalue = 0.01, type = "hyper") #Identify hypermethylated regions that are at least 50% different
+head(diffMethStats50FilteredCov5DestrandTiles100Hyper) #Confirm creation
+```
+
+```{r}
+write.csv(diffMethStats50FilteredCov5DestrandTiles100Hyper, "2018-10-25-Loci-Analysis/2019-06-05-Differentially-Methylated-Regions-50-FilteredCov5Destrand-50-Tiles100-Hypermethylated.csv") #Save table as .csv
+```
+
+##### Hypomethylated DMR
+
+```{r}
+diffMethStats50FilteredCov5DestrandTiles100Hypo <- getMethylDiff(differentialMethylationStatsTiles100, difference = 50, qvalue = 0.01, type = "hypo") #Identify hypomethylated regions that are at least 50% different
+head(diffMethStats50FilteredCov5DestrandTiles100Hypo) #Confirm creation
+```
+
+```{r}
+write.csv(diffMethStats50FilteredCov5DestrandTiles100Hypo, "2018-10-25-Loci-Analysis/2019-06-05-Differentially-Methylated-Regions-50-FilteredCov5Destrand-50-Tiles100-Hypomethylated.csv") #Save table as .csv
+```
+
 ### 1000 bp windows
 
 ```{r}
@@ -755,6 +777,34 @@ head(DMR06052019)
 
 ```{r}
 write_delim(DMR06052019, "2019-06-05-DMR-Locations.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
+```
+
+##### Hypermethylated DML
+
+```{r}
+DMR5xFilteredDestrandHyper06052019 <- mutate(diffMethStats50FilteredCov5DestrandTiles100Hyper, start = start -1, end = end + 1) %>% select(chr, start, end, meth.diff) %>% mutate_if(is.numeric, as.integer) #Save as a BED file, and avoid writing information in scientific notation
+```
+
+```{r}
+head(DMR5xFilteredDestrandHyper06052019) #Confirm changes
+```
+
+```{r}
+write_delim(DMR5xFilteredDestrandHyper06052019, "2019-06-05-DMR-Destrand-5x-Locations-Tiles100-Hypermethylated.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
+```
+
+##### Hypomethyalted DML
+
+```{r}
+DMR5xFilteredDestrandHypo06052019 <- mutate(diffMethStats50FilteredCov5DestrandTiles100Hypo, start = start -1, end = end + 1) %>% select(chr, start, end, meth.diff) %>% mutate_if(is.numeric, as.integer) #Save as a BED file, and avoid writing information in scientific notation
+```
+
+```{r}
+head(DMR5xFilteredDestrandHypo06052019) #Confirm changes
+```
+
+```{r}
+write_delim(DMR5xFilteredDestrandHypo06052019, "2019-06-05-DMR-Destrand-5x-Locations-Tiles100-Hypomethylated.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
 ```
 
 ### 1000 bp windows
