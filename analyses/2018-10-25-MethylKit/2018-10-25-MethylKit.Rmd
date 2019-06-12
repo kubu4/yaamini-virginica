@@ -614,7 +614,7 @@ install.packages("tidyverse") #Install tidyverse
 library(tidyverse) #Load package
 ```
 
-## Background
+## DML Background
 
 ```{r}
 head(methylationInformationFilteredCov5Destrand) #I only want the columns with chromosome, start position, stop position, and strand.
@@ -760,6 +760,28 @@ head(DML5xFilteredDestrandHypo04302019) #Confirm changes
 
 ```{r}
 write_delim(DML5xFilteredDestrandHypo04302019, "2019-04-05-DML-Destrand-5x-Locations-Hypomethylated.bed",  delim = '\t', col_names = FALSE) #Save data as a BED file
+```
+
+## DMR Background
+
+```{r}
+head(methylationInformationTiles100) #I only want the columns with chromosome, start position, stop position, and strand.
+```
+
+```{r}
+methylationInformationTiles100Reduced <- data.frame("chr" = methylationInformationTiles100$chr,
+                                                    "start" = methylationInformationTiles100$start,
+                                                    "stop" = methylationInformationTiles100$end,
+                                                    "strand" = methylationInformationTiles100$strand) #Subset file 
+head(methylationInformationTiles100Reduced) #Confirm subsetting
+```
+
+```{r}
+write_delim(methylationInformationTiles100Reduced, "2019-06-05-Methylation-Information-Filtered-Destrand-Cov5-Tiles100.bed", delim = "\t", col_names = FALSE) #Write out all methylation information as a background to be used for gene enrichment analyses.
+```
+
+```{bash}
+head 2019-06-05-Methylation-Information-Filtered-Destrand-Cov5-Tiles100.bed #Confirm formatting was retained in export
 ```
 
 ## DMRs

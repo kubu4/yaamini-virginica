@@ -17,7 +17,9 @@ knitr::opts_chunk$set(echo = TRUE)
 sessionInfo()
 ```
 
-# Import data
+# DML
+
+## Import data
 
 ```{r}
 overlapData <- read.csv("2019-01-15-Overlap-Proportions.csv", header = TRUE)
@@ -26,11 +28,11 @@ overlapData <- overlapData[,-1] #Remove genomic feature indication column
 head(overlapData) #Confirm import
 ```
 
-# Conduct chi-squared tests of homogeneity
+## Conduct chi-squared tests of homogeneity
 
 The null hypothesis is that loci distributions in the genome are the same between different categories.
 
-## Total CpGs vs. all CpGs with 5x coverage enriched by MBD treatment
+### Total CpGs vs. all CpGs with 5x coverage enriched by MBD treatment
 
 I want to see if MBD enriched CpGs in certain areas of the genome.
 
@@ -51,7 +53,7 @@ totalVersusEnrichedTest$expected #Look at expected values
 totalVersusEnrichedTest$residuals #Look at residuals
 ```
 
-## Enriched CpGs vs. methylated CpGs
+### Enriched CpGs vs. methylated CpGs
 
 Are methylated CpGs more populous in certain genomic regions?
 
@@ -66,7 +68,7 @@ enrichedVersusMethylatedTest <- chisq.test(t(enrichedVersusMethylated)) #Conduct
 enrichedVersusMethylatedTest #The distribution of methylated CpGs is significantly different from CpGs enriched by MBD
 ```
 
-## Enriched CpGs vs. methylated CpGs vs. sparsely methylated CpGs vs. unmethylated CpGs
+### Enriched CpGs vs. methylated CpGs vs. sparsely methylated CpGs vs. unmethylated CpGs
 
 ```{r}
 allMethylationCategories <- overlapData[, 2:5] #Subset data for statistical testing
@@ -79,7 +81,7 @@ allMethylationCategoriesTest <- chisq.test(t(allMethylationCategories)) #Conduct
 allMethylationCategoriesTest #The distributions differ from eachother.
 ```
 
-## Enriched CpGs vs. DML
+### Enriched CpGs vs. DML
 
 The MBD-Enriched loci are the background for DML.
 
@@ -94,7 +96,7 @@ enrichedVersusDMLTest <- chisq.test(t(enrichedVersusDML)) #Conduct a chi-squared
 enrichedVersusDMLTest #The distribution of DML is significantly different from methylated CpGs.
 ```
 
-## Methylated CpGs vs. DML
+### Methylated CpGs vs. DML
 
 Even though the methylated CpGs are not the background of the DML, it's still an interesting comparison.
 
@@ -109,9 +111,9 @@ methylatedVersusDMLTest <- chisq.test(t(methylatedVersusDML)) #Conduct a chi-squ
 methylatedVersusDMLTest #The distribution of DML is significantly different from methylated CpGs.
 ```
 
-# Create figures
+## Create figures
 
-## Reformat data
+### Reformat data
 
 ```{r}
 proportionData <- overlapData #Copy overlap data as a new dataframe
@@ -127,7 +129,7 @@ proportionData <- proportionData[-6,] #Remove totalLines row
 tail(proportionData) #Confirm changes
 ```
 
-## Total CpGs vs. enriched CpGs
+### Total CpGs vs. enriched CpGs
 
 ```{r}
 totalVersusEnrichedProportions <- proportionData[,1:2] #Subset data
@@ -152,7 +154,7 @@ legend("topright",
 #dev.off()
 ```
 
-## Enriched CpGs vs. methylated CpGs
+### Enriched CpGs vs. methylated CpGs
 
 ```{r}
 enrichedVersusMethylatedProportions <- proportionData[,2:3] #Subset data
@@ -177,7 +179,7 @@ legend("topright",
 #dev.off()
 ```
 
-## Enriched CpGs vs. methylated vs. sparsely methylated vs. unmethylated
+### Enriched CpGs vs. methylated vs. sparsely methylated vs. unmethylated
 
 ```{r}
 allMethylationCategoriesProportions <- proportionData[,2:5] #Subset data
@@ -202,7 +204,7 @@ legend("topright",
 #dev.off()
 ```
 
-## Enriched CpGs vs. DML
+### Enriched CpGs vs. DML
 
 ```{r}
 enrichedVersusDMLProportions <- proportionData[,c(2,6)] #Subset data
@@ -227,7 +229,7 @@ legend("topright",
 #dev.off()
 ```
 
-## Methylated CpGs vs. DML
+### Methylated CpGs vs. DML
 
 ```{r}
 methylatedVersusDMLProportions <- proportionData[,c(3,6)] #Subset data
@@ -252,7 +254,15 @@ legend("topright",
 #dev.off()
 ```
 
-## Enriched CpGs vs. DMR
+# DMR
+
+## Conduct chi-squared test
+
+## Create figures
+
+### 100 bp tile background vs. DMR
+
+The 100 bp tiles are every possible DMR, so this is the appropriate background.
 
 ```{r}
 enrichedVersusDMRProportions <- proportionData[,c(2,7)] #Subset data
