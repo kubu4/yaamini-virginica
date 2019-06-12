@@ -17,9 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 sessionInfo()
 ```
 
-# DML
-
-## Import data
+# Import data
 
 ```{r}
 overlapData <- read.csv("2019-01-15-Overlap-Proportions.csv", header = TRUE)
@@ -27,6 +25,24 @@ rownames(overlapData) <- overlapData$genomicFeature #Set genomic feature indicat
 overlapData <- overlapData[,-1] #Remove genomic feature indication column
 head(overlapData) #Confirm import
 ```
+
+## Reformat data
+
+```{r}
+proportionData <- overlapData #Copy overlap data as a new dataframe
+nLength <- length(proportionData$totalCpG) #Count number of rows
+for(i in 1:nLength) {
+  proportionData[i,] <- (proportionData[i,]/proportionData[6,])*100
+} #Divide each column of proportionData by respective totalLines entry. Multiply by 100 and and save the percentage
+head(proportionData) #Confirm changes
+```
+
+```{r}
+proportionData <- proportionData[-6,] #Remove totalLines row
+tail(proportionData) #Confirm changes
+```
+
+# DML
 
 ## Conduct chi-squared tests of homogeneity
 
@@ -112,22 +128,6 @@ methylatedVersusDMLTest #The distribution of DML is significantly different from
 ```
 
 ## Create figures
-
-### Reformat data
-
-```{r}
-proportionData <- overlapData #Copy overlap data as a new dataframe
-nLength <- length(proportionData$totalCpG) #Count number of rows
-for(i in 1:nLength) {
-  proportionData[i,] <- (proportionData[i,]/proportionData[6,])*100
-} #Divide each column of proportionData by respective totalLines entry. Multiply by 100 and and save the percentage
-head(proportionData) #Confirm changes
-```
-
-```{r}
-proportionData <- proportionData[-6,] #Remove totalLines row
-tail(proportionData) #Confirm changes
-```
 
 ### Total CpGs vs. enriched CpGs
 
@@ -258,56 +258,45 @@ legend("topright",
 
 ## Conduct chi-squared test
 
-## Create figures
-
 ### 100 bp tile background vs. DMR
 
 The 100 bp tiles are every possible DMR, so this is the appropriate background.
 
 ```{r}
-enrichedVersusDMRProportions <- proportionData[,c(2,7)] #Subset data
-head(enrichedVersusDMRProportions) #Confirm subset
+backgroundVersusDMR <- overlapData[,c(7,8)] #Subset data for statistical testing
+backgroundVersusDMR <- backgroundVersusDMR[-6,] #Remove totalLines row
+head(backgroundVersusDMR) #Confirm changes
 ```
 
 ```{r}
-#pdf("2019-06-05-Enriched-Versus-DMR.pdf", height = 8.5, width = 11)
+backgroundVersusDMRTest <- chisq.test(t(backgroundVersusDMR)) #Conduct a chi-squared test
+backgroundVersusDMRTest #The distribution of DML is significantly different from methylated CpGs.
+```
+
+## Create figures
+
+### 100 bp tile background vs. DMR
+
+```{r}
+backgroundVersusDMRProportions <- proportionData[,c(8,7)] #Subset data. Column 8 is the DMRBackground, and column 7 are the DMR.
+head(backgroundVersusDMRProportions) #Confirm subset
+```
+
+```{r}
+#pdf("2019-06-05-Background-Versus-DMR.pdf", height = 8.5, width = 11)
 par(mar = c(3,5,1,1)) #Change figure boundaries
-barplot(t(enrichedVersusDMRProportions), 
+barplot(t(backgroundVersusDMRProportions), 
         beside = TRUE, 
         axes = FALSE, 
         names.arg = c("Exons", "Introns", "TE", "Promoters", "Other"),
         ylim = c(0,75)) #Create a grouped barplot (beside = TRUE) using a transposed version of the proportion data. Use axes = FALSE to remove the y-axis and names.arg to set labels on the x-axis.
 axis(side = 2, at = seq(0, 75, by = 5), las = 2, col = "grey80")
-mtext(side = 2, "Proportion CpGs", line = 3) #Add y-axis label
+mtext(side = 2, "Proportion 100 bp Regions", line = 3) #Add y-axis label
 legend("topright", 
-       legend = c("MBD-Enriched", "DMR"),
+       legend = c("All 100 bp Regions", "DMR"),
        pch = 16,
        col = c("grey20", "grey80"),
        bty = "n") #Place a legend in the top right of the figure with no box
 #dev.off()
 ```
 
-## Methylated CpGs vs. DMR
-
-```{r}
-methylatedVersusDMRProportions <- proportionData[,c(3,7)] #Subset data
-head(methylatedVersusDMRProportions) #Confirm subset
-```
-
-```{r}
-#pdf("2019-06-05-Methylated-CpGs-Versus-DMR.pdf", height = 8.5, width = 11)
-par(mar = c(3,5,1,1)) #Change figure boundaries
-barplot(t(methylatedVersusDMRProportions), 
-        beside = TRUE, 
-        axes = FALSE, 
-        names.arg = c("Exons", "Introns", "TE", "Promoters", "Other"),
-        ylim = c(0,75)) #Create a grouped barplot (beside = TRUE) using a transposed version of the proportion data. Use axes = FALSE to remove the y-axis and names.arg to set labels on the x-axis.
-axis(side = 2, at = seq(0, 75, by = 5), las = 2, col = "grey80")
-mtext(side = 2, "Proportion CpGs", line = 3) #Add y-axis label
-legend("topright", 
-       legend = c("Methylated CpGs", "DML"),
-       pch = 16,
-       col = c("grey20", "grey80"),
-       bty = "n") #Place a legend in the top right of the figure with no box
-#dev.off()
-```
