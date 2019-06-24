@@ -9,17 +9,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 In this script, I'll isolate Uniprot codes needed to perform a gene enrichment. My ultimate goal is to identify enriched genes for mRNA regions that overlap with DMRs and DMLs. I will isolate Uniprot codes for the DMR-mRNA overlap, and for the gene background. The gene background will serve as my background for enrichment analyses, instead of the full transcriptome.
 
-## Session information
+# Session information
 
 ```{r}
 sessionInfo()
 ```
 
-## Obtain GOterms
+# Obtain GOterms
 
 Before I do any sort of gene enrichment analysis, I need to get Uniprot codes for all genes. To do this, I will use `blastx`.
 
-### Make a Uniprot Database
+## Make a Uniprot Database
 
 The Uniprot database was downloaded from this link as a .fasta file: http://www.uniprot.org/uniprot/?query=&fil=reviewed%3Ayes&columns=id%2Centry%20name%2Creviewed%2Cprotein%20names%2Cgenes%2Corganism%2Clength%2Cgo(biological%20process)%2Cgo-id%2Ccomment(PATHWAY)%2Cdatabase(UniPathway)%2Cdatabase(CDD)%2Cdatabase(Pfam.
 
@@ -82,7 +82,7 @@ colnames(blastResults) <- c("Genbank", "V2", "Uniprot", "V4", "pident", "length"
 head(blastResults) #Confirm column headers
 ```
 
-## Master gene list
+# Master gene list
 
 I want to create a master list with the following columns:
 
@@ -104,9 +104,9 @@ I want to create a master list with the following columns:
 - e-value
 - product
 
-I can start with my DML or DMR csv file, then merge that with the information from `closestBed`. Then I'll merge that document with my gene track to get gene IDs. I'll merge the resultant file with the mRNA track by gene ID to get Genbank IDs. Finally, I'll merge that document with the Uniprot codes by matching Genbank IDs.
+I can start with my DML csv file, then merge that with the information from `closestBed`. Then I'll merge that document with my gene track to get gene IDs. I'll merge the resultant file with the mRNA track by gene ID to get Genbank IDs. Finally, I'll merge that document with the Uniprot codes by matching Genbank IDs.
 
-### Merge DML list with `closestBed` list
+## Merge DML list with `closestBed` list
 
 ```{r}
 allDML <- read.csv("../2018-10-25-MethylKit/2018-10-25-Loci-Analysis/2019-04-05-Differentially-Methylated-Loci-Filtered-Destrand-50-Cov5.csv", header = TRUE) #Import DML list
@@ -137,9 +137,9 @@ allDMLclosestBed <- allDMLclosestBed[, c(2, 1, 3, 4, 11, 12, 13, 14, 8, 5, 6, 7)
 head(allDMLclosestBed) #Confirm reorganization
 ```
 
-### Merge with gene track
+## Merge with gene track
 
-#### Import full gene list
+### Import full gene list
 
 ```{r}
 geneList <- read.delim("../2019-05-13-Generating-Genome-Feature-Tracks/C_virginica-3.0_Gnomon_gene_sorted_yrv.gff3", header = FALSE) #Import gene gff3
@@ -152,7 +152,7 @@ geneList <- geneList[,-c(6:8)] #Remove columns 6-8
 head(geneList) #Confirm changes
 ```
 
-#### Isolate gene description from full list
+### Isolate gene description from full list
 
 ```{bash}
 cut -f9 ../2019-05-13-Generating-Genome-Feature-Tracks/C_virginica-3.0_Gnomon_gene_sorted_yrv.gff3 \
@@ -170,7 +170,7 @@ Before I import this new data set into R, I need to count the number of columns.
 awk '{print NF}' 2019-06-20-Gene-Descriptions.txt > 2019-06-20-Gene-Description-Column-Numbers.txt
 ```
 
-#### Import isolated gene descriptions
+### Import isolated gene descriptions
 
 ```{r}
 geneDescriptionColumns <- read.delim("2019-06-20-Gene-Description-Column-Numbers.txt", header = FALSE) #Import data with number of columns for each row
@@ -196,7 +196,7 @@ colnames(geneList) <- c("gene-chr", "Gnomon", "gene", "gene-start", "gene-end", 
 head(geneList) #Confirm merge
 ```
 
-#### Merge gene track with `allDMLclosestBed`
+### Merge gene track with `allDMLclosestBed`
 
 ```{r}
 allDMLclosestBedgeneList <- merge(x = allDMLclosestBed, y = geneList, by = c("gene-start", "gene-end")) #Merge dataframes by gene start and end positions
@@ -208,9 +208,9 @@ allDMLclosestBedgeneList <- allDMLclosestBedgeneList[,c(3:12, 14:15, 1:2, 16)] #
 head(allDMLclosestBedgeneList) #Confirm reorganization
 ```
 
-### Merge with mRNA track
+## Merge with mRNA track
 
-#### Import full mRNA track
+### Import full mRNA track
 
 ```{r}
 mRNAList <- read.delim("../2019-05-13-Generating-Genome-Feature-Tracks/C_virginica-3.0_Gnomon_mRNA_yrv.gff3", header = FALSE) #Import mRNA track
@@ -219,7 +219,7 @@ colnames(mRNAList) <- c("mRNA-chr", "Gnomon", "mRNA", "mRNA-start", "mRNA-end", 
 head(mRNAList) #Confirm import
 ```
 
-#### Isolate mRNA description from full list
+### Isolate mRNA description from full list
 
 ```{bash}
 cut -f9 ../2019-05-13-Generating-Genome-Feature-Tracks/C_virginica-3.0_Gnomon_mRNA_yrv.gff3 \
@@ -238,7 +238,7 @@ Before I import this new data set into R, I need to count the number of columns.
 awk '{print NF}' 2019-06-20-mRNA-Descriptions.txt > 2019-06-20-mRNA-Description-Column-Numbers.txt
 ```
 
-#### Import isolated mRNA descriptions
+### Import isolated mRNA descriptions
 
 ```{r}
 mRNADescriptionColumns <- read.delim("2019-06-20-mRNA-Description-Column-Numbers.txt", header = FALSE) #Import data with number of columns for each row
@@ -264,7 +264,7 @@ head(genbankIDmRNAList) #Confirm changes
 
 Buried in the `mRNAList` is mRNA product information. I'm going to extract that information and add it to the master list.
 
-#### Isolate product descriptions
+### Isolate product descriptions
 
 ```{bash}
 cut -f9 ../2019-05-13-Generating-Genome-Feature-Tracks/C_virginica-3.0_Gnomon_mRNA_yrv.gff3 \
@@ -282,7 +282,7 @@ head 2019-06-20-mRNA-Products.txt #Confirm product description isolation
 awk '{print NF}' 2019-06-20-mRNA-Products.txt > 2019-06-20-mRNA-Products-Column-Numbers.txt
 ```
 
-#### Import isolated mRNA products
+### Import isolated mRNA products
 
 ```{r}
 mRNAProductColumns <- read.delim("2019-06-20-mRNA-Products-Column-Numbers.txt", header = FALSE) #Import data with number of columns for each row
@@ -298,7 +298,7 @@ head(mRNAProducts) #Confirm import
 mRNAProducts <- mRNAProducts$V1 #Extract the first column with product information
 ```
 
-#### Merge mRNA track with `allDMLclosestBedgeneList`
+### Merge mRNA track with `allDMLclosestBedgeneList`
 
 ```{r}
 mRNAList <- data.frame(mRNAList, geneIDmRNAList, genbankIDmRNAList, mRNAProducts) #Replace mRNAList dataframe with mRNAList, geneIDmRNAList, genbankIDmRNAList, and mRNAProducts
@@ -317,7 +317,7 @@ allDMLclosestBedgeneListmRNAList <- allDMLclosestBedgeneListmRNAList[,c(2:15, 1,
 head(allDMLclosestBedgeneListmRNAList) #Confirm reorganization
 ```
 
-### Merge with Uniprot codes
+## Merge with Uniprot codes
 
 ```{r}
 allDMLclosestBedgeneListmRNAListUniprot <- merge(x = allDMLclosestBedgeneListmRNAList, y = blastResults, by = "Genbank") #Merge DML list with Uniprot codes by Genbank IDs
@@ -334,9 +334,85 @@ head(masterDMLAnnotation) #Confirm reorganization
 write.csv(masterDMLAnnotation, "2019-06-20-Master-DML-Annotation.csv") #Write out masterDMLAnnotation as a .csv file
 ```
 
-## Gene background
+Now that I have a master gene list, I can create relevant subset documents.
 
-### Check file format
+# DML-Gene overlaps
+
+```{r}
+DMLGeneAnnotation <- subset(x = masterDMLAnnotation, subset = masterDMLAnnotation$`dist-to-closest-gene` == 0) #Subset dataset where the distance to the closest gene = 0 (i.e. DML and gene are overlapping)
+head(DMLGeneAnnotation) #Confirm subset
+```
+
+```{r}
+write.csv(DMLGeneAnnotation, "2019-06-20-DML-Gene-Annotation.csv") #Save file
+```
+
+## Hypermethylated
+
+```{r}
+DMLGeneAnnotationHypermethylated <- subset(x = DMLGeneAnnotation, subset = DMLGeneAnnotation$meth.diff > 0) #Subset hypermethylated DML by selecting meth.diff > 0
+head(DMLGeneAnnotationHypermethylated) #Confirm subset
+```
+
+```{r}
+write.csv(DMLGeneAnnotationHypermethylated, "2019-06-20-DML-Gene-Annotation-Hypermethylated.csv") #Save file
+```
+
+## Hypomethylated
+
+```{r}
+DMLGeneAnnotationHypomethylated <- subset(x = DMLGeneAnnotation, subset = DMLGeneAnnotation$meth.diff < 0) #Subset hypomethylated DML by selecting meth.diff < 0
+head(DMLGeneAnnotationHypomethylated) #Confirm subset
+```
+
+```{r}
+write.csv(DMLGeneAnnotationHypomethylated, "2019-06-20-DML-Gene-Annotation-Hypomethylated.csv") #Save file
+```
+
+# DML-Exon overlaps
+
+## Hypermethylated
+
+## Hypomethylated
+
+# DML-Intron overlaps
+
+## Hypermethylated
+
+## Hypomethylated
+
+# Master promoter overlap list
+
+# Master transposable element list
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Gene background
+
+## Check file format
 
 ```{bash}
 head 2018-12-18-Gene-Background-mRNA.txt #Check file format
@@ -348,7 +424,7 @@ The IDs in the blast result match up with the Genbank IDs in the overlap file. I
 head 2018-12-18-Gene-Background-mRNA-Unfolded.txt #Confirm unfolding
 ```
 
-### Import files
+## Import files
 
 ```{r}
 backgroundmRNA <- read.delim("2018-12-18-Gene-Background-mRNA-Unfolded.txt", header = FALSE) #Import background-mRNA overlaps
@@ -357,7 +433,7 @@ colnames(backgroundmRNA) <- c("backgroundchromosome", "backgroundstart", "backgr
 head(backgroundmRNA) #Confirm column naming
 ```
 
-### Merge with Uniprot codes
+## Merge with Uniprot codes
 
 ```{r}
 backgroundmRNAblast <- merge(x = blastResults, y = backgroundmRNA, by = "Genbank") #Merge the gene background and Uniprot codes by the Genbank ID column
@@ -368,7 +444,7 @@ head(backgroundmRNAblast) #Confirm merge
 write.csv(backgroundmRNAblast, "2019-02-22-mRNA-Gene-Background-Uniprot.csv") #Write out file
 ```
 
-### Separate unique entries
+## Separate unique entries
 
 I want a list of unique genes and matching Uniprot codes represented in the gene background-mRNA overlaps.
 
@@ -382,7 +458,7 @@ nrow(uniqueBackgroundmRNAblast) #Number of unique genes = 14943
 write.csv(uniqueBackgroundmRNAblast, "2019-02-28-mRNA-Gene-Background-Uniprot-Unique.csv") #Save file
 ```
 
-### Isolate Uniprot codes
+## Isolate Uniprot codes
 
 To obtain gene enrichment information from DAVID, I need to isolate the Uniprot codes.
 
