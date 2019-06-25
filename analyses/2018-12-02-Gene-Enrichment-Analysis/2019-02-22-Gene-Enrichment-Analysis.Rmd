@@ -538,18 +538,44 @@ colnames(TEOverlaps) <- c("chr", "start", "end", "TE-chr", "TE-start", "TE-end",
 head(TEOverlaps) #Confirm import
 ```
 
-## Import TE-gene overlap file
+## Merge with TE-gene overlap file
 
 ```{r}
 TEGeneOverlaps <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2018-11-07-Genes-TE-all.txt", header = FALSE)
-TEGeneOverlaps <- TEGeneOverlaps[,-c()] #Remove extraneous columns
-colnames(TEGeneOverlaps) <- c("")
+TEGeneOverlaps <- TEGeneOverlaps[,-c(4:6, 11, 13)] #Remove extraneous columns
+colnames(TEGeneOverlaps) <- c("gene-chr", "gene-start", "gene-end", "TE-start", "TE-end", "V10", "TE-strand", "Target-Motif") #Rename columns. Changed V9 to V10 to match column names in TEOverlaps
 head(TEGeneOverlaps) #Confirm import
 ```
 
+```{r}
+TEDMLOverlaps <- merge(x = TEOverlaps, y = TEGeneOverlaps, by = c("TE-start", "TE-end"), sort = FALSE, all.x = TRUE) #Merge TEOverlaps with TEGeneOverlaps. Do not sort the output. Retain any information in the DML-TE overlaps that does not have matching gene annotations
+head(TEDMLOverlaps) #Confirm merge
+```
 
+```{r}
+TEDMLOverlaps <- TEDMLOverlaps[,c(3:5, 1:2, 7:9, 11:12)] #Reorganize columns
+head(TEDMLOverlaps) #Confirm changes
+```
 
+## Merge with `masterDMLAnnotation`
 
+This will allow me to match TE-DML-gene overlaps with genes.
+
+```{r}
+DMLTEAnnotation <- merge(x = TEDMLOverlaps, y = masterDMLAnnotation, by = c("gene-start", "gene-end"), sort = FALSE, all.x = TRUE) #Merge TEDMLOverlaps with masterDMLAnnotation by gene start and end positions. Do not sort the output and retain any TEDMLOverlap entries that do not have matches in masterDMLAnnotation
+head(DMLTEAnnotation) #Confirm merge
+```
+
+```{r}
+DMLTEAnnotation <- DMLTEAnnotation[,c(11:17, 6:10, 18, 1:2, 20:27)] #Reorganize columns
+colnames(DMLTEAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "TE-start", "TE-end", "V10", "TE-strand", "Target-Motif", "dist-to-closest-gene", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-Accession", "Uniprot-ID", "evalue", "Product") #Rename columns
+DMLTEAnnotation <- distinct(DMLTEAnnotation) #Retain unique rows
+head(DMLTEAnnotation) #Confirm changes
+```
+
+```{r}
+write.csv(DMLTEAnnotation, "2019-06-20-DML-TE-Annotation.csv") #Save file
+```
 
 
 
