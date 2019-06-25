@@ -338,6 +338,7 @@ head(allDMLclosestBedgeneListmRNAListUniprot) #Confirm merge
 ```{r}
 masterDMLAnnotation <- allDMLclosestBedgeneListmRNAListUniprot[,c(2:4, 9, 6:8, 10:11, 14:18, 1, 21:22, 31, 19)] #Reorganize columns and save as a new dataframe
 colnames(masterDMLAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "dist-to-closest-gene", "gene-chr", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-Accession", "Uniprot-ID", "evalue", "Product") #Rename columns
+masterDMLAnnotation <- distinct(masterDMLAnnotation) #Keep only unique rows
 head(masterDMLAnnotation) #Confirm reorganization
 ```
 
