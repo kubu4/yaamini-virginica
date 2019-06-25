@@ -489,6 +489,42 @@ write.csv(DMLIntronAnnotationHypomethylated, "2019-06-20-DML-Intron-Annotation-H
 
 # Master promoter overlap list
 
+The `dist-to-closet-gene` has important information for DML distances to genes, but not the closest transcription start sites (i.e. mRNA). I will import the DML-promoter overlaps, then modify this dataframe to obtain a master DML-promoter overlap annotation.
+
+## Import DML-promoter overlaps
+
+```{r}
+promoterList <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2019-05-29-Flanking-Analysis/2019-05-29-mRNA-1000bp-UpstreamFlanks-DML.txt", header = FALSE) #Import DML-promoter overlaps
+promoterList <- promoterList[,-c(7:8)] #Remove extra columns
+colnames(promoterList) <- c("flank-chr", "flank-start", "flank-end", "chr", "start", "end") #Rename columns
+head(promoterList) #Confirm changes
+```
+
+```{r}
+promoterList$start <- promoterList$start + 1 #Add 1 to the start position since the file is BEDtools output
+promoterList$end <- promoterList$end -1 #Subtract 1 to the end position since the file is BEDtools output
+promoterList$`mRNA-start` <- promoterList$`flank-end` #Duplicate The end of the flank is the same as the start of the mRNA. Create a duplicate column for easy merging.
+head(promoterList) #Confrm changes
+```
+
+## Merge with `masterDMLAnnotation`
+
+```{r}
+DMLPromoterAnnotation <- merge(x = masterDMLAnnotation, y = promoterList, by = "mRNA-start", sort = FALSE, all.y = TRUE) #Merge the master list with promoter information by mRNA-start. Retain all rows in promoterList that do not have matching entries in masterDMLAnnotation
+head(DMLPromoterAnnotation) #Confirm merge
+```
+
+```{r}
+DMLPromoterAnnotation <- DMLPromoterAnnotation[,c(2:13, 21:22, 1, 14:19)] #Reorganize columns
+colnames(DMLPromoterAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "dist-to-closest-gene", "gene-chr", "gene-start", "gene-end", "geneID", "flank-start", "flank-end", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-Accession", "Uniprot-ID", "evalue", "Product") #Rename columns to match naming conventions
+DMLPromoterAnnotation <- distinct(DMLPromoterAnnotation) #Remove duplicate rows (merge artifacts)
+head(DMLPromoterAnnotation) #Confirm reorganization
+```
+
+```{r}
+write.csv(DMLPromoterAnnotation, "2019-06-20-DML-Promoter-Annotation.csv") #Save file
+```
+
 # Master transposable element list
 
 
