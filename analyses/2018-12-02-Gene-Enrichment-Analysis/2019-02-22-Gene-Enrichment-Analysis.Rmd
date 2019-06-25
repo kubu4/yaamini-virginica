@@ -527,6 +527,26 @@ write.csv(DMLPromoterAnnotation, "2019-06-20-DML-Promoter-Annotation.csv") #Save
 
 # Master transposable element list
 
+The last annotation list I need is one with DML-transposable element overlaps.
+
+## Import DML-TE overlap file
+
+```{r}
+TEOverlaps <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2019-05-29-DML-TE-all.txt", header = FALSE) #Import DML-TE overlap file
+TEOverlaps <- TEOverlaps[,-c(4, 6:7, 12)] #Remove extraneous columns
+colnames(TEOverlaps) <- c("chr", "start", "end", "TE-chr", "TE-start", "TE-end", "V10", "TE-strand", "Target-Motif") #Rename columns
+head(TEOverlaps) #Confirm import
+```
+
+## Import TE-gene overlap file
+
+```{r}
+TEGeneOverlaps <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2018-11-07-Genes-TE-all.txt", header = FALSE)
+TEGeneOverlaps <- TEGeneOverlaps[,-c()] #Remove extraneous columns
+colnames(TEGeneOverlaps) <- c("")
+head(TEGeneOverlaps) #Confirm import
+```
+
 
 
 
