@@ -9,6 +9,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 In this script, I'll isolate Uniprot codes needed to perform a gene enrichment. My ultimate goal is to identify enriched genes for mRNA regions that overlap with DMRs and DMLs. I will isolate Uniprot codes for the DMR-mRNA overlap, and for the gene background. The gene background will serve as my background for enrichment analyses, instead of the full transcriptome.
 
+# Install packages
+
+```{r}
+require(dplyr)
+```
+
 # Session information
 
 ```{r}
@@ -128,7 +134,7 @@ head(closestDML) #Confirm changes
 ```
 
 ```{r}
-allDMLclosestBed <- merge(x = closestDML, y = allDML, by = "start") #Merge closest information and DML list
+allDMLclosestBed <- merge(x = closestDML, y = allDML, by = "start", sort = FALSE) #Merge closest information and DML list. Do not resort the output.
 head(allDMLclosestBed) #Confirm merge
 ```
 
@@ -199,7 +205,7 @@ head(geneList) #Confirm merge
 ### Merge gene track with `allDMLclosestBed`
 
 ```{r}
-allDMLclosestBedgeneList <- merge(x = allDMLclosestBed, y = geneList, by = c("gene-start", "gene-end")) #Merge dataframes by gene start and end positions
+allDMLclosestBedgeneList <- merge(x = allDMLclosestBed, y = geneList, by = c("gene-start", "gene-end"), sort = FALSE) #Merge dataframes by gene start and end positions
 head(allDMLclosestBedgeneList) #Confirm merge
 ```
 
@@ -271,7 +277,8 @@ cut -f9 ../2019-05-13-Generating-Genome-Feature-Tracks/C_virginica-3.0_Gnomon_mR
 | awk  '{gsub("product=","\t",$0); print;}' \
 | cut -f2 \
 | awk  '{gsub(";","\t",$0); print;}' \
-> 2019-06-20-mRNA-Products.txt #Isolate mRNA description column and convert "product=" to "\t". This separates the descriptions into 2 columns. The beginning of second column has the product description. Take the second column of the output and convert ";" to "\tab" to better isolate mRNA products. Save the output as a new file.
+| awk  '{gsub("%","\t",$0); print;}' \
+> 2019-06-20-mRNA-Products.txt #Isolate mRNA description column and convert "product=" to "\t". This separates the descriptions into 2 columns. The beginning of second column has the product description. Take the second column of the output and convert ";" and "%" to "\t" to better isolate mRNA products. Save the output as a new file.
 ```
 
 ```{bash}
@@ -308,7 +315,7 @@ head(mRNAList) #Confirm merge
 ```
 
 ```{r}
-allDMLclosestBedgeneListmRNAList <- merge(x = allDMLclosestBedgeneList, y = mRNAList, by = "gene-ID") #Merge dataframes by gene ID
+allDMLclosestBedgeneListmRNAList <- merge(x = allDMLclosestBedgeneList, y = mRNAList, by = "gene-ID", sort = FALSE, all.x = TRUE) #Merge dataframes by gene ID
 head(allDMLclosestBedgeneListmRNAList) #Confirm merge
 ```
 
@@ -317,10 +324,14 @@ allDMLclosestBedgeneListmRNAList <- allDMLclosestBedgeneListmRNAList[,c(2:15, 1,
 head(allDMLclosestBedgeneListmRNAList) #Confirm reorganization
 ```
 
+```{r}
+allDMLclosestBedgeneListmRNAList <- distinct(allDMLclosestBedgeneListmRNAList) #Keep only unique rows
+```
+
 ## Merge with Uniprot codes
 
 ```{r}
-allDMLclosestBedgeneListmRNAListUniprot <- merge(x = allDMLclosestBedgeneListmRNAList, y = blastResults, by = "Genbank") #Merge DML list with Uniprot codes by Genbank IDs
+allDMLclosestBedgeneListmRNAListUniprot <- merge(x = allDMLclosestBedgeneListmRNAList, y = blastResults, by = "Genbank", sort = FALSE, all.x = TRUE) #Merge DML list with Uniprot codes by Genbank IDs
 head(allDMLclosestBedgeneListmRNAListUniprot) #Confirm merge
 ```
 
@@ -336,7 +347,7 @@ write.csv(masterDMLAnnotation, "2019-06-20-Master-DML-Annotation.csv") #Write ou
 
 Now that I have a master gene list, I can create relevant subset documents.
 
-# DML-Gene overlaps
+## DML-Gene overlaps
 
 ```{r}
 DMLGeneAnnotation <- subset(x = masterDMLAnnotation, subset = masterDMLAnnotation$`dist-to-closest-gene` == 0) #Subset dataset where the distance to the closest gene = 0 (i.e. DML and gene are overlapping)
@@ -347,7 +358,7 @@ head(DMLGeneAnnotation) #Confirm subset
 write.csv(DMLGeneAnnotation, "2019-06-20-DML-Gene-Annotation.csv") #Save file
 ```
 
-## Hypermethylated
+### Hypermethylated DML-gene overlaps
 
 ```{r}
 DMLGeneAnnotationHypermethylated <- subset(x = DMLGeneAnnotation, subset = DMLGeneAnnotation$meth.diff > 0) #Subset hypermethylated DML by selecting meth.diff > 0
@@ -358,7 +369,7 @@ head(DMLGeneAnnotationHypermethylated) #Confirm subset
 write.csv(DMLGeneAnnotationHypermethylated, "2019-06-20-DML-Gene-Annotation-Hypermethylated.csv") #Save file
 ```
 
-## Hypomethylated
+### Hypomethylated DML-gene overlaps
 
 ```{r}
 DMLGeneAnnotationHypomethylated <- subset(x = DMLGeneAnnotation, subset = DMLGeneAnnotation$meth.diff < 0) #Subset hypomethylated DML by selecting meth.diff < 0
@@ -369,17 +380,40 @@ head(DMLGeneAnnotationHypomethylated) #Confirm subset
 write.csv(DMLGeneAnnotationHypomethylated, "2019-06-20-DML-Gene-Annotation-Hypomethylated.csv") #Save file
 ```
 
-# DML-Exon overlaps
+# Master exon overlap list
 
-## Hypermethylated
+## Import DML-exon overlaps
 
-## Hypomethylated
+```{r}
+DMLExonOverlaps <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2019-05-29-DML-Exon.txt", header = FALSE) #Import file with DML and matching exons
+DMLExonOverlaps <- DMLExonOverlaps[,-4] #Remove extra meth.diff column
+colnames(DMLExonOverlaps) <- c("chr", "start", "end", "exon-chr", "exon-start", "exon-end")
+head(DMLExonOverlaps) #Confirm import
+```
 
-# DML-Intron overlaps
+## Merge with DML-gene annotation table
 
-## Hypermethylated
+```{r}
+DMLExonAnnotation <- merge(x = DMLExonOverlaps, y = DMLGeneAnnotation, by = "start", all = TRUE, sort = FALSE) #Merge files by DML position
+head(DMLExonAnnotation)
+```
 
-## Hypomethylated
+```{r}
+head(DMLGeneAnnotation)
+```
+
+
+## Hypermethylated DML-exon overlaps
+
+## Hypomethylated DML-exon overlaps
+
+# Master intron overlap list
+
+## DML-Intron overlaps
+
+## Hypermethylated DML-intron overlaps
+
+## Hypomethylated DML-intron overlaps
 
 # Master promoter overlap list
 
