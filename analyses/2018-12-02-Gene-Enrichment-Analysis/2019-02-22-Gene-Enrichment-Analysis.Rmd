@@ -389,32 +389,103 @@ write.csv(DMLGeneAnnotationHypomethylated, "2019-06-20-DML-Gene-Annotation-Hypom
 DMLExonOverlaps <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2019-05-29-DML-Exon.txt", header = FALSE) #Import file with DML and matching exons
 DMLExonOverlaps <- DMLExonOverlaps[,-4] #Remove extra meth.diff column
 colnames(DMLExonOverlaps) <- c("chr", "start", "end", "exon-chr", "exon-start", "exon-end")
-head(DMLExonOverlaps) #Confirm import
+DMLExonOverlaps$start <- DMLExonOverlaps$start + 1 #Add 1 to the start position since the file is BEDtools output
+DMLExonOverlaps$end <- DMLExonOverlaps$end - 1 #Add 1 to the start position since the file is BEDtools output
+head(DMLExonOverlaps) #Confirm changes
 ```
 
 ## Merge with DML-gene annotation table
 
 ```{r}
-DMLExonAnnotation <- merge(x = DMLExonOverlaps, y = DMLGeneAnnotation, by = "start", all = TRUE, sort = FALSE) #Merge files by DML position
-head(DMLExonAnnotation)
+DMLExonAnnotation <- merge(x = DMLExonOverlaps, y = DMLGeneAnnotation, by = "start", sort = FALSE, all.x = TRUE) #Merge files by DML position. Don't sort the output and retain all rows from DMLExonOverlaps even if there are no matches in DMLGeneAnnotation
+head(DMLExonAnnotation) #Confirm merge
 ```
 
 ```{r}
-head(DMLGeneAnnotation)
+DMLExonAnnotation <- DMLExonAnnotation[,c(2, 1, 3, 9:12, 5:6, 15:24)] #Reorganize columns remove dist-to-closest-gene column since these is all overlaps.
+colnames(DMLExonAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "exon-start", "exon-end", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-ID", "Uniprot-Accession", "evalue", "Product") #Add column names
+DMLExonAnnotation <- distinct(DMLExonAnnotation) #Remove duplicate rows (merging artifacts)
+head(DMLExonAnnotation) #Confirm changes
 ```
 
+```{r}
+write.csv(DMLExonAnnotation, "2019-06-20-DML-Exon-Annotation.csv") #Save file
+```
 
 ## Hypermethylated DML-exon overlaps
 
+```{r}
+DMLExonAnnotationHypermethylated <- subset(x = DMLExonAnnotation, y = DMLExonAnnotation$meth.diff > 0) #Obtain hypermethylated DML by subsetting meth.dif > 0
+head(DMLExonAnnotationHypermethylated) #Confirm subset
+```
+
+```{r}
+write.csv(DMLExonAnnotationHypermethylated, "2019-06-20-DML-Exon-Annotation-Hypermethylated.csv") #Save file
+```
+
 ## Hypomethylated DML-exon overlaps
+
+```{r}
+DMLExonAnnotationHypomethylated <- subset(x = DMLExonAnnotation, y = DMLExonAnnotation$meth.diff < 0) #Obtain hypomethylated DML by subsetting meth.dif < 0
+head(DMLExonAnnotationHypomethylated) #Confirm subset
+```
+
+```{r}
+write.csv(DMLExonAnnotationHypomethylated, "2019-06-20-DML-Exon-Annotation-Hypomethylated.csv") #Save file
+```
 
 # Master intron overlap list
 
-## DML-Intron overlaps
+## Import DML-Intron overlaps
+
+```{r}
+DMLIntonOverlaps <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2019-05-29-DML-Intron.txt", header = FALSE) #Import file with DML and matching introns
+DMLIntonOverlaps <- DMLIntonOverlaps[,-4] #Remove extra meth.diff column
+colnames(DMLIntonOverlaps) <- c("chr", "start", "end", "intron-chr", "intron-start", "intron-end")
+DMLIntonOverlaps$start <- DMLIntonOverlaps$start + 1 #Add 1 to the start position since the file is BEDtools output
+DMLIntonOverlaps$end <- DMLIntonOverlaps$end - 1 #Add 1 to the start position since the file is BEDtools output
+head(DMLIntonOverlaps) #Confirm changes
+```
+
+## Merge with DML-gene annotation table
+
+```{r}
+DMLIntronAnnotation <- merge(x = DMLIntonOverlaps, y = DMLGeneAnnotation, by = "start", sort = FALSE, all.x = TRUE) #Merge files by DML position. Don't sort the output and retain all rows from DMLIntronOverlaps even if there are no matches in DMLGeneAnnotation
+head(DMLIntronAnnotation) #Confirm merge
+```
+
+```{r}
+DMLIntronAnnotation <- DMLIntronAnnotation[,c(2, 1, 3, 9:12, 5:6, 15:24)] #Reorganize columns remove dist-to-closest-gene column since these is all overlaps.
+colnames(DMLIntronAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "intron-start", "intron-end", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-ID", "Uniprot-Accession", "evalue", "Product") #Add column names
+DMLIntronAnnotation <- distinct(DMLIntronAnnotation) #Remove duplicate rows (merging artifacts)
+head(DMLIntronAnnotation) #Confirm changes
+```
+
+```{r}
+write.csv(DMLIntronAnnotation, "2019-06-20-DML-Intron-Annotation.csv") #Save file
+```
 
 ## Hypermethylated DML-intron overlaps
 
+```{r}
+DMLIntronAnnotationHypermethylated <- subset(x = DMLIntronAnnotation, subset = DMLIntronAnnotation$meth.diff > 0) #Obtain hypermethylated DML by subsetting meth.diff > 0
+head(DMLIntronAnnotationHypermethylated) #Confirm subset
+```
+
+```{r}
+write.csv(DMLIntronAnnotationHypermethylated, "2019-06-20-DML-Intron-Annotation-Hypermethylated.csv") #Save file
+```
+
 ## Hypomethylated DML-intron overlaps
+
+```{r}
+DMLIntronAnnotationHypomethylated <- subset(x = DMLIntronAnnotation, subset = DMLIntronAnnotation$meth.diff < 0) #Obtain hypomethylated DML by subsetting meth.diff < 0
+head(DMLIntronAnnotationHypomethylated) #Confirm subset
+```
+
+```{r}
+write.csv(DMLIntronAnnotationHypomethylated, "2019-06-20-DML-Intron-Annotation-Hypomethylated.csv") #Save file
+```
 
 # Master promoter overlap list
 
