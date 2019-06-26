@@ -346,7 +346,7 @@ head(allDMLclosestBedgeneListmRNAListUniprot) #Confirm reorganization
 
 ## Merge with GOterms
 
-I will use a Uniprot-SwissProt database I downloaded to match Uniprot-Accession with Gene Ontology information, which includes GOterms and IDs.
+I will use a Uniprot-SwissProt database I downloaded to match Uniprot-Accession with Gene Ontology information, which includes GOterms and IDs. I downloaded a tab-delimited SwissProt database with five additional columns: Gene Ontology IDs, Gene ontology (GO), Gene ontology (biological processes), Gene ontology (cellular component), and Gene ontology (molecular function).
 
 ### Import Uniprot-Gene Ontology databse
 
