@@ -21,7 +21,7 @@ require(dplyr)
 sessionInfo()
 ```
 
-# Obtain GOterms
+# Obtain Uniprot codes
 
 Before I do any sort of gene enrichment analysis, I need to get Uniprot codes for all genes. To do this, I will use `blastx`.
 
@@ -54,6 +54,8 @@ The first step involves taking the uniprot fasta file and making a new database.
 ```
 
 Now I can perform a `blastx` to compare my query, the *C. virginica* transcripts, to our protein database.
+
+## Perform `blastx`
 
 1. Path to `blastx`
 2. `-query` provides the file we want to blast (*C. virginica* transcripts)
@@ -336,10 +338,55 @@ head(allDMLclosestBedgeneListmRNAListUniprot) #Confirm merge
 ```
 
 ```{r}
-masterDMLAnnotation <- allDMLclosestBedgeneListmRNAListUniprot[,c(2:4, 9, 6:8, 10:11, 14:18, 1, 21:22, 31, 19)] #Reorganize columns and save as a new dataframe
-colnames(masterDMLAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "dist-to-closest-gene", "gene-chr", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-Accession", "Uniprot-ID", "evalue", "Product") #Rename columns
-masterDMLAnnotation <- distinct(masterDMLAnnotation) #Keep only unique rows
-head(masterDMLAnnotation) #Confirm reorganization
+allDMLclosestBedgeneListmRNAListUniprot <- allDMLclosestBedgeneListmRNAListUniprot[,c(2:4, 9, 6:8, 10:11, 14:18, 1, 21:22, 31, 19)] #Reorganize columns and save as a new dataframe
+colnames(allDMLclosestBedgeneListmRNAListUniprot) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "dist-to-closest-gene", "gene-chr", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-Accession", "Uniprot-ID", "evalue", "Product") #Rename columns
+allDMLclosestBedgeneListmRNAListUniprot <- distinct(allDMLclosestBedgeneListmRNAListUniprot) #Keep only unique rows
+head(allDMLclosestBedgeneListmRNAListUniprot) #Confirm reorganization
+```
+
+## Merge with GOterms
+
+I will use a Uniprot-SwissProt database I downloaded to match Uniprot-Accession with Gene Ontology information, which includes GOterms and IDs.
+
+### Import Uniprot-Gene Ontology databse
+
+```{bash}
+gunzip uniprot-reviewed_yes.tab.gz #Unzip file
+```
+
+```{bash}
+head -n2 uniprot-reviewed_yes.tab #View file header
+```
+
+```{r}
+uniprotGOTerms <- read.delim("uniprot-reviewed_yes.tab", header = TRUE) #Import tab-delimited file with header
+head(uniprotGOTerms) #Confirm import
+```
+
+```{r}
+uniprotGOTerms <- uniprotGOTerms[,c(1:2, 8, 10:12)] #Remove unnecessary columns
+colnames(uniprotGOTerms) <- c("Uniprot-Accession", "Uniprot-ID", "GO-ID", "GO-BP", "GO-CC", "GO-MF") #Rename columns to match previous naming conventions
+head(uniprotGOTerms) #Confirm changes
+```
+
+### Merge with `allDMLclosestBedgeneListmRNAListUniprot`
+
+```{r}
+allDMLclosestBedgeneListmRNAListUniprotGOTerms <- merge(x = allDMLclosestBedgeneListmRNAListUniprot, y = uniprotGOTerms, by = c("Uniprot-Accession", "Uniprot-ID"), sort = FALSE, all.x = TRUE) #Merge files by Uniprot Accesssion code and Uniprot ID
+head(allDMLclosestBedgeneListmRNAListUniprotGOTerms) #Confirm merge
+```
+
+```{r}
+allDMLclosestBedgeneListmRNAListUniprotGOTerms <- allDMLclosestBedgeneListmRNAListUniprotGOTerms[,c(3:17, 1:2, 18:23)] #Reorganize columns
+colnames(allDMLclosestBedgeneListmRNAListUniprotGOTerms) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "dist-to-closest-gene", "gene-chr", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-Accession", "Uniprot-ID", "evalue", "Product", "GO-ID", "GO-BP", "GO-CC", "GO-MF") #Rename columns to match naming conventions
+head(allDMLclosestBedgeneListmRNAListUniprotGOTerms) #Confirm changes
+```
+
+## Export master gene list
+
+```{r}
+masterDMLAnnotation <- distinct(allDMLclosestBedgeneListmRNAListUniprotGOTerms) #Remove duplicated rows (merging artifacts)
+head(masterDMLAnnotation) #Confirm changes
 ```
 
 ```{r}
@@ -402,8 +449,8 @@ head(DMLExonAnnotation) #Confirm merge
 ```
 
 ```{r}
-DMLExonAnnotation <- DMLExonAnnotation[,c(2, 1, 3, 9:12, 5:6, 15:24)] #Reorganize columns remove dist-to-closest-gene column since these is all overlaps.
-colnames(DMLExonAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "exon-start", "exon-end", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-ID", "Uniprot-Accession", "evalue", "Product") #Add column names
+DMLExonAnnotation <- DMLExonAnnotation[,c(2, 1, 3, 9:12, 5:6, 15:28)] #Reorganize columns remove dist-to-closest-gene column since these is all overlaps.
+colnames(DMLExonAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "exon-start", "exon-end", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-ID", "Uniprot-Accession", "evalue", "Product", "GO-ID", "GO-BP", "GO-CC", "GO-MF") #Add column names
 DMLExonAnnotation <- distinct(DMLExonAnnotation) #Remove duplicate rows (merging artifacts)
 head(DMLExonAnnotation) #Confirm changes
 ```
@@ -455,8 +502,8 @@ head(DMLIntronAnnotation) #Confirm merge
 ```
 
 ```{r}
-DMLIntronAnnotation <- DMLIntronAnnotation[,c(2, 1, 3, 9:12, 5:6, 15:24)] #Reorganize columns remove dist-to-closest-gene column since these is all overlaps.
-colnames(DMLIntronAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "intron-start", "intron-end", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-ID", "Uniprot-Accession", "evalue", "Product") #Add column names
+DMLIntronAnnotation <- DMLIntronAnnotation[,c(2, 1, 3, 9:12, 5:6, 15:28)] #Reorganize columns remove dist-to-closest-gene column since these is all overlaps.
+colnames(DMLIntronAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "intron-start", "intron-end", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-ID", "Uniprot-Accession", "evalue", "Product", "GO-ID", "GO-BP", "GO-CC", "GO-MF") #Add column names
 DMLIntronAnnotation <- distinct(DMLIntronAnnotation) #Remove duplicate rows (merging artifacts)
 head(DMLIntronAnnotation) #Confirm changes
 ```
@@ -515,8 +562,8 @@ head(DMLPromoterAnnotation) #Confirm merge
 ```
 
 ```{r}
-DMLPromoterAnnotation <- DMLPromoterAnnotation[,c(2:13, 21:22, 1, 14:19)] #Reorganize columns
-colnames(DMLPromoterAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "dist-to-closest-gene", "gene-chr", "gene-start", "gene-end", "geneID", "flank-start", "flank-end", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-Accession", "Uniprot-ID", "evalue", "Product") #Rename columns to match naming conventions
+DMLPromoterAnnotation <- DMLPromoterAnnotation[,c(2:13, 25:26, 1, 14:23)] #Reorganize columns
+colnames(DMLPromoterAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "dist-to-closest-gene", "gene-chr", "gene-start", "gene-end", "geneID", "flank-start", "flank-end", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-Accession", "Uniprot-ID", "evalue", "Product", "GO-ID", "GO-BP", "GO-CC", "GO-MF") #Rename columns to match naming conventions
 DMLPromoterAnnotation <- distinct(DMLPromoterAnnotation) #Remove duplicate rows (merge artifacts)
 head(DMLPromoterAnnotation) #Confirm reorganization
 ```
@@ -567,8 +614,8 @@ head(DMLTEAnnotation) #Confirm merge
 ```
 
 ```{r}
-DMLTEAnnotation <- DMLTEAnnotation[,c(11:17, 6:10, 18, 1:2, 20:27)] #Reorganize columns
-colnames(DMLTEAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "TE-start", "TE-end", "V10", "TE-strand", "Target-Motif", "dist-to-closest-gene", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-Accession", "Uniprot-ID", "evalue", "Product") #Rename columns
+DMLTEAnnotation <- DMLTEAnnotation[,c(11:17, 6:10, 18, 1:2, 20:31)] #Reorganize columns
+colnames(DMLTEAnnotation) <- c("chr", "start", "end", "meth.diff", "strand", "pvalue", "qvalue", "TE-start", "TE-end", "V10", "TE-strand", "Target-Motif", "dist-to-closest-gene", "gene-start", "gene-end", "geneID", "mRNA-start", "mRNA-end", "Genbank", "Uniprot-Accession", "Uniprot-ID", "evalue", "Product", "GO-ID", "GO-BP", "GO-CC", "GO-MF") #Rename columns
 DMLTEAnnotation <- distinct(DMLTEAnnotation) #Retain unique rows
 head(DMLTEAnnotation) #Confirm changes
 ```
