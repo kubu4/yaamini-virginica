@@ -626,59 +626,43 @@ write.csv(DMLTEAnnotation, "2019-06-20-DML-TE-Annotation.csv") #Save file
 
 # Gene background
 
-## Check file format
-
-```{bash}
-head 2018-12-18-Gene-Background-mRNA.txt #Check file format
-```
-
-The IDs in the blast result match up with the Genbank IDs in the overlap file. I need to isolate the Genbank IDs before I can merge the files. I'm not sure how to do this file manipulation in bash or R, so I'll do this in Excel.
-
-```{bash}
-head 2018-12-18-Gene-Background-mRNA-Unfolded.txt #Confirm unfolding
-```
-
-## Import files
+## Import DMLBackground-mRNA overlaps
 
 ```{r}
-backgroundmRNA <- read.delim("2018-12-18-Gene-Background-mRNA-Unfolded.txt", header = FALSE) #Import background-mRNA overlaps
-head(backgroundmRNA) #Confirm import
-colnames(backgroundmRNA) <- c("backgroundchromosome", "backgroundstart", "backgroundend", "backgroundstrand", "V5","V6","V7","V8","V9","V10","V11","V12","V13","V14","V15","V16","V17","V18","V19","V20","V21","V22","V23","V24","V25","V26","V27","V28","V29","V30","V31","V32","V33","V34", "mRNAchromosome", "Gnomon", "mRNA", "mRNAstart", "mRNAend", "V40", "mRNAstrand", "V42", "ID", "Parent", "Dbxref=GeneID", "V46", "V47", "Genbank", "Name", "V50", "V51", "V52", "V53", "V54", "V55", "V56", "V57", "V58", "V59", "V60", "V61") #Rename columns
-head(backgroundmRNA) #Confirm column naming
+DMLBackgroundmRNAOverlaps <- read.delim("../2018-11-01-DML-and-DMR-Analysis/2019-06-20-DMLBackground-mRNA.txt", header = FALSE)
+DMLBackgroundmRNAOverlaps <- DMLBackgroundmRNAOverlaps[,-c(4:5)] #Remove extra columns
+colnames(DMLBackgroundmRNAOverlaps) <- c("chr", "DMLB-start", "DMLB-end", "mRNA-start", "mRNA-end") #Rename columns
+head(DMLBackgroundmRNAOverlaps) #Confirm import
+```
+
+## Merge with `mRNAList`
+
+```{r}
+DMLBackgroundmRNAOverlaps <- merge(x = DMLBackgroundmRNAOverlaps, y = mRNAList, by = c("mRNA-start", "mRNA-end"), sort = FALSE) #Merge dataframes by mRNA start and end positions
+head(DMLBackgroundmRNAOverlaps) #Confirm merge
+```
+
+```{r}
+DMLBackgroundmRNAOverlaps <- DMLBackgroundmRNAOverlaps[,c(3:6, 1:2, 9:11)] #Reorganize columns
+head(DMLBackgroundmRNAOverlaps) #Confirm reorganization
 ```
 
 ## Merge with Uniprot codes
 
 ```{r}
-backgroundmRNAblast <- merge(x = blastResults, y = backgroundmRNA, by = "Genbank") #Merge the gene background and Uniprot codes by the Genbank ID column
+backgroundmRNAblast <- merge(x = blastResults, y = DMLBackgroundmRNAOverlaps, by = "Genbank", sort = FALSE) #Merge the gene background and Uniprot codes by the Genbank ID column
+backgroundmRNAblast <- distinct(backgroundmRNAblast) #Remove duplicate rows from merging artifacts
 head(backgroundmRNAblast) #Confirm merge
 ```
 
 ```{r}
-write.csv(backgroundmRNAblast, "2019-02-22-mRNA-Gene-Background-Uniprot.csv") #Write out file
-```
-
-## Separate unique entries
-
-I want a list of unique genes and matching Uniprot codes represented in the gene background-mRNA overlaps.
-
-```{r}
-uniqueBackgroundmRNAblast <- subset(backgroundmRNAblast, !duplicated(backgroundmRNAblast$Genbank)) #Subset the unique Genbank IDs from backgroundmRNAUniprot and save as a new dataframe.
-head(uniqueBackgroundmRNAblast) #Confirm changes
+backgroundmRNAblast <- backgroundmRNAblast[,c(15:21, 1:14, 22)] #Reorganize columns
+backgroundmRNAblasteValueCutoff <- subset(backgroundmRNAblast, subset = backgroundmRNAblast$evalue < 1e-10) #Subset by evalue cutoff
+head(backgroundmRNAblasteValueCutoff) #Confirm reorganization
 ```
 
 ```{r}
-nrow(uniqueBackgroundmRNAblast) #Number of unique genes = 14943
-write.csv(uniqueBackgroundmRNAblast, "2019-02-28-mRNA-Gene-Background-Uniprot-Unique.csv") #Save file
-```
-
-## Isolate Uniprot codes
-
-To obtain gene enrichment information from DAVID, I need to isolate the Uniprot codes.
-
-```{r}
-backgroundmRNAUniprot <- backgroundmRNAblast$Uniprot #Isolate Uniprot codes from merged file
-write.csv(backgroundmRNAUniprot, "2019-02-22-mRNA-Gene-Background-UniprotOnly.csv") #Save Uniprot codes as a new file
+write.csv(backgroundmRNAblasteValueCutoff, "2019-06-20-mRNA-Gene-Background-Uniprot.csv") #Write out file
 ```
 
 # Functional gene description
@@ -755,6 +739,10 @@ head(DMLExonAnnotationGOBPCounts) #Confirm counting
 ```
 
 ```{r}
+nrow(DMLExonAnnotationGOBPCounts) #Count the number of rows
+```
+
+```{r}
 write.csv(DMLExonAnnotationGOBPCounts, "2019-06-20-DML-Exon-Annotation-GO-BP-Counts.csv") #Save file
 ```
 
@@ -826,6 +814,10 @@ head(DMLExonAnnotationHypermethylatedGOBPCounts) #Confirm counting
 ```
 
 ```{r}
+nrow(DMLExonAnnotationHypermethylatedGOBPCounts) #Count the number of rows
+```
+
+```{r}
 write.csv(DMLExonAnnotationHypermethylatedGOBPCounts, "2019-06-20-DML-Exon-Annotation-Hypermethylated-GO-BP-Counts.csv") #Save file
 ```
 
@@ -894,6 +886,10 @@ head(DMLExonAnnotationHypomethylatedGOBPExpandedNoNAList) #Check format
 ```{r}
 DMLExonAnnotationHypomethylatedGOBPCounts <- count(DMLExonAnnotationHypomethylatedGOBPExpandedNoNAList, GO.BP) #Count instances of each GOterm
 head(DMLExonAnnotationHypomethylatedGOBPCounts) #Confirm counting
+```
+
+```{r}
+nrow(DMLExonAnnotationHypomethylatedGOBPCounts) #Count rows
 ```
 
 ```{r}
@@ -970,6 +966,10 @@ head(DMLIntronAnnotationGOBPCounts) #Confirm counting
 ```
 
 ```{r}
+nrow(DMLIntronAnnotationGOBPCounts) #Count the number of GOterm categories
+```
+
+```{r}
 write.csv(DMLIntronAnnotationGOBPCounts, "2019-06-20-DML-Intron-Annotation-GO-BP-Counts.csv") #Save file
 ```
 
@@ -1041,6 +1041,10 @@ head(DMLIntronAnnotationHypermethylatedGOBPCounts) #Confirm counting
 ```
 
 ```{r}
+nrow(DMLIntronAnnotationHypermethylatedGOBPCounts) #Count rows
+```
+
+```{r}
 write.csv(DMLIntronAnnotationHypermethylatedGOBPCounts, "2019-06-20-DML-Intron-Annotation-Hypermethylated-GO-BP-Counts.csv") #Save file
 ```
 
@@ -1109,6 +1113,10 @@ head(DMLIntronAnnotationHypomethylatedGOBPExpandedNoNAList) #Check format
 ```{r}
 DMLIntronAnnotationHypomethylatedGOBPCounts <- count(DMLIntronAnnotationHypomethylatedGOBPExpandedNoNAList, GO.BP) #Count instances of each GOterm
 head(DMLIntronAnnotationHypomethylatedGOBPCounts) #Confirm counting
+```
+
+```{r}
+nrow(DMLIntronAnnotationHypomethylatedGOBPCounts)
 ```
 
 ```{r}
