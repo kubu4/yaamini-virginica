@@ -7,7 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In this script, I'll isolate Uniprot codes needed to perform a gene enrichment. My ultimate goal is to identify enriched genes for mRNA regions that overlap with DMRs and DMLs. I will isolate Uniprot codes for the DMR-mRNA overlap, and for the gene background. The gene background will serve as my background for enrichment analyses, instead of the full transcriptome.
+In this script, I'll create several annotation tables for DML, perform a functional gene description, and prepare Uniprot codes for enrichment in DAVID.
 
 # Install packages
 
@@ -462,7 +462,7 @@ write.csv(DMLExonAnnotation, "2019-06-20-DML-Exon-Annotation.csv") #Save file
 ## Hypermethylated DML-exon overlaps
 
 ```{r}
-DMLExonAnnotationHypermethylated <- subset(x = DMLExonAnnotation, y = DMLExonAnnotation$meth.diff > 0) #Obtain hypermethylated DML by subsetting meth.dif > 0
+DMLExonAnnotationHypermethylated <- DMLExonAnnotation[DMLExonAnnotation$meth.diff > 0,] #Obtain hypermethylated DML by subsetting meth.dif > 0
 head(DMLExonAnnotationHypermethylated) #Confirm subset
 ```
 
@@ -473,7 +473,7 @@ write.csv(DMLExonAnnotationHypermethylated, "2019-06-20-DML-Exon-Annotation-Hype
 ## Hypomethylated DML-exon overlaps
 
 ```{r}
-DMLExonAnnotationHypomethylated <- subset(x = DMLExonAnnotation, y = DMLExonAnnotation$meth.diff < 0) #Obtain hypomethylated DML by subsetting meth.dif < 0
+DMLExonAnnotationHypomethylated <- DMLExonAnnotation[DMLExonAnnotation$meth.diff < 0,] #Obtain hypomethylated DML by subsetting meth.dif < 0
 head(DMLExonAnnotationHypomethylated) #Confirm subset
 ```
 
@@ -624,27 +624,6 @@ head(DMLTEAnnotation) #Confirm changes
 write.csv(DMLTEAnnotation, "2019-06-20-DML-TE-Annotation.csv") #Save file
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Gene background
 
 ## Check file format
@@ -700,5 +679,439 @@ To obtain gene enrichment information from DAVID, I need to isolate the Uniprot 
 ```{r}
 backgroundmRNAUniprot <- backgroundmRNAblast$Uniprot #Isolate Uniprot codes from merged file
 write.csv(backgroundmRNAUniprot, "2019-02-22-mRNA-Gene-Background-UniprotOnly.csv") #Save Uniprot codes as a new file
+```
+
+# Functional gene description
+
+I will use `GO-BP` information to characterize Gene Ontology represented in DML-exon and DML-intron overlaps. I will also separate this out by hyper- and hypomethylated DML.
+
+## Exons
+
+### All exons
+
+#### Subset by e-value cutoffs
+
+```{r}
+DMLExonAnnotationEvalueCutoff <- subset(x = DMLExonAnnotation, subset = DMLExonAnnotation$evalue < 1e-10) #Subset rows with acceptably low e-value cutoffs (no larger than 1e-10)
+write.csv(DMLExonAnnotationEvalueCutoff, "2019-06-20-DML-Exon-Annotation-Evalue-Cutoff.csv")
+nrow(DMLExonAnnotationEvalueCutoff) #Approx. 8000 rows dropped
+```
+
+#### Separate GOterms into new columns
+
+```{bash}
+awk -F "\"*,\"*" '{print $22}' 2019-06-20-DML-Exon-Annotation-Evalue-Cutoff.csv \
+| awk  '{gsub(";","\t",$0); print;}' \
+> 2019-06-20-DML-Exon-Annotation-GO-BP-Expanded.txt #Isolate GO-BP column and convert ";" to ",". Save the output as a new file.
+```
+
+```{bash}
+head -n5 2019-06-20-DML-Exon-Annotation-GO-BP-Expanded.txt #Confirm file creation
+```
+
+```{bash}
+awk '{print NF}' 2019-06-20-DML-Exon-Annotation-GO-BP-Expanded.txt > 2019-06-20-DML-Exon-Annotation-GO-BP-Expanded-Column-Numbers.txt #Count the number of columns in each row
+```
+
+#### Import and format isolated GO-BP information
+
+```{r}
+DMLExonAnnotationGOBPColumns <- read.delim("2019-06-20-DML-Exon-Annotation-GO-BP-Expanded-Column-Numbers.txt")
+max(DMLExonAnnotationGOBPColumns$X1) #I should import the file with 353 columns
+```
+
+```{r}
+DMLExonAnnotationGOBPExpanded <- read.delim("2019-06-20-DML-Exon-Annotation-GO-BP-Expanded.txt", col.names = paste("V", 1:353, sep = ""), header = FALSE) #Import expanded GO-BP information
+DMLExonAnnotationGOBPExpanded <- DMLExonAnnotationGOBPExpanded[-1,] #Remove the first row, which is the original haeder from the file
+head(DMLExonAnnotationGOBPExpanded) #Confirm import
+```
+
+```{r}
+DMLExonAnnotationGOBPExpanded <- DMLExonAnnotationGOBPExpanded[,c(1:3)] #Not every Uniprot Accession code has the same number of GOterms. I will use the first 3 GOterms assigned in my analyses
+DMLExonAnnotationGOBPExpandedNoNA <- DMLExonAnnotationGOBPExpanded[is.na(DMLExonAnnotationGOBPExpanded$V1) == FALSE,] #Keeps rows with without NA in the first column (columns with at least one associated GOterm)
+nrow(DMLExonAnnotationGOBPExpandedNoNA) #Count the number of rows
+```
+
+```{r}
+DMLExonAnnotationGOBPExpandedNoNA$V2 <- gsub('{1}$', '', DMLExonAnnotationGOBPExpandedNoNA$V2) #Remove space before GOterms
+DMLExonAnnotationGOBPExpandedNoNA$V3 <- gsub('{1}$', '', DMLExonAnnotationGOBPExpandedNoNA$V3) #Remove space before GOterms
+head(DMLExonAnnotationGOBPExpandedNoNA) #Confim change
+```
+
+```{r}
+DMLExonAnnotationGOBPExpandedNoNAList <- c(as.vector(DMLExonAnnotationGOBPExpandedNoNA$V1),
+                                           as.vector(DMLExonAnnotationGOBPExpandedNoNA$V2),
+                                           as.vector(DMLExonAnnotationGOBPExpandedNoNA$V3)) #Convert to a vector
+DMLExonAnnotationGOBPExpandedNoNAList <- data.frame("rowNumber" = seq(from = 1, to = length(DMLExonAnnotationGOBPExpandedNoNAList), by = 1),
+                                                    "GO-BP" = DMLExonAnnotationGOBPExpandedNoNAList) #Add row numbers to use in count function
+head(DMLExonAnnotationGOBPExpandedNoNAList) #Check format
+```
+
+#### Count GOterms
+
+```{r}
+DMLExonAnnotationGOBPCounts <- count(DMLExonAnnotationGOBPExpandedNoNAList, GO.BP) #Count instances of each GOterm
+head(DMLExonAnnotationGOBPCounts) #Confirm counting
+```
+
+```{r}
+write.csv(DMLExonAnnotationGOBPCounts, "2019-06-20-DML-Exon-Annotation-GO-BP-Counts.csv") #Save file
+```
+
+### Hypermethylated exons
+
+#### Subset by e-value cutoffs
+
+```{r}
+DMLExonAnnotationHypermethylatedEvalueCutoff <- subset(x = DMLExonAnnotationHypermethylated, subset = DMLExonAnnotationHypermethylated$evalue < 1e-10) #Subset rows with acceptably low e-value cutoffs (no larger than 1e-10)
+write.csv(DMLExonAnnotationHypermethylatedEvalueCutoff, "2019-06-20-DML-Exon-Annotation-Hypermethylated-Evalue-Cutoff.csv") #Save file
+nrow(DMLExonAnnotationHypermethylatedEvalueCutoff) #Count the number of rows
+```
+
+#### Separate GOterms into new columns
+
+```{bash}
+awk -F "\"*,\"*" '{print $22}' 2019-06-20-DML-Exon-Annotation-Hypermethylated-Evalue-Cutoff.csv \
+| awk  '{gsub(";","\t",$0); print;}' \
+> 2019-06-20-DML-Exon-Annotation-Hypermethylated-GO-BP-Expanded.txt #Isolate GO-BP column and convert ";" to ",". Save the output as a new file.
+```
+
+```{bash}
+head -n5 2019-06-20-DML-Exon-Annotation-Hypermethylated-GO-BP-Expanded.txt #Confirm file creation
+```
+
+```{bash}
+awk '{print NF}' 2019-06-20-DML-Exon-Annotation-Hypermethylated-GO-BP-Expanded.txt > 2019-06-20-DML-Exon-Annotation-Hypermethylated-GO-BP-Expanded-Column-Numbers.txt #Count the number of columns in each row
+```
+
+#### Import and format isolated GO-BP information
+
+```{r}
+DMLExonAnnotationHypermethylatedGOBPColumns <- read.delim("2019-06-20-DML-Exon-Annotation-Hypermethylated-GO-BP-Expanded-Column-Numbers.txt")
+max(DMLExonAnnotationHypermethylatedGOBPColumns$X1) #I should import the file with 147 columns
+```
+
+```{r}
+DMLExonAnnotationHypermethylatedGOBPExpanded <- read.delim("2019-06-20-DML-Exon-Annotation-Hypermethylated-GO-BP-Expanded.txt", col.names = paste("V", 1:147, sep = ""), header = FALSE) #Import expanded GO-BP information
+DMLExonAnnotationHypermethylatedGOBPExpanded <- DMLExonAnnotationHypermethylatedGOBPExpanded[-1,] #Remove the first row, which is the original haeder from the file
+head(DMLExonAnnotationHypermethylatedGOBPExpanded) #Confirm import
+```
+
+```{r}
+DMLExonAnnotationHypermethylatedGOBPExpanded <- DMLExonAnnotationHypermethylatedGOBPExpanded[,c(1:3)] #Not every Uniprot Accession code has the same number of GOterms. I will use the first 3 GOterms assigned in my analyses
+DMLExonAnnotationHypermethylatedGOBPExpandedNoNA <- DMLExonAnnotationHypermethylatedGOBPExpanded[is.na(DMLExonAnnotationHypermethylatedGOBPExpanded$V1) == FALSE,] #Keeps rows with without NA in the first column (columns with at least one associated GOterm)
+nrow(DMLExonAnnotationHypermethylatedGOBPExpandedNoNA) #Count the number of rows
+```
+
+```{r}
+DMLExonAnnotationHypermethylatedGOBPExpandedNoNA$V2 <- gsub('{1}$', '', DMLExonAnnotationHypermethylatedGOBPExpandedNoNA$V2) #Remove space before GOterms
+DMLExonAnnotationHypermethylatedGOBPExpandedNoNA$V3 <- gsub('{1}$', '', DMLExonAnnotationHypermethylatedGOBPExpandedNoNA$V3) #Remove space before GOterms
+head(DMLExonAnnotationHypermethylatedGOBPExpandedNoNA) #Confim change
+```
+
+```{r}
+DMLExonAnnotationHypermethylatedGOBPExpandedNoNAList <- c(as.vector(DMLExonAnnotationHypermethylatedGOBPExpandedNoNA$V1),
+                                           as.vector(DMLExonAnnotationHypermethylatedGOBPExpandedNoNA$V2),
+                                           as.vector(DMLExonAnnotationHypermethylatedGOBPExpandedNoNA$V3)) #Convert to a vector
+DMLExonAnnotationHypermethylatedGOBPExpandedNoNAList <- data.frame("rowNumber" = seq(from = 1, to = length(DMLExonAnnotationHypermethylatedGOBPExpandedNoNAList), by = 1),
+                                                    "GO-BP" = DMLExonAnnotationHypermethylatedGOBPExpandedNoNAList) #Add row numbers to use in count function
+head(DMLExonAnnotationHypermethylatedGOBPExpandedNoNAList) #Check format
+```
+
+#### Count GOterms
+
+```{r}
+DMLExonAnnotationHypermethylatedGOBPCounts <- count(DMLExonAnnotationHypermethylatedGOBPExpandedNoNAList, GO.BP) #Count instances of each GOterm
+head(DMLExonAnnotationHypermethylatedGOBPCounts) #Confirm counting
+```
+
+```{r}
+write.csv(DMLExonAnnotationHypermethylatedGOBPCounts, "2019-06-20-DML-Exon-Annotation-Hypermethylated-GO-BP-Counts.csv") #Save file
+```
+
+### Hypomethylated exons
+
+#### Subset by e-value cutoffs
+
+```{r}
+DMLExonAnnotationHypomethylatedEvalueCutoff <- subset(x = DMLExonAnnotationHypomethylated, subset = DMLExonAnnotationHypomethylated$evalue < 1e-10) #Subset rows with acceptably low e-value cutoffs (no larger than 1e-10)
+write.csv(DMLExonAnnotationHypomethylatedEvalueCutoff, "2019-06-20-DML-Exon-Annotation-Hypomethylated-Evalue-Cutoff.csv") #Save file
+nrow(DMLExonAnnotationHypomethylatedEvalueCutoff) #Count the number of rows
+```
+
+#### Separate GOterms into new columns
+
+```{bash}
+awk -F "\"*,\"*" '{print $22}' 2019-06-20-DML-Exon-Annotation-Hypomethylated-Evalue-Cutoff.csv \
+| awk  '{gsub(";","\t",$0); print;}' \
+> 2019-06-20-DML-Exon-Annotation-Hypomethylated-GO-BP-Expanded.txt #Isolate GO-BP column and convert ";" to ",". Save the output as a new file.
+```
+
+```{bash}
+head -n5 2019-06-20-DML-Exon-Annotation-Hypomethylated-GO-BP-Expanded.txt #Confirm file creation
+```
+
+```{bash}
+awk '{print NF}' 2019-06-20-DML-Exon-Annotation-Hypomethylated-GO-BP-Expanded.txt > 2019-06-20-DML-Exon-Annotation-Hypomethylated-GO-BP-Expanded-Column-Numbers.txt #Count the number of columns in each row
+```
+
+#### Import and format isolated GO-BP information
+
+```{r}
+DMLExonAnnotationHypomethylatedGOBPColumns <- read.delim("2019-06-20-DML-Exon-Annotation-Hypomethylated-GO-BP-Expanded-Column-Numbers.txt")
+max(DMLExonAnnotationHypomethylatedGOBPColumns$X1) #I should import the file with 353 columns
+```
+
+```{r}
+DMLExonAnnotationHypomethylatedGOBPExpanded <- read.delim("2019-06-20-DML-Exon-Annotation-Hypomethylated-GO-BP-Expanded.txt", col.names = paste("V", 1:353, sep = ""), header = FALSE) #Import expanded GO-BP information
+DMLExonAnnotationHypomethylatedGOBPExpanded <- DMLExonAnnotationHypomethylatedGOBPExpanded[-1,] #Remove the first row, which is the original haeder from the file
+head(DMLExonAnnotationHypomethylatedGOBPExpanded) #Confirm import
+```
+
+```{r}
+DMLExonAnnotationHypomethylatedGOBPExpanded <- DMLExonAnnotationHypomethylatedGOBPExpanded[,c(1:3)] #Not every Uniprot Accession code has the same number of GOterms. I will use the first 3 GOterms assigned in my analyses
+DMLExonAnnotationHypomethylatedGOBPExpandedNoNA <- DMLExonAnnotationHypomethylatedGOBPExpanded[is.na(DMLExonAnnotationHypomethylatedGOBPExpanded $V1) == FALSE,] #Keeps rows with without NA in the first column (columns with at least one associated GOterm)
+nrow(DMLExonAnnotationHypomethylatedGOBPExpandedNoNA) #Count the number of rows
+```
+
+```{r}
+DMLExonAnnotationHypomethylatedGOBPExpandedNoNA $V2 <- gsub('{1}$', '', DMLExonAnnotationHypomethylatedGOBPExpandedNoNA $V2) #Remove space before GOterms
+DMLExonAnnotationHypomethylatedGOBPExpandedNoNA $V3 <- gsub('{1}$', '', DMLExonAnnotationHypomethylatedGOBPExpandedNoNA $V3) #Remove space before GOterms
+head(DMLExonAnnotationHypomethylatedGOBPExpandedNoNA) #Confim change
+```
+
+```{r}
+DMLExonAnnotationHypomethylatedGOBPExpandedNoNAList <- c(as.vector(DMLExonAnnotationHypomethylatedGOBPExpandedNoNA $V1),
+                                           as.vector(DMLExonAnnotationHypomethylatedGOBPExpandedNoNA $V2),
+                                           as.vector(DMLExonAnnotationHypomethylatedGOBPExpandedNoNA $V3)) #Convert to a vector
+DMLExonAnnotationHypomethylatedGOBPExpandedNoNAList <- data.frame("rowNumber" = seq(from = 1, to = length(DMLExonAnnotationHypomethylatedGOBPExpandedNoNAList), by = 1),
+                                                    "GO-BP" = DMLExonAnnotationHypomethylatedGOBPExpandedNoNAList) #Add row numbers to use in count function
+head(DMLExonAnnotationHypomethylatedGOBPExpandedNoNAList) #Check format
+```
+
+#### Count GOterms
+
+```{r}
+DMLExonAnnotationHypomethylatedGOBPCounts <- count(DMLExonAnnotationHypomethylatedGOBPExpandedNoNAList, GO.BP) #Count instances of each GOterm
+head(DMLExonAnnotationHypomethylatedGOBPCounts) #Confirm counting
+```
+
+```{r}
+write.csv(DMLExonAnnotationHypomethylatedGOBPCounts, "2019-06-20-DML-Exon-Annotation-Hypomethylated-GO-BP-Counts.csv") #Save file
+```
+
+## Introns
+
+### All introns
+
+#### Subset by e-value cutoffs
+
+```{r}
+DMLIntronAnnotationEvalueCutoff <- subset(x = DMLIntronAnnotation, subset = DMLIntronAnnotation$evalue < 1e-10) #Subset rows with acceptably low e-value cutoffs (no larger than 1e-10)
+write.csv(DMLIntronAnnotationEvalueCutoff, "2019-06-20-DML-Intron-Annotation-Evalue-Cutoff.csv")
+nrow(DMLIntronAnnotationEvalueCutoff)
+```
+
+#### Separate GOterms into new columns
+
+```{bash}
+awk -F "\"*,\"*" '{print $22}' 2019-06-20-DML-Intron-Annotation-Evalue-Cutoff.csv \
+| awk  '{gsub(";","\t",$0); print;}' \
+> 2019-06-20-DML-Intron-Annotation-GO-BP-Expanded.txt #Isolate GO-BP column and convert ";" to ",". Save the output as a new file.
+```
+
+```{bash}
+head -n5 2019-06-20-DML-Intron-Annotation-GO-BP-Expanded.txt #Confirm file creation
+```
+
+```{bash}
+awk '{print NF}' 2019-06-20-DML-Intron-Annotation-GO-BP-Expanded.txt > 2019-06-20-DML-Intron-Annotation-GO-BP-Expanded-Column-Numbers.txt #Count the number of columns in each row
+```
+
+#### Import and format isolated GO-BP information
+
+```{r}
+DMLIntronAnnotationGOBPColumns <- read.delim("2019-06-20-DML-Intron-Annotation-GO-BP-Expanded-Column-Numbers.txt")
+max(DMLIntronAnnotationGOBPColumns $X1) #I should import the file with 147 columns
+```
+
+```{r}
+DMLIntronAnnotationGOBPExpanded <- read.delim("2019-06-20-DML-Intron-Annotation-GO-BP-Expanded.txt", col.names = paste("V", 1:147, sep = ""), header = FALSE) #Import expanded GO-BP information
+DMLIntronAnnotationGOBPExpanded <- DMLIntronAnnotationGOBPExpanded[-1,] #Remove the first row, which is the original header from the file
+head(DMLIntronAnnotationGOBPExpanded) #Confirm import
+```
+
+```{r}
+DMLIntronAnnotationGOBPExpanded <- DMLIntronAnnotationGOBPExpanded[,c(1:3)] #Not every Uniprot Accession code has the same number of GOterms. I will use the first 3 GOterms assigned in my analyses
+DMLIntronAnnotationGOBPExpandedNoNA <- DMLIntronAnnotationGOBPExpanded[is.na(DMLIntronAnnotationGOBPExpanded $V1) == FALSE,] #Keeps rows with without NA in the first column (columns with at least one associated GOterm)
+nrow(DMLIntronAnnotationGOBPExpandedNoNA) #Count the number of rows
+```
+
+```{r}
+DMLIntronAnnotationGOBPExpandedNoNA $V2 <- gsub('{1}$', '', DMLIntronAnnotationGOBPExpandedNoNA $V2) #Remove space before GOterms
+DMLIntronAnnotationGOBPExpandedNoNA $V3 <- gsub('{1}$', '', DMLIntronAnnotationGOBPExpandedNoNA $V3) #Remove space before GOterms
+head(DMLIntronAnnotationGOBPExpandedNoNA) #Confim change
+```
+
+```{r}
+DMLIntronAnnotationGOBPExpandedNoNAList <- c(as.vector(DMLIntronAnnotationGOBPExpandedNoNA$V1),
+                                           as.vector(DMLIntronAnnotationGOBPExpandedNoNA$V2),
+                                           as.vector(DMLIntronAnnotationGOBPExpandedNoNA$V3)) #Convert to a vector
+DMLIntronAnnotationGOBPExpandedNoNAList <- data.frame("rowNumber" = seq(from = 1, to = length(DMLIntronAnnotationGOBPExpandedNoNAList), by = 1),
+                                                    "GO-BP" = DMLIntronAnnotationGOBPExpandedNoNAList) #Add row numbers to use in count function
+head(DMLIntronAnnotationGOBPExpandedNoNAList) #Check format
+```
+
+#### Count GOterms
+
+```{r}
+DMLIntronAnnotationGOBPCounts <- count(DMLIntronAnnotationGOBPExpandedNoNAList, GO.BP) #Count instances of each GOterm
+head(DMLIntronAnnotationGOBPCounts) #Confirm counting
+```
+
+```{r}
+write.csv(DMLIntronAnnotationGOBPCounts, "2019-06-20-DML-Intron-Annotation-GO-BP-Counts.csv") #Save file
+```
+
+### Hypermethylated introns
+
+#### Subset by e-value cutoffs
+
+```{r}
+DMLIntronAnnotationHypermethylatedEvalueCutoff <- subset(x = DMLIntronAnnotationHypermethylated, subset = DMLIntronAnnotationHypermethylated$evalue < 1e-10) #Subset rows with acceptably low e-value cutoffs (no larger than 1e-10)
+write.csv(DMLIntronAnnotationHypermethylatedEvalueCutoff, "2019-06-20-DML-Intron-Annotation-Hypermethylated-Evalue-Cutoff.csv") #Save file
+nrow(DMLIntronAnnotationHypermethylatedEvalueCutoff) #Count the number of rows
+```
+
+#### Separate GOterms into new columns
+
+```{bash}
+awk -F "\"*,\"*" '{print $22}' 2019-06-20-DML-Intron-Annotation-Hypermethylated-Evalue-Cutoff.csv \
+| awk  '{gsub(";","\t",$0); print;}' \
+> 2019-06-20-DML-Intron-Annotation-Hypermethylated-GO-BP-Expanded.txt #Isolate GO-BP column and convert ";" to ",". Save the output as a new file.
+```
+
+```{bash}
+head -n5 2019-06-20-DML-Intron-Annotation-Hypermethylated-GO-BP-Expanded.txt #Confirm file creation
+```
+
+```{bash}
+awk '{print NF}' 2019-06-20-DML-Intron-Annotation-Hypermethylated-GO-BP-Expanded.txt > 2019-06-20-DML-Intron-Annotation-Hypermethylated-GO-BP-Expanded-Column-Numbers.txt #Count the number of columns in each row
+```
+
+#### Import and format isolated GO-BP information
+
+```{r}
+DMLIntronAnnotationHypermethylatedGOBPColumns <- read.delim("2019-06-20-DML-Intron-Annotation-Hypermethylated-GO-BP-Expanded-Column-Numbers.txt")
+max(DMLIntronAnnotationHypermethylatedGOBPColumns$X1) #I should import the file with 147 columns
+```
+
+```{r}
+DMLIntronAnnotationHypermethylatedGOBPExpanded <- read.delim("2019-06-20-DML-Intron-Annotation-Hypermethylated-GO-BP-Expanded.txt", col.names = paste("V", 1:147, sep = ""), header = FALSE) #Import expanded GO-BP information
+DMLIntronAnnotationHypermethylatedGOBPExpanded <- DMLIntronAnnotationHypermethylatedGOBPExpanded[-1,] #Remove the first row, which is the original haeder from the file
+head(DMLIntronAnnotationHypermethylatedGOBPExpanded) #Confirm import
+```
+
+```{r}
+DMLIntronAnnotationHypermethylatedGOBPExpanded <- DMLIntronAnnotationHypermethylatedGOBPExpanded[,c(1:3)] #Not every Uniprot Accession code has the same number of GOterms. I will use the first 3 GOterms assigned in my analyses
+DMLIntronAnnotationHypermethylatedGOBPExpandedNoNA <- DMLIntronAnnotationHypermethylatedGOBPExpanded[is.na(DMLIntronAnnotationHypermethylatedGOBPExpanded$V1) == FALSE,] #Keeps rows with without NA in the first column (columns with at least one associated GOterm)
+nrow(DMLIntronAnnotationHypermethylatedGOBPExpandedNoNA) #Count the number of rows
+```
+
+```{r}
+DMLIntronAnnotationHypermethylatedGOBPExpandedNoNA$V2 <- gsub('{1}$', '', DMLIntronAnnotationHypermethylatedGOBPExpandedNoNA$V2) #Remove space before GOterms
+DMLIntronAnnotationHypermethylatedGOBPExpandedNoNA$V3 <- gsub('{1}$', '', DMLIntronAnnotationHypermethylatedGOBPExpandedNoNA$V3) #Remove space before GOterms
+head(DMLIntronAnnotationHypermethylatedGOBPExpandedNoNA) #Confim change
+```
+
+```{r}
+DMLIntronAnnotationHypermethylatedGOBPExpandedNoNAList <- c(as.vector(DMLIntronAnnotationHypermethylatedGOBPExpandedNoNA$V1),
+                                           as.vector(DMLIntronAnnotationHypermethylatedGOBPExpandedNoNA$V2),
+                                           as.vector(DMLIntronAnnotationHypermethylatedGOBPExpandedNoNA$V3)) #Convert to a vector
+DMLIntronAnnotationHypermethylatedGOBPExpandedNoNAList <- data.frame("rowNumber" = seq(from = 1, to = length(DMLIntronAnnotationHypermethylatedGOBPExpandedNoNAList), by = 1),
+                                                    "GO-BP" = DMLIntronAnnotationHypermethylatedGOBPExpandedNoNAList) #Add row numbers to use in count function
+head(DMLIntronAnnotationHypermethylatedGOBPExpandedNoNAList) #Check format
+```
+
+#### Count GOterms
+
+```{r}
+DMLIntronAnnotationHypermethylatedGOBPCounts <- count(DMLIntronAnnotationHypermethylatedGOBPExpandedNoNAList, GO.BP) #Count instances of each GOterm
+head(DMLIntronAnnotationHypermethylatedGOBPCounts) #Confirm counting
+```
+
+```{r}
+write.csv(DMLIntronAnnotationHypermethylatedGOBPCounts, "2019-06-20-DML-Intron-Annotation-Hypermethylated-GO-BP-Counts.csv") #Save file
+```
+
+### Hypomethylated introns
+
+#### Subset by e-value cutoffs
+
+```{r}
+DMLIntronAnnotationHypomethylatedEvalueCutoff <- subset(x = DMLIntronAnnotationHypomethylated, subset = DMLIntronAnnotationHypomethylated$evalue < 1e-10) #Subset rows with acceptably low e-value cutoffs (no larger than 1e-10)
+write.csv(DMLIntronAnnotationHypomethylatedEvalueCutoff, "2019-06-20-DML-Intron-Annotation-Hypomethylated-Evalue-Cutoff.csv") #Save file
+nrow(DMLIntronAnnotationHypomethylatedEvalueCutoff) #Count the number of rows
+```
+
+#### Separate GOterms into new columns
+
+```{bash}
+awk -F "\"*,\"*" '{print $22}' 2019-06-20-DML-Intron-Annotation-Hypomethylated-Evalue-Cutoff.csv \
+| awk  '{gsub(";","\t",$0); print;}' \
+> 2019-06-20-DML-Intron-Annotation-Hypomethylated-GO-BP-Expanded.txt #Isolate GO-BP column and convert ";" to ",". Save the output as a new file.
+```
+
+```{bash}
+head -n5 2019-06-20-DML-Intron-Annotation-Hypomethylated-GO-BP-Expanded.txt #Confirm file creation
+```
+
+```{bash}
+awk '{print NF}' 2019-06-20-DML-Intron-Annotation-Hypomethylated-GO-BP-Expanded.txt > 2019-06-20-DML-Intron-Annotation-Hypomethylated-GO-BP-Expanded-Column-Numbers.txt #Count the number of columns in each row
+```
+
+#### Import and format isolated GO-BP information
+
+```{r}
+DMLIntronAnnotationHypomethylatedGOBPColumns <- read.delim("2019-06-20-DML-Intron-Annotation-Hypomethylated-GO-BP-Expanded-Column-Numbers.txt")
+max(DMLIntronAnnotationHypomethylatedGOBPColumns$X1) #I should import the file with 73 columns
+```
+
+```{r}
+DMLIntronAnnotationHypomethylatedGOBPExpanded <- read.delim("2019-06-20-DML-Intron-Annotation-Hypomethylated-GO-BP-Expanded.txt", col.names = paste("V", 1:73, sep = ""), header = FALSE) #Import expanded GO-BP information
+DMLIntronAnnotationHypomethylatedGOBPExpanded <- DMLIntronAnnotationHypomethylatedGOBPExpanded[-1,] #Remove the first row, which is the original haeder from the file
+head(DMLIntronAnnotationHypomethylatedGOBPExpanded) #Confirm import
+```
+
+```{r}
+DMLIntronAnnotationHypomethylatedGOBPExpanded <- DMLIntronAnnotationHypomethylatedGOBPExpanded[,c(1:3)] #Not every Uniprot Accession code has the same number of GOterms. I will use the first 3 GOterms assigned in my analyses
+DMLIntronAnnotationHypomethylatedGOBPExpandedNoNA <- DMLIntronAnnotationHypomethylatedGOBPExpanded[is.na(DMLIntronAnnotationHypomethylatedGOBPExpanded $V1) == FALSE,] #Keeps rows with without NA in the first column (columns with at least one associated GOterm)
+nrow(DMLIntronAnnotationHypomethylatedGOBPExpandedNoNA) #Count the number of rows
+```
+
+```{r}
+DMLIntronAnnotationHypomethylatedGOBPExpandedNoNA $V2 <- gsub('{1}$', '', DMLIntronAnnotationHypomethylatedGOBPExpandedNoNA $V2) #Remove space before GOterms
+DMLIntronAnnotationHypomethylatedGOBPExpandedNoNA $V3 <- gsub('{1}$', '', DMLIntronAnnotationHypomethylatedGOBPExpandedNoNA $V3) #Remove space before GOterms
+head(DMLIntronAnnotationHypomethylatedGOBPExpandedNoNA) #Confim change
+```
+
+```{r}
+DMLIntronAnnotationHypomethylatedGOBPExpandedNoNAList <- c(as.vector(DMLIntronAnnotationHypomethylatedGOBPExpandedNoNA $V1),
+                                           as.vector(DMLIntronAnnotationHypomethylatedGOBPExpandedNoNA $V2),
+                                           as.vector(DMLIntronAnnotationHypomethylatedGOBPExpandedNoNA $V3)) #Convert to a vector
+DMLIntronAnnotationHypomethylatedGOBPExpandedNoNAList <- data.frame("rowNumber" = seq(from = 1, to = length(DMLIntronAnnotationHypomethylatedGOBPExpandedNoNAList), by = 1),
+                                                    "GO-BP" = DMLIntronAnnotationHypomethylatedGOBPExpandedNoNAList) #Add row numbers to use in count function
+head(DMLIntronAnnotationHypomethylatedGOBPExpandedNoNAList) #Check format
+```
+
+#### Count GOterms
+
+```{r}
+DMLIntronAnnotationHypomethylatedGOBPCounts <- count(DMLIntronAnnotationHypomethylatedGOBPExpandedNoNAList, GO.BP) #Count instances of each GOterm
+head(DMLIntronAnnotationHypomethylatedGOBPCounts) #Confirm counting
+```
+
+```{r}
+write.csv(DMLIntronAnnotationHypomethylatedGOBPCounts, "2019-06-20-DML-Intron-Annotation-Hypomethylated-GO-BP-Counts.csv") #Save file
 ```
 
