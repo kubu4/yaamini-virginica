@@ -393,6 +393,14 @@ write.csv(diffMethStats50Cov10Destrand, "2018-10-25-Loci-Analysis/2019-03-13-Dif
 
 ```{r}
 differentialMethylationStatsFilteredCov5Destrand <- calculateDiffMeth(methylationInformationFilteredCov5Destrand) #Calculate differential methylation statistics based on treatment indication from processBismarkAln
+head(differentialMethylationStatsFilteredCov5Destrand) #Look at differential methylation statistics
+```
+
+```{r}
+write.csv(differentialMethylationStatsFilteredCov5Destrand, "2018-10-25-Loci-Analysis/2019-06-30-All-Loci-Methylation-Statistic-Filtered-Destrand-50-Cov5.csv") #Save table as a .csv
+```
+
+```{r}
 diffMethStats50FilteredCov5Destrand <- getMethylDiff(differentialMethylationStatsFilteredCov5Destrand, difference = 50, qvalue = 0.01) #Identify loci that are at least 50% different
 head(diffMethStats50FilteredCov5Destrand) #Confirm creation
 ```
@@ -400,6 +408,9 @@ head(diffMethStats50FilteredCov5Destrand) #Confirm creation
 ```{r}
 write.csv(diffMethStats50FilteredCov5Destrand, "2018-10-25-Loci-Analysis/2019-04-05-Differentially-Methylated-Loci-Filtered-Destrand-50-Cov5.csv") #Save table as .csv
 ```
+
+
+
 
 ##### Hypermethylated DML
 
